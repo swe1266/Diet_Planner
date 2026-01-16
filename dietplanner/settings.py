@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -76,10 +82,15 @@ WSGI_APPLICATION = 'dietplanner.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'planner',
+        'USER': 'root',
+        'PASSWORD': 'swe1266',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
 
 
 # Password validation
@@ -120,3 +131,5 @@ STATIC_URL = 'static/'
 LOGIN_URL = '/login/'  # Tell Django to use our custom login
 LOGIN_REDIRECT_URL = '/'  # Redirect to calculator after login
 LOGOUT_REDIRECT_URL = '/register/'  # Redirect after logout
+
+

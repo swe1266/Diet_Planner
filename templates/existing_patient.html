@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Existing Patient Checkup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+        }
+        .container {
+            width: 420px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Existing Patient Checkup</h2>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Phone Number</label>
+        <input type="tel" name="phone" pattern="[0-9]{10}" required>
+
+        <label>Age</label>
+        <input type="number" name="age" required>
+
+        <label>Height (cm)</label>
+        <input type="number" name="height" step="0.1" required>
+
+        <label>Weight (kg)</label>
+        <input type="number" name="weight" step="0.1" required>
+
+        <label>Blood Pressure</label>
+        <input type="text" name="bp" placeholder="120/80" required>
+
+        <label>Activity Level</label>
+        <select name="activity" required>
+            <option value="1.2">Sedentary</option>
+            <option value="1.375">Lightly Active</option>
+            <option value="1.55">Moderately Active</option>
+            <option value="1.725">Very Active</option>
+        </select>
+
+        <button type="submit">Save Checkup</button>
+    </form>
+</div>
+
+</body>
+</html>

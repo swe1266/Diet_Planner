@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Information</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c7be5;
+            margin-bottom: 25px;
+        }
+
+        .patient-options {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .option {
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px solid #2c7be5;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .option:hover {
+            background-color: #2c7be5;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Select Patient Type</h2>
+
+    <div class="patient-options">
+        <div class="option" onclick="location.href='{% url 'new_patient' %}'">
+            New Patient
+        </div>
+
+        <div class="option" onclick="location.href='{% url 'existing_patient' %}'">
+            Existing Patient
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

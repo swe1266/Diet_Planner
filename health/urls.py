@@ -1,9 +1,12 @@
-from django.urls import path
+from django.urls import path 
 from . import views
 
 urlpatterns = [
-    path('', views.calculator, name='calculator'),
-    path('register/', views.register, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    path('', views.home, name='home'),
+    path('patients/', views.patients, name='patients'),
+    path('contact/', views.contact, name='contact'),
+    path('patients/new/', views.new_patient, name='new_patient'),
+    path('patients/existing/', views.existing_patient, name='existing_patient'),
+    path('patients/report/', views.patient_report, name='patient_report'),
+
 ]
