@@ -9,4 +9,6 @@ urlpatterns = [
     path('patients/existing/', views.existing_patient, name='existing_patient'),
     path('patients/report/', views.patient_report, name='patient_report'),
 
+    # --- ADD THIS MISSING LINE BELOW ---
+    path('diet-plan/<int:patient_id>/<int:checkup_id>/', views.generate_dynamic_diet_plan, name='generate_dynamic_diet_plan'),
 ]

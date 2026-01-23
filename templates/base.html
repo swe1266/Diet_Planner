@@ -1,0 +1,328 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Diet Planner</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --sidebar-bg: #0b2545;       /* Deep Navy */
+            --sidebar-hover: #1e4c8c;    /* Lighter Blue */
+            --topbar-bg: #ffffff;        /* White */
+            --accent: #48cae4;           /* Medical Cyan */
+            --text-main: #333;
+            --bg-body: #f4f7fa;
+            
+            /* Dimensions */
+            --sidebar-width: 260px;
+            --sidebar-collapsed-width: 70px;
+            --topbar-height: 70px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: all 0.3s ease; /* Smooth transition for everything */
+        }
+
+        /* --- 1. SIDEBAR (Left) --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            transition: width 0.3s ease; /* Animate width change */
+            overflow: hidden; /* Hide text when shrinking */
+        }
+
+        /* Collapsed State for Sidebar */
+        body.collapsed .sidebar {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-logo {
+            height: var(--topbar-height);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.1);
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .sidebar-logo img {
+            height: 40px;
+            transition: 0.3s;
+        }
+        
+        /* Hide logo when collapsed */
+        body.collapsed .sidebar-logo img {
+            display: none; 
+        }
+
+        .sidebar-menu {
+            flex-grow: 1;
+            padding: 20px 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 15px;
+            border-left: 4px solid transparent;
+            white-space: nowrap;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: var(--sidebar-hover);
+            color: white;
+            border-left-color: var(--accent);
+        }
+
+        .sidebar-menu li a i {
+            min-width: 30px; /* Fixed width for icon so it doesn't move */
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Hide text spans when collapsed */
+        body.collapsed .sidebar-menu li a span {
+            opacity: 0;
+            pointer-events: none;
+            display: none; 
+        }
+        
+        /* Hide logout text when collapsed */
+        body.collapsed .logout-btn span {
+            display: none;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            padding-left: 5px;
+        }
+
+        .logout-btn:hover {
+            color: #ff4c4c;
+        }
+
+        /* --- 2. TOP NAVBAR (Top) --- */
+        .top-navbar {
+            position: fixed;
+            left: var(--sidebar-width);
+            top: 0;
+            width: calc(100% - var(--sidebar-width));
+            height: var(--topbar-height);
+            background: var(--topbar-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 900;
+            transition: left 0.3s ease, width 0.3s ease;
+        }
+
+        /* Adjust Topbar when Sidebar is collapsed */
+        body.collapsed .top-navbar {
+            left: var(--sidebar-collapsed-width);
+            width: calc(100% - var(--sidebar-collapsed-width));
+        }
+
+        /* Toggle Button Styles */
+        .toggle-btn {
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--sidebar-bg);
+            margin-right: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: #e0e6ed;
+        }
+
+        .hospital-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--sidebar-bg);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e0e6ed;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sidebar-bg);
+            font-size: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* --- 3. MAIN CONTENT AREA --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--topbar-height);
+            padding: 40px;
+            min-height: calc(100vh - var(--topbar-height));
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Adjust content when sidebar is collapsed */
+        body.collapsed .main-content {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        /* Responsive Mobile Adjustment */
+        @media (max-width: 768px) {
+            .sidebar { width: var(--sidebar-collapsed-width); }
+            .sidebar-logo img { display: none; }
+            .sidebar-menu li a span { display: none; }
+            .top-navbar { left: var(--sidebar-collapsed-width); width: calc(100% - var(--sidebar-collapsed-width)); }
+            .main-content { margin-left: var(--sidebar-collapsed-width); }
+            
+            body.collapsed .sidebar { width: var(--sidebar-width); }
+            body.collapsed .sidebar-menu li a span { display: inline; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <img src="{% static 'images/kg icon.webp' %}" alt="Logo">
+        </div>
+
+        <ul class="sidebar-menu">
+            <li>
+                <a href="{% url 'home' %}">
+                    <i class="fas fa-home"></i> <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'new_patient' %}">
+                    <i class="fas fa-user-plus"></i> <span>New Patient</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'existing_patient' %}">
+                    <i class="fas fa-file-medical"></i> <span>Existing Patient</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <form action="{% url 'logout' %}" method="post" style="width: 100%;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn" style="background: none; border: none; cursor: pointer; width: 100%; text-align: left; padding: 0; font-family: inherit; font-size: inherit;">
+                    <i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i> 
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="top-navbar">
+        <div style="display: flex; align-items: center;">
+            <i class="fas fa-bars toggle-btn" onclick="toggleSidebar()"></i>
+            
+            <div class="hospital-brand">
+                <img src="{% static 'images/kg icon.webp' %}" alt="Hospital Logo" style="height: 40px;">
+                <span>HOSPITAL DIET PLANNER</span>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-info">
+                <div class="user-name">
+                    {% if user.is_authenticated %}
+                        {{ user.username|title }} 
+                    {% else %}
+                        Guest User
+                    {% endif %}
+                </div>
+                <div class="user-role">
+                    {% if user.is_superuser %}
+                        Administrator
+                    {% else %}
+                        Doctor
+                    {% endif %}
+                </div>
+            </div>
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.body.classList.toggle('collapsed');
+        }
+    </script>
+
+</body>
+</html>

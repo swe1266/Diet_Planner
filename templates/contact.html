@@ -1,0 +1,251 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Diet Planner</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL VARIABLES (Matching Home Page) --- */
+        :root {
+            --primary-dark: #0b2545;       /* Deep Navy Blue */
+            --primary-light: #1e4c8c;      /* Professional Blue */
+            --accent: #48cae4;             /* Medical Light Blue Accent */
+            --bg-color: #f0f4f8;           /* Very Light Grey-Blue Background */
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- HEADER & NAVIGATION (Exact Copy) --- */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            color: var(--white);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: flex;       /* Added flex to align image and text */
+            align-items: center; /* Vertically center the logo */
+        }
+
+        /* REMOVED the ::before pseudo-element here so the image works */
+
+        nav a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- PAGE TITLE SECTION --- */
+        .page-header {
+            background: var(--white);
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid #e0e6ed;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 36px;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        /* --- MAIN CONTENT CONTAINER --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        /* --- SECTIONS --- */
+        .content-section {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+            border-left: 5px solid var(--primary-light);
+        }
+
+        .content-section h3 {
+            color: var(--primary-dark);
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .content-section p {
+            line-height: 1.8;
+            color: #555;
+            font-size: 16px;
+        }
+
+        /* --- GRID FOR FEATURES --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-top: 3px solid var(--primary-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: var(--white);
+        }
+
+        .feature-card h4 {
+            color: var(--primary-dark);
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: auto;
+            background-color: var(--primary-dark);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header { flex-direction: column; text-align: center; }
+            nav { margin-top: 15px; }
+            nav a { margin: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>
+            <img src="{% static 'images/kg icon.webp' %}" alt="Hospital Logo" style="height: 50px; margin-right: 15px;">
+            HOSPITAL DIET PLANNER
+        </h1>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'patients' %}">Patients Info</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h2>About Us</h2>
+        <p>Your Personal Nutrition Companion</p>
+    </div>
+
+    <div class="container">
+        
+        <div class="content-section">
+            <h3>Our Mission</h3>
+            <p>Diet Planner is dedicated to helping individuals achieve their health and fitness goals through personalized nutrition planning. We believe that healthy eating should be simple, accessible, and sustainable for everyone. Our goal is to bridge the gap between medical requirements and daily lifestyle.</p>
+        </div>
+
+        <div class="content-section">
+            <h3>Why Choose Us?</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>Personalized Plans</h4>
+                    <p>Get customized meal plans tailored specifically to your BMI, BMR, and medical activity levels.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Expert Guidance</h4>
+                    <p>Access nutritional information and structures based on hospital-grade standards.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Easy Tracking</h4>
+                    <p>Monitor your daily calorie intake (TDEE) and macronutrients with our intuitive tools.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Community Support</h4>
+                    <p>Join thousands of users on their journey to better health and sustainable recovery.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3>Our Commitment</h3>
+            <p>We are committed to providing accurate nutritional information, promoting healthy lifestyle choices, and supporting our users every step of the way toward their wellness goals. Your health is our priority.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hospital Diet Planner System. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,26 +1,13 @@
-# Python
+# Django cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 
 # Virtual Environment
 venv/
 env/
-ENV/
 
-# Django
+# Database (if you use sqlite locally)
 db.sqlite3
-*.log
-local_settings.py
 
-# Migrations cache
-health/migrations/__pycache__/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
+# OS generated files
 .DS_Store
-Thumbs.db
