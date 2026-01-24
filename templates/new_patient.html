@@ -1,137 +1,199 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Patient Registration</title>
+{% extends 'base.html' %}
+{% load static %}
 
-    <style>
-        body {
-            background-color: #eef2f7;
-            font-family: Arial, sans-serif;
-        }
+{% block content %}
+<style>
+    /* --- Page Specific Styles --- */
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        position: relative; /* For positioning the back button */
+        border-top: 5px solid #1e4c8c; /* Professional Blue Top Border */
+    }
 
-        /* Form container */
-        form {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
+    /* Back Button Styling */
+    .back-btn {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f0f4f8;
+        color: #0b2545;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-        /* Form heading (optional) */
-        .form-title {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
-        }
+    .back-btn:hover {
+        background-color: #1e4c8c;
+        color: white;
+        transform: translateX(-3px);
+    }
 
-        /* Labels */
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #333;
-        }
+    .form-title {
+        text-align: center;
+        color: #0b2545;
+        font-weight: 700;
+        margin-bottom: 30px;
+        margin-top: 10px;
+        font-size: 28px;
+    }
 
-        /* Inputs, selects, textarea */
-        input[type="text"],
-        input[type="number"],
-        input[type="tel"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-        }
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns */
+        gap: 20px;
+    }
 
-        /* Focus effect */
-        input:focus,
-        textarea:focus,
-        select:focus {
-            border-color: #4a90e2;
-            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-            outline: none;
-        }
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-        /* Submit button */
-        button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background-color: #4a90e2;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+    .form-group.full-width {
+        grid-column: span 2; /* Make address take full width */
+    }
 
-        button:hover {
-            background-color: #357ab7;
-        }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+        font-size: 14px;
+    }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            form {
-                margin: 20px;
-                padding: 20px;
-            }
-        }
-    </style>
-</head>
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e6ed;
+        border-radius: 8px;
+        font-size: 15px;
+        background-color: #f8f9fa;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        box-sizing: border-box;
+    }
 
-<body>
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #48cae4; /* Medical Cyan */
+        box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.1);
+        outline: none;
+        background-color: #fff;
+    }
 
-<form method="post">
-    {% csrf_token %}
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #0b2545, #1e4c8c);
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 10px;
+    }
 
-    <h2 class="form-title">Patient Registration</h2>
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(11, 37, 69, 0.3);
+    }
 
-    <label>Patient Name</label>
-    <input type="text" name="name" required>
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .form-grid { grid-template-columns: 1fr; } /* Stack columns on mobile */
+        .form-group.full-width { grid-column: span 1; }
+        .form-container { padding: 25px; }
+        .back-btn { top: 20px; left: 20px; }
+    }
+</style>
 
-    <label>Age</label>
-    <input type="number" name="age" required>
+<div class="form-container">
+    <a href="{% url 'home' %}" class="back-btn" title="Back to Selection">
+        <i class="fas fa-arrow-left"></i>
+    </a>
 
-    <label>Gender</label>
-    <select name="gender" required>
-        <option value="">Select</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="others">Others</option>
-    </select>
+    <h2 class="form-title">New Patient Registration</h2>
 
-    <label>Phone Number</label>
-    <input type="tel" name="phone" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Patient Name</label>
+                <input type="text" name="name" placeholder="Enter full name" required>
+            </div>
 
-    <label>Address</label>
-    <textarea name="address" rows="3" required></textarea>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
+            </div>
 
-    <label>Height (cm)</label>
-    <input type="number" name="height" step="0.1" required>
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" name="age" placeholder="Years" required>
+            </div>
 
-    <label>Weight (kg)</label>
-    <input type="number" name="weight" step="0.1" required>
+            <div class="form-group">
+                <label>Gender</label>
+                <select name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="others">Others</option>
+                </select>
+            </div>
 
-    <label>Blood Pressure (mmHg)</label>
-    <input type="text" name="bp" placeholder="120/80" required>
+            <div class="form-group full-width">
+                <label>Address</label>
+                <textarea name="address" rows="2" placeholder="Patient's full address" required></textarea>
+            </div>
 
-    <label>Activity Level</label>
-    <select name="activity" required>
-        <option value="1.2">Sedentary</option>
-        <option value="1.375">Lightly Active</option>
-        <option value="1.55">Moderately Active</option>
-        <option value="1.725">Very Active</option>
-    </select>
+            <div class="form-group">
+                <label>Height (cm)</label>
+                <input type="number" name="height" step="0.1" placeholder="e.g. 175" required>
+            </div>
 
-    <button type="submit">Register & Calculate</button>
-</form>
+            <div class="form-group">
+                <label>Weight (kg)</label>
+                <input type="number" name="weight" step="0.1" placeholder="e.g. 70.5" required>
+            </div>
 
-</body>
-</html>
+            <div class="form-group">
+                <label>Blood Pressure</label>
+                <input type="text" name="bp" placeholder="e.g. 120/80" required>
+            </div>
+
+            <div class="form-group">
+                <label>Activity Level</label>
+                <select name="activity" required>
+                    <option value="1.2">Sedentary (Little/No exercise)</option>
+                    <option value="1.375">Lightly Active (1-3 days/week)</option>
+                    <option value="1.55">Moderately Active (3-5 days/week)</option>
+                    <option value="1.725">Very Active (6-7 days/week)</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-file-medical-alt" style="margin-right: 8px;"></i>
+            Register & Calculate Diet
+        </button>
+    </form>
+</div>
+
+{% endblock %}

@@ -6,30 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospital Diet Planner</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --sidebar-bg: #0b2545;       /* Deep Navy */
-            --sidebar-hover: #1e4c8c;    /* Lighter Blue */
-            --topbar-bg: #ffffff;        /* White */
-            --accent: #48cae4;           /* Medical Cyan */
-            --text-main: #333;
-            --bg-body: #f4f7fa;
+            /* Palette Upgrade */
+            --sidebar-bg: #0f172a;       /* Darker, richer slate blue */
+            --sidebar-text: #94a3b8;     /* Muted blue-grey text */
+            --sidebar-active-bg: #3b82f6; /* Modern primary blue */
+            --sidebar-active-text: #ffffff;
+            --topbar-bg: rgba(255, 255, 255, 0.95); /* Semi-transparent */
+            --bg-body: #f1f5f9;          /* Light slate background */
+            --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             
             /* Dimensions */
             --sidebar-width: 260px;
-            --sidebar-collapsed-width: 70px;
+            --sidebar-collapsed-width: 80px;
             --topbar-height: 70px;
+            --radius-btn: 12px;
         }
 
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-body);
-            color: var(--text-main);
-            transition: all 0.3s ease; /* Smooth transition for everything */
+            color: #334155;
+            overflow-x: hidden;
         }
 
         /* --- 1. SIDEBAR (Left) --- */
@@ -37,106 +40,127 @@
             width: var(--sidebar-width);
             height: 100vh;
             background-color: var(--sidebar-bg);
-            color: white;
             position: fixed;
             left: 0;
             top: 0;
             display: flex;
             flex-direction: column;
             z-index: 1000;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-            transition: width 0.3s ease; /* Animate width change */
-            overflow: hidden; /* Hide text when shrinking */
+            transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 5px 0 25px rgba(0,0,0,0.05);
         }
 
-        /* Collapsed State for Sidebar */
-        body.collapsed .sidebar {
-            width: var(--sidebar-collapsed-width);
-        }
-
+        /* Logo Area */
         .sidebar-logo {
-            height: var(--topbar-height);
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.1);
-            white-space: nowrap; /* Prevent text wrapping */
+            padding: 0 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
         }
 
         .sidebar-logo img {
             height: 40px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            display: block;
         }
         
-        /* Hide logo when collapsed */
-        body.collapsed .sidebar-logo img {
-            display: none; 
+        .logo-text {
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            margin-left: 10px;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.3s;
         }
 
+        /* Menu List */
         .sidebar-menu {
             flex-grow: 1;
-            padding: 20px 0;
+            padding: 0 15px;
             list-style: none;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .sidebar-menu li a {
             display: flex;
             align-items: center;
-            padding: 15px 25px;
-            color: rgba(255,255,255,0.8);
+            padding: 12px 15px;
+            color: var(--sidebar-text);
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             font-size: 15px;
-            border-left: 4px solid transparent;
+            font-weight: 500;
+            border-radius: var(--radius-btn);
             white-space: nowrap;
+            position: relative;
         }
 
         .sidebar-menu li a:hover {
-            background-color: var(--sidebar-hover);
+            background-color: rgba(255, 255, 255, 0.1);
             color: white;
-            border-left-color: var(--accent);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: var(--sidebar-active-bg);
+            color: var(--sidebar-active-text);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
 
         .sidebar-menu li a i {
-            min-width: 30px; /* Fixed width for icon so it doesn't move */
+            min-width: 24px;
             font-size: 18px;
             text-align: center;
+            margin-right: 15px;
+            transition: margin 0.3s;
         }
 
-        /* Hide text spans when collapsed */
-        body.collapsed .sidebar-menu li a span {
-            opacity: 0;
-            pointer-events: none;
-            display: none; 
-        }
-        
-        /* Hide logout text when collapsed */
-        body.collapsed .logout-btn span {
-            display: none;
-        }
-
+        /* Footer / Logout */
         .sidebar-footer {
             padding: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.1);
         }
 
         .logout-btn {
             display: flex;
             align-items: center;
-            color: #ff6b6b;
+            color: #ef4444;
             text-decoration: none;
             font-weight: 600;
             transition: 0.3s;
-            padding-left: 5px;
+            padding: 10px;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+            width: 100%;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 15px;
         }
 
         .logout-btn:hover {
-            color: #ff4c4c;
+            background: rgba(239, 68, 68, 0.1);
         }
 
-        /* --- 2. TOP NAVBAR (Top) --- */
+        /* --- COLLAPSED STATE LOGIC --- */
+        body.collapsed .sidebar { width: var(--sidebar-collapsed-width); }
+        body.collapsed .logo-text,
+        body.collapsed .sidebar-menu li a span,
+        body.collapsed .logout-btn span { opacity: 0; width: 0; display: none; }
+        body.collapsed .sidebar-menu li a { justify-content: center; padding: 12px 0; }
+        body.collapsed .sidebar-menu li a i { margin-right: 0; }
+        body.collapsed .sidebar-logo img { height: 32px; }
+        body.collapsed .logout-btn { justify-content: center; }
+
+        /* --- 2. TOP NAVBAR --- */
         .top-navbar {
             position: fixed;
             left: var(--sidebar-width);
@@ -144,103 +168,76 @@
             width: calc(100% - var(--sidebar-width));
             height: var(--topbar-height);
             background: var(--topbar-bg);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 30px;
             box-sizing: border-box;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-subtle);
             z-index: 900;
-            transition: left 0.3s ease, width 0.3s ease;
+            transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s ease;
         }
 
-        /* Adjust Topbar when Sidebar is collapsed */
         body.collapsed .top-navbar {
             left: var(--sidebar-collapsed-width);
             width: calc(100% - var(--sidebar-collapsed-width));
         }
 
-        /* Toggle Button Styles */
         .toggle-btn {
             font-size: 20px;
             cursor: pointer;
-            color: var(--sidebar-bg);
-            margin-right: 20px;
-            padding: 10px;
-            border-radius: 5px;
+            color: #64748b;
+            padding: 8px;
+            border-radius: 8px;
             transition: 0.3s;
         }
-
-        .toggle-btn:hover {
-            background: #e0e6ed;
-        }
-
-        .hospital-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--sidebar-bg);
-        }
+        .toggle-btn:hover { background: #e2e8f0; color: #0f172a; }
 
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
         }
+        .user-profile:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: #e0e6ed;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--sidebar-bg);
-            font-size: 20px;
+            color: white;
+            font-size: 16px;
         }
+        .user-name { font-weight: 600; font-size: 14px; color: #1e293b; }
+        .user-role { font-size: 11px; color: #64748b; font-weight: 500; }
 
-        .user-info {
-            text-align: right;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .user-role {
-            font-size: 12px;
-            color: #777;
-        }
-
-        /* --- 3. MAIN CONTENT AREA --- */
+        /* --- 3. MAIN CONTENT --- */
         .main-content {
             margin-left: var(--sidebar-width);
             margin-top: var(--topbar-height);
             padding: 40px;
             min-height: calc(100vh - var(--topbar-height));
-            transition: margin-left 0.3s ease;
+            transition: margin-left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Adjust content when sidebar is collapsed */
-        body.collapsed .main-content {
-            margin-left: var(--sidebar-collapsed-width);
-        }
+        body.collapsed .main-content { margin-left: var(--sidebar-collapsed-width); }
 
-        /* Responsive Mobile Adjustment */
+        /* Mobile */
         @media (max-width: 768px) {
-            .sidebar { width: var(--sidebar-collapsed-width); }
-            .sidebar-logo img { display: none; }
-            .sidebar-menu li a span { display: none; }
-            .top-navbar { left: var(--sidebar-collapsed-width); width: calc(100% - var(--sidebar-collapsed-width)); }
-            .main-content { margin-left: var(--sidebar-collapsed-width); }
-            
-            body.collapsed .sidebar { width: var(--sidebar-width); }
-            body.collapsed .sidebar-menu li a span { display: inline; }
+            .sidebar { transform: translateX(-100%); width: var(--sidebar-width); }
+            body.collapsed .sidebar { transform: translateX(0); }
+            .top-navbar { left: 0; width: 100%; }
+            .main-content { margin-left: 0; }
+            .sidebar-logo { display: flex; }
         }
     </style>
 </head>
@@ -249,31 +246,41 @@
     <nav class="sidebar">
         <div class="sidebar-logo">
             <img src="{% static 'images/kg icon.webp' %}" alt="Logo">
+            <span class="logo-text">DietPlanner</span>
         </div>
 
         <ul class="sidebar-menu">
             <li>
-                <a href="{% url 'home' %}">
-                    <i class="fas fa-home"></i> <span>Home</span>
+                <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> 
+                    <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'new_patient' %}">
-                    <i class="fas fa-user-plus"></i> <span>New Patient</span>
+                <a href="{% url 'new_patient' %}" class="{% if request.resolver_match.url_name == 'new_patient' %}active{% endif %}">
+                    <i class="fas fa-user-plus"></i>
+                    <span>New Patient</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'existing_patient' %}">
-                    <i class="fas fa-file-medical"></i> <span>Existing Patient</span>
+                <a href="{% url 'existing_patient' %}" class="{% if request.resolver_match.url_name == 'existing_patient' %}active{% endif %}">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Update Patient</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'search_patient' %}" class="{% if request.resolver_match.url_name == 'search_patient' %}active{% endif %}">
+                    <i class="fas fa-folder-open"></i>
+                    <span>View Records</span>
                 </a>
             </li>
         </ul>
 
         <div class="sidebar-footer">
-            <form action="{% url 'logout' %}" method="post" style="width: 100%;">
+            <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="logout-btn" style="background: none; border: none; cursor: pointer; width: 100%; text-align: left; padding: 0; font-family: inherit; font-size: inherit;">
-                    <i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i> 
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-arrow-right-from-bracket"></i> 
                     <span>Logout</span>
                 </button>
             </form>
@@ -281,13 +288,9 @@
     </nav>
 
     <div class="top-navbar">
-        <div style="display: flex; align-items: center;">
-            <i class="fas fa-bars toggle-btn" onclick="toggleSidebar()"></i>
-            
-            <div class="hospital-brand">
-                <img src="{% static 'images/kg icon.webp' %}" alt="Hospital Logo" style="height: 40px;">
-                <span>HOSPITAL DIET PLANNER</span>
-            </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <i class="fas fa-bars-staggered toggle-btn" onclick="toggleSidebar()"></i>
+            <h3 style="margin:0; font-size: 18px; color: #1e293b; font-weight:600;">Hospital Nutrition System</h3>
         </div>
 
         <div class="user-profile">
@@ -296,15 +299,11 @@
                     {% if user.is_authenticated %}
                         {{ user.username|title }} 
                     {% else %}
-                        Guest User
+                        Guest
                     {% endif %}
                 </div>
                 <div class="user-role">
-                    {% if user.is_superuser %}
-                        Administrator
-                    {% else %}
-                        Doctor
-                    {% endif %}
+                    {% if user.is_superuser %}Admin{% else %}Doctor{% endif %}
                 </div>
             </div>
             <div class="user-avatar">

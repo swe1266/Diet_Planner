@@ -1,133 +1,250 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Patient Diet Report</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; }
-        .chart-container { position: relative; width: 100%; max-width: 400px; margin: auto; }
-        .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20px; font-weight: bold; }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-<div class="container my-5">
-    <h2 class="text-center text-primary mb-4">Patient Diet Report</h2>
+{% block content %}
+<style>
+    /* --- Layout: Split Screen --- */
+    .report-container {
+        display: flex;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        height: calc(100vh - 120px); /* Fill screen height */
+    }
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <h5 class="card-title mb-3">Patient Summary</h5>
-            <div class="row">
-                <div class="col-md-3"><strong>Name:</strong> {{ patient.name }}</div>
-                <div class="col-md-2"><strong>Age:</strong> {{ checkup.age }}</div>
-                <div class="col-md-2"><strong>Gender:</strong> {{ patient.gender }}</div>
-                <div class="col-md-2"><strong>Height:</strong> {{ checkup.height }} cm</div>
-                <div class="col-md-3"><strong>Weight:</strong> {{ checkup.weight }} kg</div>
-            </div>
+    /* --- LEFT SIDEBAR: History --- */
+    .history-sidebar {
+        width: 280px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid #e0e6ed;
+    }
+
+    .history-header {
+        background: #0b2545;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .history-list {
+        overflow-y: auto; /* Scrollable if many reports */
+        flex-grow: 1;
+        padding: 10px;
+    }
+
+    .history-item {
+        display: block;
+        padding: 15px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #555;
+        border-left: 4px solid transparent;
+        transition: 0.2s;
+        background: #f8f9fa;
+    }
+
+    .history-item:hover {
+        background: #eef2f7;
+        color: #1e4c8c;
+    }
+
+    /* Style for the currently active report */
+    .history-item.active {
+        background: #e3f2fd;
+        border-left-color: #1e4c8c;
+        color: #0b2545;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .history-date {
+        font-size: 14px;
+        display: block;
+    }
+    
+    .history-sub {
+        font-size: 12px;
+        color: #888;
+    }
+
+    /* --- RIGHT CONTENT: The Report --- */
+    .report-main {
+        flex-grow: 1;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        padding: 40px;
+        overflow-y: auto; /* Scrollable content */
+        border-top: 5px solid #48cae4;
+    }
+
+    .patient-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #f0f4f8;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+
+    .vitals-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .vital-card {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid #eee;
+    }
+
+    .vital-val { font-size: 20px; font-weight: 700; color: #1e4c8c; }
+    .vital-lbl { font-size: 13px; color: #666; margin-top: 5px; }
+
+    /* Diet Plan Table */
+    .diet-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    .diet-table th {
+        background: #1e4c8c;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .diet-table td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        color: #444;
+    }
+
+    /* Print Button */
+    .print-btn {
+        background: #48cae4;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .print-btn:hover { background: #1e4c8c; }
+    
+    @media (max-width: 900px) {
+        .report-container { flex-direction: column; height: auto; }
+        .history-sidebar { width: 100%; height: 200px; }
+        .vitals-grid { grid-template-columns: 1fr 1fr; }
+    }
+</style>
+
+<div class="report-container">
+    
+    <div class="history-sidebar">
+        <div class="history-header">
+            <h3 style="margin:0; font-size: 18px;">Visit History</h3>
+            <div style="font-size: 12px; opacity: 0.8;">{{ patient.name }}</div>
+        </div>
+        <div class="history-list">
+            {% for item in history %}
+                <a href="{% url 'generate_dynamic_diet_plan' patient.id item.id %}" 
+                   class="history-item {% if item.id == checkup.id %}active{% endif %}">
+                    <span class="history-date">
+                        <i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>
+                        Report #{{ item.id }}
+                    </span>
+                    <span class="history-sub">
+                        Weight: {{ item.weight }}kg | BMI: {{ item.bmi }}
+                    </span>
+                </a>
+            {% endfor %}
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card text-center shadow-sm h-100">
-                <div class="card-body">
-                    <h6>BMI</h6>
-                    <h3 class="text-primary">{{ checkup.bmi }}</h3>
-                    <span class="badge bg-info">{{ checkup.category }}</span>
-                </div>
+    <div class="report-main" id="printableArea">
+        <div class="patient-header">
+            <div>
+                <h1 style="margin:0; color: #0b2545;">Diet Report</h1>
+                <p style="color: #666; margin: 5px 0 0 0;">Report ID: #{{ checkup.id }}</p>
             </div>
+            <button onclick="window.print()" class="print-btn">
+                <i class="fas fa-print"></i> Print Report
+            </button>
         </div>
-        <div class="col-md-4">
-            <div class="card text-center shadow-sm h-100">
-                <div class="card-body">
-                    <h6>BMR</h6>
-                    <h3>{{ checkup.bmr|floatformat:0 }} <small class="text-muted fs-6">kcal</small></h3>
-                    <small class="text-muted">Calories at rest</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card text-center shadow-sm h-100">
-                <div class="card-body">
-                    <h6>TDEE</h6>
-                    <h3 class="text-success">{{ checkup.tdee|floatformat:0 }} <small class="text-muted fs-6">kcal</small></h3>
-                    <small class="text-muted">Daily calorie need</small>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <h5 class="card-title text-center mb-4">Macronutrients</h5>
-            <div class="chart-container">
-                <canvas id="dietChart"></canvas>
-                <div class="center-text">{{ checkup.tdee|floatformat:0 }} kcal</div>
+        <h3 style="color: #1e4c8c;">Patient Vitals</h3>
+        <div class="vitals-grid">
+            <div class="vital-card">
+                <div class="vital-val">{{ checkup.bmi }}</div>
+                <div class="vital-lbl">BMI ({{ checkup.category }})</div>
+            </div>
+            <div class="vital-card">
+                <div class="vital-val">{{ checkup.weight }} kg</div>
+                <div class="vital-lbl">Current Weight</div>
+            </div>
+            <div class="vital-card">
+                <div class="vital-val">{{ checkup.tdee }}</div>
+                <div class="vital-lbl">Daily Calories (TDEE)</div>
+            </div>
+            <div class="vital-card">
+                <div class="vital-val">{{ checkup.bp }}</div>
+                <div class="vital-lbl">Blood Pressure</div>
             </div>
         </div>
-    </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title text-center mb-4">Suggested Meal Calories</h5>
-            <div class="row text-center">
-                <div class="col-md-3">
-                    <div class="p-3 border rounded bg-light">
-                        <h6>Breakfast</h6>
-                        <strong class="text-primary">{{ meals.breakfast.cal|floatformat:0 }} kcal</strong>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="p-3 border rounded bg-light">
-                        <h6>Lunch</h6>
-                        <strong class="text-success">{{ meals.lunch.cal|floatformat:0 }} kcal</strong>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="p-3 border rounded bg-light">
-                        <h6>Snacks</h6>
-                        <strong class="text-warning">{{ meals.snacks.cal|floatformat:0 }} kcal</strong>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="p-3 border rounded bg-light">
-                        <h6>Dinner</h6>
-                        <strong class="text-danger">{{ meals.dinner.cal|floatformat:0 }} kcal</strong>
-                    </div>
-                </div>
-            </div>
+        <h3 style="color: #1e4c8c;">Recommended Nutrition</h3>
+        <table class="diet-table">
+            <thead>
+                <tr>
+                    <th>Meal</th>
+                    <th>Calories</th>
+                    <th>Suggestions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Breakfast</strong> (25%)</td>
+                    <td>{{ meals.breakfast.cal }} kcal</td> 
+                    <td>Oats, Eggs, or Whole Wheat Toast with Fruit</td>
+                </tr>
+                <tr>
+                    <td><strong>Lunch</strong> (35%)</td>
+                    <td>{{ meals.lunch.cal }} kcal</td>
+                    <td>Brown Rice/Quinoa, Lean Protein (Chicken/Lentils), Veggies</td>
+                </tr>
+                <tr>
+                    <td><strong>Snacks</strong> (10%)</td>
+                    <td>{{ meals.snacks.cal }} kcal</td>
+                    <td>Nuts, Yogurt, or a Fruit</td>
+                </tr>
+                <tr>
+                    <td><strong>Dinner</strong> (30%)</td>
+                    <td>{{ meals.dinner.cal }} kcal</td>
+                    <td>Light Salad, Soup, or Grilled Fish/Tofu</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 30px; background: #f0f8ff; padding: 20px; border-radius: 10px;">
+            <h4 style="margin-top:0;">Macro Distribution</h4>
+            <p><strong>Carbs:</strong> {{ checkup.carbs }}g | <strong>Protein:</strong> {{ checkup.protein }}g | <strong>Fats:</strong> {{ checkup.fat }}g</p>
         </div>
     </div>
 </div>
-
-<script>
-    const ctx = document.getElementById('dietChart').getContext('2d');
-    
-    // Using Django variables inside JavaScript
-    const carbs = {{ checkup.carbs|default:0 }};
-    const protein = {{ checkup.protein|default:0 }};
-    const fat = {{ checkup.fat|default:0 }};
-
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Carbs', 'Protein', 'Fat'],
-            datasets: [{
-                data: [carbs, protein, fat],
-                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            cutout: '75%',
-            plugins: {
-                legend: { position: 'bottom' }
-            }
-        }
-    });
-</script>
-
-</body>
-</html>
+{% endblock %}

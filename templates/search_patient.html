@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .search-card {
+        max-width: 550px;
+        margin: 40px auto;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(11, 37, 69, 0.1);
+        text-align: center;
+        position: relative;
+        border-top: 6px solid #28a745; /* Green for "View Mode" */
+    }
+
+    /* Floating Back Button */
+    .back-btn {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f1f5f9;
+        color: #0b2545;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+    }
+
+    .back-btn:hover {
+        background-color: #0b2545;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    .icon-circle {
+        width: 80px;
+        height: 80px;
+        background-color: #e8f5e9;
+        color: #28a745;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        margin: 0 auto 20px auto;
+    }
+
+    .search-title {
+        color: #0b2545;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .search-desc {
+        color: #64748b;
+        font-size: 15px;
+        margin-bottom: 30px;
+        line-height: 1.5;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        transition: 0.3s;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .search-input:focus {
+        border-color: #28a745;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+    }
+
+    .btn-view {
+        width: 100%;
+        background: #28a745;
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-view:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .error-box {
+        background-color: #fee2e2;
+        color: #ef4444;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #fecaca;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+</style>
+
+<div class="search-card">
+    <a href="{% url 'home' %}" class="back-btn" title="Back to Dashboard">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <div class="icon-circle">
+        <i class="fas fa-folder-open"></i>
+    </div>
+    
+    <h2 class="search-title">View Patient Records</h2>
+    <p class="search-desc">
+        Enter a registered phone number to view past diet plans and medical history without making changes.
+    </p>
+    
+    {% if error %}
+    <div class="error-box">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="tel" name="phone" class="search-input" placeholder="Enter 10-digit Phone Number" required autofocus>
+        
+        <button type="submit" class="btn-view">
+            <i class="fas fa-search" style="margin-right: 8px;"></i> Find Records
+        </button>
+    </form>
+</div>
+{% endblock %}

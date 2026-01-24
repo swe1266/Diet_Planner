@@ -5,108 +5,230 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Hospital Diet Planner</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         body {
-            background: linear-gradient(135deg, #0b2545, #1e4c8c);
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f172a; /* Deep Navy Background */
             height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
         }
+
+        /* Abstract Background Circle */
+        .bg-circle {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(15,23,42,0) 70%);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: #ffffff;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* Strong shadow for depth */
+            position: relative;
+            z-index: 1;
             text-align: center;
+            box-sizing: border-box;
+            animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .login-header {
+
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .brand-logo {
+            width: 80px;
+            height: 80px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            color: #0f172a;
+            font-size: 32px;
+        }
+
+        .brand-logo img {
+            width: 50px;
+        }
+
+        h2 {
+            color: #0f172a;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
             margin-bottom: 30px;
         }
-        .login-header img {
-            height: 60px;
-            margin-bottom: 10px;
-        }
-        .login-header h2 {
-            color: #0b2545;
-            margin: 0;
-            font-weight: 600;
-        }
-        .form-group {
+
+        /* Form Styling */
+        .input-group {
+            position: relative;
             margin-bottom: 20px;
             text-align: left;
         }
-        .form-group label {
+
+        .input-group label {
             display: block;
-            color: #666;
-            margin-bottom: 5px;
-            font-size: 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box; /* Ensures padding doesn't break width */
-            font-size: 14px;
+
+        .input-wrapper {
+            position: relative;
         }
-        .login-btn {
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input {
             width: 100%;
-            padding: 12px;
-            background: #1e4c8c;
+            padding: 14px 14px 14px 45px; /* Space for icon */
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            background: #f8fafc;
+            color: #334155;
+            transition: 0.3s;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        input:focus + i {
+            color: #3b82f6;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 10px;
+            font-family: 'Poppins', sans-serif;
         }
-        .login-btn:hover {
-            background: #0b2545;
+
+        button:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
         }
+
         .error-message {
-            color: red;
+            background: #fee2e2;
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 8px;
             font-size: 13px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #94a3b8;
         }
     </style>
 </head>
 <body>
 
-<div class="login-card">
-    <div class="login-header">
-        <img src="{% static 'images/kg icon.webp' %}" alt="Logo">
-        <h2>Welcome Back</h2>
-        <p style="color: #888; font-size: 14px;">Sign in to access patient records</p>
-    </div>
+    <div class="bg-circle"></div>
 
-    <form method="post">
-        {% csrf_token %}
-        
+    <div class="login-card">
+        <div class="brand-logo">
+            <i class="fas fa-heartbeat"></i> 
+        </div>
+
+        <h2>Welcome Back</h2>
+        <p>Enter your credentials to access the system.</p>
+
         {% if form.errors %}
-            <div class="error-message">Invalid username or password. Please try again.</div>
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i> 
+                Invalid username or password.
+            </div>
         {% endif %}
 
-        <div class="form-group">
-            <label>Username</label>
-            <input type="text" name="username" required autofocus>
-        </div>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <label>Username</label>
+                <div class="input-wrapper">
+                    <input type="text" name="username" placeholder="Doctor ID" required autofocus>
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" name="password" required>
-        </div>
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <input type="password" name="password" placeholder="••••••••" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
 
-        <button type="submit" class="login-btn">Login</button>
-    </form>
-</div>
+            <button type="submit">
+                Sign In <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+            </button>
+        </form>
+
+        <div class="footer-text">
+            Restricted Access • Authorized Personnel Only
+        </div>
+    </div>
 
 </body>
 </html>

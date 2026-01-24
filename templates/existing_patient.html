@@ -1,94 +1,326 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Existing Patient Checkup</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #eef2f7;
-        }
-        .container {
-            width: 420px;
-            margin: 50px auto;
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            margin-top: 15px;
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .error {
-            color: red;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-<div class="container">
-    <h2>Existing Patient Checkup</h2>
+{% block content %}
+<style>
+    /* --- Page Specific Styles --- */
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(11, 37, 69, 0.1); /* Deep Blue Shadow */
+        position: relative;
+        border-top: 6px solid #0b2545; /* Dark Navy Top */
+    }
 
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
+    /* Floating Back Button */
+    .back-btn {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f1f5f9;
+        color: #0b2545;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+    }
 
-    <form method="post">
-        {% csrf_token %}
+    .back-btn:hover {
+        background-color: #0b2545;
+        color: white;
+        transform: translateX(-3px);
+    }
 
-        <label>Phone Number</label>
-        <input type="tel" name="phone" pattern="[0-9]{10}" required>
+    .form-title {
+        text-align: center;
+        color: #0b2545;
+        font-weight: 700;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        font-size: 26px;
+    }
+    
+    .form-subtitle {
+        text-align: center;
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
 
-        <label>Age</label>
-        <input type="number" name="age" required>
+    /* Form Inputs */
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-        <label>Height (cm)</label>
-        <input type="number" name="height" step="0.1" required>
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #334155;
+        font-size: 14px;
+    }
 
-        <label>Weight (kg)</label>
-        <input type="number" name="weight" step="0.1" required>
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"],
+    select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 15px;
+        background-color: #f8fafc;
+        transition: all 0.3s;
+        box-sizing: border-box;
+        color: #0f172a;
+    }
 
-        <label>Blood Pressure</label>
-        <input type="text" name="bp" placeholder="120/80" required>
+    input:focus, select:focus {
+        border-color: #3b82f6;
+        background-color: #fff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
 
-        <label>Activity Level</label>
-        <select name="activity" required>
-            <option value="1.2">Sedentary</option>
-            <option value="1.375">Lightly Active</option>
-            <option value="1.55">Moderately Active</option>
-            <option value="1.725">Very Active</option>
-        </select>
+    /* Buttons */
+    .btn-primary {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #0b2545, #1e4c8c);
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 10px;
+    }
 
-        <button type="submit">Save Checkup</button>
-    </form>
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(11, 37, 69, 0.25);
+    }
+
+    /* --- MODAL STYLES --- */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(15, 23, 42, 0.7); /* Dark overlay */
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background-color: #ffffff;
+        margin: 5% auto;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        animation: slideUp 0.4s ease;
+        overflow: hidden;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+        background: #0b2545;
+        color: white;
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .close-btn {
+        color: rgba(255,255,255,0.7);
+        font-size: 28px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .close-btn:hover { color: white; }
+
+    .modal-body { padding: 30px; }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        background: #f1f5f9;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+    
+    .info-item label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; }
+    .info-item span { font-size: 15px; font-weight: 600; color: #0f172a; }
+
+    .update-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .full-width { grid-column: span 2; }
+    
+    .error-msg {
+        background-color: #fee2e2;
+        color: #ef4444;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        display: none;
+    }
+</style>
+
+<div class="form-container">
+    <a href="{% url 'home' %}" class="back-btn" title="Back to Dashboard">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <h2 class="form-title">Update Patient</h2>
+    <p class="form-subtitle">Search for an existing patient to update their vitals.</p>
+    
+    <div class="form-group">
+        <label>Registered Phone Number</label>
+        <input type="tel" id="searchInput" placeholder="Enter 10-digit number" autofocus>
+    </div>
+    
+    <button onclick="fetchPatient()" class="btn-primary">
+        <i class="fas fa-search" style="margin-right: 8px;"></i> Search Patient
+    </button>
+    
+    <div id="errorMsg" class="error-msg"></div>
 </div>
 
-</body>
-</html>
+<div id="patientModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 style="margin:0; font-size: 18px;">Patient Found</h3>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+
+        <div class="modal-body">
+            <div class="info-grid">
+                <div class="info-item"><label>Name</label><span id="pName"></span></div>
+                <div class="info-item"><label>Gender</label><span id="pGender"></span></div>
+                <div class="info-item"><label>Phone</label><span id="pPhone"></span></div>
+                <div class="info-item"><label>Previous Age</label><span id="pAge"></span></div>
+                <div class="info-item full-width"><label>Address</label><span id="pAddress"></span></div>
+            </div>
+
+            <h4 style="color: #0b2545; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
+                Enter New Vitals
+            </h4>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="patient_id" id="hiddenPatientId">
+                <input type="hidden" name="age" id="hiddenAge">
+
+                <div class="update-grid">
+                    <div class="form-group">
+                        <label>Current Age</label>
+                        <input type="number" name="age" id="inputAge" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Height (cm)</label>
+                        <input type="number" name="height" id="inputHeight" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Weight (kg)</label>
+                        <input type="number" name="weight" id="inputWeight" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Blood Pressure</label>
+                        <input type="text" name="bp" placeholder="e.g. 120/80" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Activity Level</label>
+                        <select name="activity" required>
+                            <option value="1.2">Sedentary (Little/No exercise)</option>
+                            <option value="1.375">Lightly Active (1-3 days/week)</option>
+                            <option value="1.55">Moderately Active (3-5 days/week)</option>
+                            <option value="1.725">Very Active (6-7 days/week)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save" style="margin-right: 8px;"></i>
+                    Update & Generate Plan
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function fetchPatient() {
+        let phone = document.getElementById('searchInput').value;
+        let errorMsg = document.getElementById('errorMsg');
+
+        if(phone === "") {
+            errorMsg.innerText = "Please enter a phone number.";
+            errorMsg.style.display = "block";
+            return;
+        }
+
+        fetch(`/get_patient_details/?phone=${phone}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                errorMsg.style.display = "none";
+                document.getElementById('pName').innerText = data.name;
+                document.getElementById('pGender').innerText = data.gender;
+                document.getElementById('pPhone').innerText = phone;
+                document.getElementById('pAddress').innerText = data.address;
+                document.getElementById('pAge').innerText = data.age;
+
+                document.getElementById('hiddenPatientId').value = data.id;
+                document.getElementById('inputAge').value = data.age;
+                document.getElementById('inputHeight').value = data.last_height;
+                document.getElementById('inputWeight').value = data.last_weight;
+
+                document.getElementById('patientModal').style.display = "block";
+            } else {
+                errorMsg.innerText = "Patient not found. Please register new patient.";
+                errorMsg.style.display = "block";
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            errorMsg.innerText = "System Error. Try again later.";
+            errorMsg.style.display = "block";
+        });
+    }
+
+    function closeModal() {
+        document.getElementById('patientModal').style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('patientModal')) {
+            closeModal();
+        }
+    }
+</script>
+
+{% endblock %}
