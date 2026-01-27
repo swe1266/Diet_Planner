@@ -222,7 +222,7 @@
                 <div class="info-item"><label>Name</label><span id="pName"></span></div>
                 <div class="info-item"><label>Gender</label><span id="pGender"></span></div>
                 <div class="info-item"><label>Phone</label><span id="pPhone"></span></div>
-                <div class="info-item"><label>Previous Age</label><span id="pAge"></span></div>
+                <div class="info-item"><label>Previous Diet</label><span id="pDiet"></span></div>
                 <div class="info-item full-width"><label>Address</label><span id="pAddress"></span></div>
             </div>
 
@@ -233,25 +233,46 @@
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="patient_id" id="hiddenPatientId">
-                <input type="hidden" name="age" id="hiddenAge">
-
+                
                 <div class="update-grid">
                     <div class="form-group">
                         <label>Current Age</label>
                         <input type="number" name="age" id="inputAge" required>
                     </div>
+                    
                     <div class="form-group">
                         <label>New Height (cm)</label>
                         <input type="number" name="height" id="inputHeight" step="0.1" required>
                     </div>
+                    
                     <div class="form-group">
                         <label>New Weight (kg)</label>
                         <input type="number" name="weight" id="inputWeight" step="0.1" required>
                     </div>
+                    
                     <div class="form-group">
                         <label>Blood Pressure</label>
                         <input type="text" name="bp" placeholder="e.g. 120/80" required>
                     </div>
+
+                    <div class="form-group">
+                        <label>Dietary Preference</label>
+                        <select name="dietary" id="inputDiet" required>
+                            <option value="Non-Veg">Non-Vegetarian</option>
+                            <option value="Veg">Vegetarian</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Eggetarian">Eggetarian</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Diet Frequency</label>
+                        <select name="plan_type" id="inputPlan" required>
+                            <option value="3-Meal">3 Meals (Breakfast, Lunch, Dinner)</option>
+                            <option value="5-Meal">5 Meals (Includes Snacks)</option>
+                        </select>
+                    </div>
+
                     <div class="form-group full-width">
                         <label>Activity Level</label>
                         <select name="activity" required>
@@ -288,17 +309,25 @@
         .then(data => {
             if (data.exists) {
                 errorMsg.style.display = "none";
+                
+                // 1. Populate Static Info
                 document.getElementById('pName').innerText = data.name;
                 document.getElementById('pGender').innerText = data.gender;
                 document.getElementById('pPhone').innerText = phone;
                 document.getElementById('pAddress').innerText = data.address;
-                document.getElementById('pAge').innerText = data.age;
+                document.getElementById('pDiet').innerText = data.last_dietary; // Shows Last Preference
 
+                // 2. Populate Form Inputs for Editing
                 document.getElementById('hiddenPatientId').value = data.id;
                 document.getElementById('inputAge').value = data.age;
                 document.getElementById('inputHeight').value = data.last_height;
                 document.getElementById('inputWeight').value = data.last_weight;
+                
+                // 3. Auto-select their previous choices
+                document.getElementById('inputDiet').value = data.last_dietary; 
+                document.getElementById('inputPlan').value = data.last_plan; 
 
+                // Show Modal
                 document.getElementById('patientModal').style.display = "block";
             } else {
                 errorMsg.innerText = "Patient not found. Please register new patient.";

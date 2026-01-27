@@ -2,249 +2,364 @@
 {% load static %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-    /* --- Layout: Split Screen --- */
-    .report-container {
+    /* --- PAGE LAYOUT --- */
+    .report-wrapper {
         display: flex;
         gap: 30px;
-        max-width: 1200px;
-        margin: 0 auto;
-        height: calc(100vh - 120px); /* Fill screen height */
+        height: calc(100vh - 100px);
+        overflow: hidden;
     }
 
-    /* --- LEFT SIDEBAR: History --- */
+    /* --- SIDEBAR --- */
     .history-sidebar {
-        width: 280px;
+        width: 300px;
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         display: flex;
         flex-direction: column;
-        overflow: hidden;
-        border: 1px solid #e0e6ed;
+        border: 1px solid #e2e8f0;
+        flex-shrink: 0;
     }
 
     .history-header {
-        background: #0b2545;
+        background: #0f172a;
         color: white;
         padding: 20px;
+        border-radius: 16px 16px 0 0;
         text-align: center;
     }
 
     .history-list {
-        overflow-y: auto; /* Scrollable if many reports */
+        overflow-y: auto;
+        padding: 15px;
         flex-grow: 1;
-        padding: 10px;
     }
 
-    .history-item {
+    .history-card {
         display: block;
         padding: 15px;
-        margin-bottom: 8px;
-        border-radius: 8px;
+        margin-bottom: 10px;
+        background: #f8fafc;
+        border-radius: 10px;
         text-decoration: none;
-        color: #555;
-        border-left: 4px solid transparent;
-        transition: 0.2s;
-        background: #f8f9fa;
+        color: #334155;
+        border-left: 5px solid transparent;
+        transition: 0.3s;
     }
 
-    .history-item:hover {
-        background: #eef2f7;
-        color: #1e4c8c;
-    }
+    .history-card:hover { background: #e2e8f0; transform: translateX(5px); }
+    .history-card.active { background: #eff6ff; border-left-color: #3b82f6; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.1); }
+    .h-date { font-weight: 700; font-size: 14px; display: block; margin-bottom: 4px; }
+    .h-stats { font-size: 12px; color: #64748b; }
 
-    /* Style for the currently active report */
-    .history-item.active {
-        background: #e3f2fd;
-        border-left-color: #1e4c8c;
-        color: #0b2545;
-        font-weight: 600;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .history-date {
-        font-size: 14px;
-        display: block;
-    }
-    
-    .history-sub {
-        font-size: 12px;
-        color: #888;
-    }
-
-    /* --- RIGHT CONTENT: The Report --- */
+    /* --- MAIN REPORT AREA --- */
     .report-main {
         flex-grow: 1;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        padding: 40px;
-        overflow-y: auto; /* Scrollable content */
-        border-top: 5px solid #48cae4;
+        overflow-y: auto;
+        padding-right: 10px;
     }
 
-    .patient-header {
+    .report-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .report-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid #f0f4f8;
+        border-bottom: 2px solid #f1f5f9;
         padding-bottom: 20px;
         margin-bottom: 30px;
     }
 
+    /* BUTTONS */
+    .btn-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .print-btn {
+        background: #3b82f6;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+    .print-btn:hover { background: #1e40af; }
+
+    .btn-delete {
+        background: #fff0f0;
+        color: #ef4444;
+        padding: 10px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.3s;
+        border: 1px solid #fecaca;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .btn-delete:hover {
+        background: #ef4444;
+        color: white;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        border-color: #ef4444;
+    }
+
+    /* VITALS GRID */
     .vitals-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
     }
+    .vital-box { background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; position: relative; overflow: hidden; }
+    .vital-box::after { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #cbd5e1; }
+    .vital-box.blue::after { background: #3b82f6; }
+    .vital-box.green::after { background: #22c55e; }
+    .vital-box.orange::after { background: #f97316; }
+    .vital-box.red::after { background: #ef4444; }
+    .v-val { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 5px; }
+    .v-label { font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    .vital-card {
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: center;
-        border: 1px solid #eee;
-    }
-
-    .vital-val { font-size: 20px; font-weight: 700; color: #1e4c8c; }
-    .vital-lbl { font-size: 13px; color: #666; margin-top: 5px; }
-
-    /* Diet Plan Table */
-    .diet-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+    /* --- CHART SECTION --- */
+    .progress-section {
+        margin-bottom: 30px;
     }
     
-    .diet-table th {
-        background: #1e4c8c;
-        color: white;
-        padding: 12px;
-        text-align: left;
-        border-radius: 8px 8px 0 0;
-    }
-    
-    .diet-table td {
-        padding: 15px;
-        border-bottom: 1px solid #eee;
-        color: #444;
+    .chart-container-large {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 25px;
+        height: 350px; 
+        position: relative;
     }
 
-    /* Print Button */
-    .print-btn {
-        background: #48cae4;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 20px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .print-btn:hover { background: #1e4c8c; }
+    /* VISUALS GRID */
+    .visuals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+    .chart-box { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; }
+
+    /* BMI BAR */
+    .bmi-track { width: 100%; height: 15px; background: linear-gradient(90deg, #3b82f6 0%, #22c55e 35%, #eab308 60%, #ef4444 100%); border-radius: 10px; position: relative; margin-top: 40px; margin-bottom: 10px; }
+    .bmi-marker { position: absolute; top: -15px; width: 4px; height: 45px; background: #0f172a; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transform: translateX(-50%); transition: left 1s ease-out; }
+    .bmi-marker::before { content: 'You'; position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 700; background: #0f172a; color: white; padding: 2px 6px; border-radius: 4px; }
+    .bmi-labels { display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: #94a3b8; margin-top: 5px; }
+
+    /* MEALS */
+    .meal-section-title { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .meal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .meal-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; position: relative; transition: 0.3s; }
+    .meal-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: #3b82f6; }
+    .meal-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 15px; background: #eff6ff; color: #3b82f6; }
+    .m-title { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
+    .m-cals { font-size: 24px; font-weight: 300; color: #3b82f6; margin-bottom: 10px; }
+    .m-desc { font-size: 13px; color: #64748b; line-height: 1.5; }
     
-    @media (max-width: 900px) {
-        .report-container { flex-direction: column; height: auto; }
-        .history-sidebar { width: 100%; height: 200px; }
-        .vitals-grid { grid-template-columns: 1fr 1fr; }
+    /* PRINT */
+    @media print {
+        body * { visibility: hidden; }
+        .sidebar, .top-navbar, .back-btn, .print-btn, .btn-delete, .history-sidebar { display: none !important; }
+        .report-main, .report-main * { visibility: visible; }
+        .report-main { position: absolute; left: 0; top: 0; width: 100%; padding: 0; margin: 0; overflow: visible; }
+        .report-card, .chart-container-large { border: none; box-shadow: none; break-inside: avoid; }
+        .chart-box { page-break-inside: avoid; }
     }
 </style>
 
-<div class="report-container">
-    
+<div class="report-wrapper">
     <div class="history-sidebar">
         <div class="history-header">
-            <h3 style="margin:0; font-size: 18px;">Visit History</h3>
-            <div style="font-size: 12px; opacity: 0.8;">{{ patient.name }}</div>
+            <h3 style="margin:0; font-size: 18px;">Patient History</h3>
+            <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">{{ patient.name }}</div>
         </div>
         <div class="history-list">
             {% for item in history %}
                 <a href="{% url 'generate_dynamic_diet_plan' patient.id item.id %}" 
-                   class="history-item {% if item.id == checkup.id %}active{% endif %}">
-                    <span class="history-date">
-                        <i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>
-                        Report #{{ item.id }}
-                    </span>
-                    <span class="history-sub">
-                        Weight: {{ item.weight }}kg | BMI: {{ item.bmi }}
-                    </span>
+                   class="history-card {% if item.id == checkup.id %}active{% endif %}">
+                    <span class="h-date"><i class="fas fa-calendar-day"></i> Report #{{ item.id }}</span>
+                    <span class="h-stats">Weight: {{ item.weight }}kg • BMI: {{ item.bmi }}</span>
                 </a>
             {% endfor %}
         </div>
     </div>
 
     <div class="report-main" id="printableArea">
-        <div class="patient-header">
-            <div>
-                <h1 style="margin:0; color: #0b2545;">Diet Report</h1>
-                <p style="color: #666; margin: 5px 0 0 0;">Report ID: #{{ checkup.id }}</p>
+        <div class="report-card">
+            <div class="report-header">
+                <div>
+                    <h1 style="margin:0; color: #0f172a;">Clinical Nutrition Report</h1>
+                    <p style="color: #64748b; margin: 5px 0 0 0;">
+                        Patient: <strong>{{ patient.name }}</strong> | ID: #{{ patient.id }} | Plan: <strong>{{ checkup.plan_type }}</strong>
+                    </p>
+                </div>
+                
+                <div class="btn-group">
+                    <a href="{% url 'delete_checkup' checkup.id %}" 
+                       class="btn-delete"
+                       onclick="return confirm('⚠️ Are you sure you want to PERMANENTLY delete Report #{{ checkup.id }}? This cannot be undone.');">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </a>
+
+                    <button onclick="window.print()" class="print-btn">
+                        <i class="fas fa-print"></i> Print Report
+                    </button>
+                </div>
             </div>
-            <button onclick="window.print()" class="print-btn">
-                <i class="fas fa-print"></i> Print Report
-            </button>
+
+            <div class="vitals-grid">
+                <div class="vital-box blue"><div class="v-val">{{ checkup.weight }} kg</div><div class="v-label">Current Weight</div></div>
+                <div class="vital-box green"><div class="v-val">{{ checkup.tdee }}</div><div class="v-label">Daily Calories (TDEE)</div></div>
+                <div class="vital-box orange"><div class="v-val">{{ checkup.bp }}</div><div class="v-label">Blood Pressure</div></div>
+                <div class="vital-box red"><div class="v-val">{{ checkup.age }}</div><div class="v-label">Age (Years)</div></div>
+            </div>
         </div>
 
-        <h3 style="color: #1e4c8c;">Patient Vitals</h3>
-        <div class="vitals-grid">
-            <div class="vital-card">
-                <div class="vital-val">{{ checkup.bmi }}</div>
-                <div class="vital-lbl">BMI ({{ checkup.category }})</div>
+        <div class="progress-section">
+            <div class="meal-section-title">
+                <i class="fas fa-chart-line" style="color: #3b82f6;"></i>
+                Progress Trends Analysis
             </div>
-            <div class="vital-card">
-                <div class="vital-val">{{ checkup.weight }} kg</div>
-                <div class="vital-lbl">Current Weight</div>
-            </div>
-            <div class="vital-card">
-                <div class="vital-val">{{ checkup.tdee }}</div>
-                <div class="vital-lbl">Daily Calories (TDEE)</div>
-            </div>
-            <div class="vital-card">
-                <div class="vital-val">{{ checkup.bp }}</div>
-                <div class="vital-lbl">Blood Pressure</div>
+            <div class="chart-container-large">
+                <canvas id="progressChart"></canvas>
             </div>
         </div>
 
-        <h3 style="color: #1e4c8c;">Recommended Nutrition</h3>
-        <table class="diet-table">
-            <thead>
-                <tr>
-                    <th>Meal</th>
-                    <th>Calories</th>
-                    <th>Suggestions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Breakfast</strong> (25%)</td>
-                    <td>{{ meals.breakfast.cal }} kcal</td> 
-                    <td>Oats, Eggs, or Whole Wheat Toast with Fruit</td>
-                </tr>
-                <tr>
-                    <td><strong>Lunch</strong> (35%)</td>
-                    <td>{{ meals.lunch.cal }} kcal</td>
-                    <td>Brown Rice/Quinoa, Lean Protein (Chicken/Lentils), Veggies</td>
-                </tr>
-                <tr>
-                    <td><strong>Snacks</strong> (10%)</td>
-                    <td>{{ meals.snacks.cal }} kcal</td>
-                    <td>Nuts, Yogurt, or a Fruit</td>
-                </tr>
-                <tr>
-                    <td><strong>Dinner</strong> (30%)</td>
-                    <td>{{ meals.dinner.cal }} kcal</td>
-                    <td>Light Salad, Soup, or Grilled Fish/Tofu</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="visuals-grid">
+            <div class="chart-box">
+                <h4 style="margin-bottom: 20px; color:#334155;">Macronutrient Split</h4>
+                <div style="height: 250px; width: 250px;"><canvas id="macroChart"></canvas></div>
+                <div style="margin-top: 15px; font-size: 12px; color: #64748b;">Carbs: {{ checkup.carbs }}g | Protein: {{ checkup.protein }}g | Fat: {{ checkup.fat }}g</div>
+            </div>
 
-        <div style="margin-top: 30px; background: #f0f8ff; padding: 20px; border-radius: 10px;">
-            <h4 style="margin-top:0;">Macro Distribution</h4>
-            <p><strong>Carbs:</strong> {{ checkup.carbs }}g | <strong>Protein:</strong> {{ checkup.protein }}g | <strong>Fats:</strong> {{ checkup.fat }}g</p>
+            <div class="chart-box">
+                <h4 style="margin-bottom: 10px; color:#334155;">BMI Analysis</h4>
+                <div style="font-size: 48px; font-weight: 800; color: #0f172a;">{{ checkup.bmi }}</div>
+                <div style="font-size: 16px; color: #3b82f6; font-weight: 600; background: #eff6ff; padding: 5px 15px; border-radius: 20px;">{{ checkup.category }}</div>
+                <div style="width: 80%;">
+                    <div class="bmi-track"><div class="bmi-marker" id="bmiMarker"></div></div>
+                    <div class="bmi-labels"><span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span></div>
+                </div>
+                <p style="margin-top: 20px; font-size: 13px; color: #64748b; text-align: center;">Your BMI indicates that you are in the <strong>{{ checkup.category }}</strong> range.</p>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <div class="meal-section-title">
+                <i class="fas fa-utensils" style="color: #3b82f6;"></i> 
+                Recommended Daily Meal Plan ({{ checkup.plan_type }})
+            </div>
+            
+            <div class="meal-grid">
+                {% for name, data in meals.items %}
+                    <div class="meal-card">
+                        <div class="meal-icon">
+                            <i class="fas {{ data.icon }}"></i>
+                        </div>
+                        <div class="m-title">{{ name }}</div>
+                        <div class="m-cals">{{ data.cal }} kcal</div>
+                        <div class="m-desc">{{ data.desc }}</div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    // --- 1. PROGRESS CHART ---
+    const ctxProgress = document.getElementById('progressChart').getContext('2d');
+    
+    // Parse JSON data from Django
+    const labels = JSON.parse('{{ chart_labels|safe }}');
+    const weights = JSON.parse('{{ chart_weights|safe }}');
+    
+    new Chart(ctxProgress, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Patient Weight (kg)',
+                data: weights,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderWidth: 3,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: '#1e40af',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: { color: '#f1f5f9' }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // --- 2. MACRO CHART ---
+    const ctxMacro = document.getElementById('macroChart').getContext('2d');
+    new Chart(ctxMacro, {
+        type: 'doughnut',
+        data: {
+            labels: ['Carbs', 'Protein', 'Fats'],
+            datasets: [{
+                data: [{{ checkup.carbs }}, {{ checkup.protein }}, {{ checkup.fat }}],
+                backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b'],
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            cutout: '70%',
+        }
+    });
+
+    // --- 3. BMI MARKER ---
+    const bmi = parseFloat("{{ checkup.bmi }}");
+    const marker = document.getElementById('bmiMarker');
+    let percent = 0;
+    
+    if (bmi < 18.5) percent = ((bmi - 15) / (18.5 - 15)) * 30; 
+    else if (bmi >= 18.5 && bmi < 25) percent = 30 + ((bmi - 18.5) / (25 - 18.5)) * 30;
+    else if (bmi >= 25 && bmi < 30) percent = 60 + ((bmi - 25) / (30 - 25)) * 20;
+    else percent = 80 + ((bmi - 30) / (40 - 30)) * 20;
+
+    marker.style.left = Math.max(0, Math.min(100, percent)) + "%";
+</script>
+
 {% endblock %}
