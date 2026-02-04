@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
     /* --- DASHBOARD STYLES --- */
     
@@ -54,7 +56,7 @@
         font-size: 32px;
         font-weight: 300;
         margin-bottom: 5px;
-        font-family: 'Roboto', sans-serif;
+        font-family: 'Segoe UI', sans-serif;
     }
 
     /* 2. Quick Stats Row */
@@ -184,6 +186,8 @@
         padding: 30px;
         border: 1px solid #e2e8f0;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
     }
 
     .info-header {
@@ -197,12 +201,6 @@
 
     .info-header i { font-size: 20px; color: #3b82f6; }
     .info-header h3 { margin: 0; font-size: 18px; color: #0f172a; font-weight: 600; }
-
-    /* Progress Bars for Macros */
-    .macro-row { margin-bottom: 15px; }
-    .macro-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 5px; }
-    .progress-track { width: 100%; height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 4px; }
 
     /* Text Lists */
     .tech-list { list-style: none; padding: 0; margin: 0; }
@@ -243,28 +241,28 @@
             <i class="fas fa-users"></i>
         </div>
         <div class="stat-info">
-            <h4>Active</h4>
-            <span>System Status</span>
+            <h4>{{ total_patients }}</h4>
+            <span>Total Patients</span>
         </div>
     </div>
     
     <div class="stat-card">
-        <div class="stat-icon" style="background: #fff7ed; color: #f97316;">
-            <i class="fas fa-server"></i>
+        <div class="stat-icon" style="background: #f0fdf4; color: #22c55e;">
+            <i class="fas fa-clipboard-check"></i>
         </div>
         <div class="stat-info">
-            <h4>Online</h4>
-            <span>Database Connection</span>
+            <h4>{{ today_visits }}</h4>
+            <span>Visits Today</span>
         </div>
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon" style="background: #f0fdf4; color: #22c55e;">
-            <i class="fas fa-file-medical"></i>
+        <div class="stat-icon" style="background: #fff7ed; color: #f97316;">
+            <i class="fas fa-heartbeat"></i>
         </div>
         <div class="stat-info">
-            <h4>Standard</h4>
-            <span>WHO Compliance</span>
+            <h4>{{ obese }}</h4>
+            <span>High Risk (Obese)</span>
         </div>
     </div>
 </div>
@@ -279,7 +277,7 @@
             </div>
             <div class="card-title">New Admission</div>
             <div class="card-desc">
-                Register a new patient profile. The system will automatically calculate BMI, BMR, and TDEE based on entered vitals.
+                Register a new patient. The system will automatically calculate BMI, BMR, and TDEE based on entered vitals.
             </div>
         </div>
         <div class="card-arrow">
@@ -318,31 +316,21 @@
     </a>
 </div>
 
-<h3 style="color: #0f172a; margin-bottom: 20px; font-weight: 700;">Clinical Standards & Protocols</h3>
+<h3 style="color: #0f172a; margin-bottom: 20px; font-weight: 700;">Clinical Analytics & Protocols</h3>
 
 <div class="info-section">
     
     <div class="info-card">
         <div class="info-header">
             <i class="fas fa-chart-pie"></i>
-            <h3>Automated Nutrition Distribution</h3>
+            <h3>Live Patient Health Overview</h3>
         </div>
-        <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">
-            The system automatically distributes TDEE into macronutrients following standard balanced diet protocols.
+        <div style="flex-grow: 1; min-height: 200px; position: relative;">
+            <canvas id="dashboardChart"></canvas>
+        </div>
+        <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-top: 15px;">
+            Real-time distribution of patient BMI categories.
         </p>
-
-        <div class="macro-row">
-            <div class="macro-label"><span>Carbohydrates</span> <span>50%</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 50%; background: #3b82f6;"></div></div>
-        </div>
-        <div class="macro-row">
-            <div class="macro-label"><span>Proteins</span> <span>20%</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 20%; background: #22c55e;"></div></div>
-        </div>
-        <div class="macro-row">
-            <div class="macro-label"><span>Fats</span> <span>30%</span></div>
-            <div class="progress-track"><div class="progress-fill" style="width: 30%; background: #f59e0b;"></div></div>
-        </div>
     </div>
 
     <div class="info-card">
@@ -372,21 +360,20 @@
             <li>
                 <i class="fas fa-check-circle"></i>
                 <div>
-                    <strong>BMI Categorization</strong><br>
-                    Automated WHO-compliant categorization (Underweight, Normal, Overweight, Obese).
+                    <strong>WHO Categorization</strong><br>
+                    Automated compliance with World Health Organization BMI standards.
                 </div>
             </li>
         </ul>
     </div>
-
 </div>
 
 <script>
+    // --- LIVE CLOCK ---
     function updateDateTime() {
         const now = new Date();
         const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         
-        // Update Time
         let hours = now.getHours();
         let minutes = now.getMinutes();
         const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -394,13 +381,37 @@
         hours = hours ? hours : 12; 
         minutes = minutes < 10 ? '0'+minutes : minutes;
         document.getElementById('liveTime').textContent = hours + ':' + minutes + ' ' + ampm;
-
-        // Update Date
         document.getElementById('liveDate').textContent = now.toLocaleDateString('en-US', optionsDate);
     }
-    
     setInterval(updateDateTime, 1000); 
     updateDateTime(); 
-</script>
 
+    // --- CHART.JS CONFIGURATION ---
+    const ctx = document.getElementById('dashboardChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
+            datasets: [{
+                data: [{{ underweight }}, {{ normal }}, {{ overweight }}, {{ obese }}],
+                backgroundColor: [
+                    '#3b82f6', // Blue
+                    '#22c55e', // Green
+                    '#f59e0b', // Orange
+                    '#ef4444'  // Red
+                ],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8 } }
+            },
+            cutout: '70%',
+        }
+    });
+</script>
 {% endblock %}

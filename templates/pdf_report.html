@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #0b2545;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #0b2545;
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Patient Info Grid */
+        .info-table {
+            width: 100%;
+            margin-bottom: 30px;
+            border-collapse: collapse;
+        }
+        .info-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        .label {
+            font-weight: bold;
+            color: #0b2545;
+            width: 30%;
+        }
+
+        /* Vitals Section */
+        .vitals-box {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .vitals-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #0b2545;
+            text-align: left;
+        }
+        
+        /* Meal Table */
+        .meal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .meal-table th {
+            background-color: #0b2545;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 12px;
+        }
+        .meal-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-size: 12px;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10px;
+            color: #999;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>LifeCare Nutrition Clinic</h1>
+        <p>123 Health Avenue, Medical District, NY 10012 | +1 (555) 019-2834</p>
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <td class="label">Patient Name:</td>
+            <td>{{ patient.name }}</td>
+            <td class="label">Report Date:</td>
+            <td>{{ checkup.date|date:"M d, Y" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Patient ID:</td>
+            <td>#{{ patient.id }}</td>
+            <td class="label">Age / Gender:</td>
+            <td>{{ checkup.age }} / {{ patient.gender }}</td>
+        </tr>
+        <tr>
+            <td class="label">Diet Preference:</td>
+            <td>{{ checkup.dietary }}</td>
+            <td class="label">Plan Type:</td>
+            <td>{{ checkup.plan_type }}</td>
+        </tr>
+    </table>
+
+    <div class="vitals-title">CLINICAL VITALS</div>
+    <table class="info-table">
+        <tr>
+            <td><strong>BMI:</strong> {{ checkup.bmi }} ({{ checkup.category }})</td>
+            <td><strong>Weight:</strong> {{ checkup.weight }} kg</td>
+            <td><strong>Height:</strong> {{ checkup.height }} cm</td>
+            <td><strong>TDEE:</strong> {{ checkup.tdee }} kcal</td>
+        </tr>
+    </table>
+
+    <div class="vitals-title" style="margin-top: 20px;">PRESCRIBED DIET CHART</div>
+    <table class="meal-table">
+        <thead>
+            <tr>
+                <th width="20%">Meal Time</th>
+                <th width="15%">Calories</th>
+                <th>Recommended Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for name, data in meals.items %}
+            <tr>
+                <td><strong>{{ name }}</strong></td>
+                <td>{{ data.cal }} kcal</td>
+                <td>{{ data.desc }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 50px; float: right; text-align: center; width: 200px;">
+        <div style="border-bottom: 1px solid #000; margin-bottom: 5px;"></div>
+        <div style="font-size: 12px; font-weight: bold;">Dr. {{ user.username|title }}</div>
+        <div style="font-size: 10px;">Senior Nutritionist</div>
+    </div>
+
+    <div class="footer">
+        This report is computer-generated. For medical advice, please consult your physician.
+    </div>
+
+</body>
+</html>

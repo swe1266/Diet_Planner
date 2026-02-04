@@ -2,148 +2,76 @@
 {% load static %}
 
 {% block content %}
-<style>
-    .search-card {
-        max-width: 550px;
-        margin: 40px auto;
-        background: #ffffff;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(11, 37, 69, 0.1);
-        text-align: center;
-        position: relative;
-        border-top: 6px solid #28a745; /* Green for "View Mode" */
-    }
+<div style="max-width: 800px; margin: 0 auto;">
+    
+    <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; margin-bottom: 30px;">
+        <h2 style="color: #0f172a; margin-bottom: 10px;">Find Patient Records</h2>
+        <p style="color: #64748b; margin-bottom: 30px;">Enter registered Phone Number or Name to view medical history.</p>
 
-    /* Floating Back Button */
-    .back-btn {
-        position: absolute;
-        top: 30px;
-        left: 30px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #f1f5f9;
-        color: #0b2545;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: 1px solid #e2e8f0;
-    }
+        <form method="GET" action="{% url 'search_patient' %}" style="display: flex; gap: 10px; justify-content: center;">
+            <input type="text" name="q" placeholder="e.g. 9876543210" value="{{ query|default:'' }}" required
+                style="padding: 15px; width: 60%; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px;">
+            <button type="submit" 
+                style="background: #3b82f6; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
 
-    .back-btn:hover {
-        background-color: #0b2545;
-        color: white;
-        transform: translateX(-3px);
-    }
-
-    .icon-circle {
-        width: 80px;
-        height: 80px;
-        background-color: #e8f5e9;
-        color: #28a745;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 32px;
-        margin: 0 auto 20px auto;
-    }
-
-    .search-title {
-        color: #0b2545;
-        font-size: 24px;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .search-desc {
-        color: #64748b;
-        font-size: 15px;
-        margin-bottom: 30px;
-        line-height: 1.5;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 15px;
-        font-size: 16px;
-        border: 2px solid #e2e8f0;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        transition: 0.3s;
-        box-sizing: border-box;
-        text-align: center;
-    }
-
-    .search-input:focus {
-        border-color: #28a745;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
-    }
-
-    .btn-view {
-        width: 100%;
-        background: #28a745;
-        color: white;
-        padding: 15px;
-        border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    .btn-view:hover {
-        background: #218838;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .error-box {
-        background-color: #fee2e2;
-        color: #ef4444;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        border: 1px solid #fecaca;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-</style>
-
-<div class="search-card">
-    <a href="{% url 'home' %}" class="back-btn" title="Back to Dashboard">
-        <i class="fas fa-arrow-left"></i>
-    </a>
-
-    <div class="icon-circle">
-        <i class="fas fa-folder-open"></i>
+        {% if error_message %}
+        <div style="margin-top: 20px; background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 8px; border: 1px solid #fecaca;">
+            <i class="fas fa-exclamation-circle"></i> {{ error_message }}
+        </div>
+        {% endif %}
     </div>
-    
-    <h2 class="search-title">View Patient Records</h2>
-    <p class="search-desc">
-        Enter a registered phone number to view past diet plans and medical history without making changes.
-    </p>
-    
-    {% if error %}
-    <div class="error-box">
-        <i class="fas fa-exclamation-circle"></i> {{ error }}
+
+    {% if patients %}
+    <div style="background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0;">
+        <h3 style="margin-bottom: 20px;">Search Results</h3>
+        {% for p in patients %}
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #f1f5f9;">
+            <div>
+                <div style="font-weight: 700; font-size: 18px;">{{ p.name }}</div>
+                <div style="color: #64748b; font-size: 14px;">{{ p.phone }} | {{ p.gender }}</div>
+            </div>
+            <a href="?view_id={{ p.id }}&q={{ query }}" style="background: #eff6ff; color: #3b82f6; padding: 8px 15px; text-decoration: none; border-radius: 6px; font-weight: 600;">
+                View Records
+            </a>
+        </div>
+        {% endfor %}
     </div>
     {% endif %}
 
-    <form method="post">
-        {% csrf_token %}
-        <input type="tel" name="phone" class="search-input" placeholder="Enter 10-digit Phone Number" required autofocus>
+    {% if selected_patient %}
+    <div style="margin-top: 30px; background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3>Medical History: <span style="color: #3b82f6;">{{ selected_patient.name }}</span></h3>
+            <a href="{% url 'new_patient' %}" style="color: #64748b; text-decoration: none; font-size: 14px;">
+                <i class="fas fa-plus"></i> Add New Checkup
+            </a>
+        </div>
         
-        <button type="submit" class="btn-view">
-            <i class="fas fa-search" style="margin-right: 8px;"></i> Find Records
-        </button>
-    </form>
+        {% if history %}
+            <div style="display: grid; gap: 15px;">
+                {% for report in history %}
+                <a href="{% url 'generate_dynamic_diet_plan' selected_patient.id report.id %}" 
+                   style="display: block; background: #f8fafc; padding: 20px; border-radius: 10px; text-decoration: none; color: inherit; border-left: 5px solid #3b82f6; transition: 0.3s;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="font-weight: 700;">Report #{{ report.id }}</span>
+                        <span style="color: #64748b; font-size: 13px;">{{ report.date }}</span>
+                    </div>
+                    <div style="margin-top: 5px; font-size: 14px;">
+                        Weight: {{ report.weight }}kg • BMI: {{ report.bmi }} • Goal: {{ report.category }}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="text-align: center; color: #94a3b8; padding: 20px;">
+                No checkup reports found for this patient. <a href="{% url 'new_patient' %}">Create one now?</a>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}

@@ -5,7 +5,6 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # Admin & Authentication
-    path('admin/', admin.site.urls),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
@@ -18,7 +17,7 @@ urlpatterns = [
     path('patients/new/', views.new_patient, name='new_patient'),
     path('patients/existing/', views.existing_patient, name='existing_patient'),
     path('patients/search/', views.search_patient, name='search_patient'),
-
+    path('regenerate/<int:checkup_id>/', views.regenerate_plan, name='regenerate_plan'),
     # Reports
     path('report/<int:patient_id>/<int:checkup_id>/', views.generate_dynamic_diet_plan, name='generate_dynamic_diet_plan'),
 
@@ -27,4 +26,6 @@ urlpatterns = [
 
     # --- THIS WAS MISSING ---
     path('delete_checkup/<int:checkup_id>/', views.delete_checkup, name='delete_checkup'),
+
+    path('download_pdf/<int:checkup_id>/', views.download_pdf, name='download_pdf'),
 ]

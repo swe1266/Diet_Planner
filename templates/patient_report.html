@@ -82,10 +82,7 @@
     }
 
     /* BUTTONS */
-    .btn-group {
-        display: flex;
-        gap: 10px;
-    }
+    .btn-group { display: flex; gap: 10px; }
 
     .print-btn {
         background: #3b82f6;
@@ -100,6 +97,7 @@
         transition: 0.3s;
         border: none;
         cursor: pointer;
+        font-size: 14px;
     }
     .print-btn:hover { background: #1e40af; }
 
@@ -118,12 +116,7 @@
         font-size: 14px;
         cursor: pointer;
     }
-    .btn-delete:hover {
-        background: #ef4444;
-        color: white;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        border-color: #ef4444;
-    }
+    .btn-delete:hover { background: #ef4444; color: white; border-color: #ef4444; }
 
     /* VITALS GRID */
     .vitals-grid {
@@ -142,10 +135,7 @@
     .v-label { font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
 
     /* --- CHART SECTION --- */
-    .progress-section {
-        margin-bottom: 30px;
-    }
-    
+    .progress-section { margin-bottom: 30px; }
     .chart-container-large {
         background: white;
         border: 1px solid #e2e8f0;
@@ -165,24 +155,63 @@
     .bmi-marker::before { content: 'You'; position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 700; background: #0f172a; color: white; padding: 2px 6px; border-radius: 4px; }
     .bmi-labels { display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: #94a3b8; margin-top: 5px; }
 
-    /* MEALS */
-    .meal-section-title { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-    .meal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-    .meal-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; position: relative; transition: 0.3s; }
-    .meal-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: #3b82f6; }
-    .meal-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 15px; background: #eff6ff; color: #3b82f6; }
-    .m-title { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 5px; }
-    .m-cals { font-size: 24px; font-weight: 300; color: #3b82f6; margin-bottom: 10px; }
-    .m-desc { font-size: 13px; color: #64748b; line-height: 1.5; }
-    
-    /* PRINT */
-    @media print {
-        body * { visibility: hidden; }
-        .sidebar, .top-navbar, .back-btn, .print-btn, .btn-delete, .history-sidebar { display: none !important; }
-        .report-main, .report-main * { visibility: visible; }
-        .report-main { position: absolute; left: 0; top: 0; width: 100%; padding: 0; margin: 0; overflow: visible; }
-        .report-card, .chart-container-large { border: none; box-shadow: none; break-inside: avoid; }
-        .chart-box { page-break-inside: avoid; }
+    /* CLINICAL BLUE TABLE STYLES */
+    .diet-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #bfdbfe;
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .diet-table thead tr {
+        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        color: white;
+        text-align: left;
+    }
+
+    .diet-table th {
+        padding: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 12px;
+        border-bottom: 3px solid #172554;
+    }
+
+    .diet-table tbody tr { background: white; transition: 0.2s; }
+    .diet-table tbody tr:nth-child(even) { background: #eff6ff; }
+    .diet-table tbody tr:hover { background: #dbeafe; }
+    .diet-table td { padding: 12px 15px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+
+    .day-cell {
+        font-weight: 800;
+        color: #1e3a8a;
+        background: #f1f5f9;
+        border-right: 2px solid #cbd5e1;
+        width: 100px;
+        vertical-align: middle !important;
+    }
+
+    .food-name { font-weight: 700; color: #0f172a; margin-bottom: 4px; font-size: 13px; }
+    .food-qty { font-size: 11px; color: #64748b; font-style: italic; margin-bottom: 8px; }
+
+    .macro-badge { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .cal-tag { background: #1e40af; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; }
+    .macro-dots { display: flex; gap: 4px; font-size: 10px; font-weight: 600; }
+    .dot { padding: 2px 4px; border-radius: 3px; color: white; min-width: 35px; text-align: center; }
+    .dot.p { background: #22c55e; }
+    .dot.c { background: #f59e0b; }
+    .dot.f { background: #ef4444; }
+
+    @media (max-width: 900px) {
+        .report-wrapper { flex-direction: column; height: auto; overflow: visible; }
+        .history-sidebar { width: 100%; height: 300px; }
+        .vitals-grid, .visuals-grid { grid-template-columns: 1fr; }
+        .report-card { overflow-x: auto; }
     }
 </style>
 
@@ -214,30 +243,45 @@
                 </div>
                 
                 <div class="btn-group">
-                    <a href="{% url 'delete_checkup' checkup.id %}" 
-                       class="btn-delete"
+                    <a href="{% url 'delete_checkup' checkup.id %}" class="btn-delete"
                        onclick="return confirm('⚠️ Are you sure you want to PERMANENTLY delete Report #{{ checkup.id }}? This cannot be undone.');">
                         <i class="fas fa-trash-alt"></i> Delete
                     </a>
-
-                    <button onclick="window.print()" class="print-btn">
-                        <i class="fas fa-print"></i> Print Report
-                    </button>
+                    
+                    <a href="{% url 'download_pdf' checkup.id %}" class="print-btn" style="background: #0f172a;">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </a>
+                    
+                    <a href="{% url 'regenerate_plan' checkup.id %}" class="print-btn" style="background: #f59e0b; border: 1px solid #d97706;">
+                        <i class="fas fa-sync-alt"></i> Regenerate Plan
+                    </a>
                 </div>
             </div>
 
             <div class="vitals-grid">
-                <div class="vital-box blue"><div class="v-val">{{ checkup.weight }} kg</div><div class="v-label">Current Weight</div></div>
-                <div class="vital-box green"><div class="v-val">{{ checkup.tdee }}</div><div class="v-label">Daily Calories (TDEE)</div></div>
-                <div class="vital-box orange"><div class="v-val">{{ checkup.bp }}</div><div class="v-label">Blood Pressure</div></div>
-                <div class="vital-box red"><div class="v-val">{{ checkup.age }}</div><div class="v-label">Age (Years)</div></div>
+                <div class="vital-box blue">
+                    <div class="v-val">{{ checkup.bmi }}</div>
+                    <div class="v-label">BMI ({{ checkup.category }})</div>
+                </div>
+                <div class="vital-box orange">
+                    <div class="v-val" style="font-size: 18px; padding-top: 5px;">{{ diet_goal }}</div>
+                    <div class="v-label">Recommended Goal</div>
+                </div>
+                <div class="vital-box green">
+                    <div class="v-val">{{ target_calories }} kcal</div>
+                    <div class="v-label">Target Daily Intake</div>
+                </div>
+                <div class="vital-box red">
+                    <div class="v-val">{{ checkup.weight }} kg</div>
+                    <div class="v-label">Current Weight</div>
+                </div>
             </div>
         </div>
 
         <div class="progress-section">
             <div class="meal-section-title">
                 <i class="fas fa-chart-line" style="color: #3b82f6;"></i>
-                Progress Trends Analysis
+                Progress Trends Analysis (BMI)
             </div>
             <div class="chart-container-large">
                 <canvas id="progressChart"></canvas>
@@ -263,43 +307,60 @@
             </div>
         </div>
 
-        <div class="report-card">
+        <div class="report-card" style="overflow-x: auto;">
             <div class="meal-section-title">
-                <i class="fas fa-utensils" style="color: #3b82f6;"></i> 
-                Recommended Daily Meal Plan ({{ checkup.plan_type }})
+                <i class="fas fa-calendar-alt" style="color: #1e3a8a;"></i> 
+                7-Day Clinical Diet Chart
             </div>
-            
-            <div class="meal-grid">
-                {% for name, data in meals.items %}
-                    <div class="meal-card">
-                        <div class="meal-icon">
-                            <i class="fas {{ data.icon }}"></i>
-                        </div>
-                        <div class="m-title">{{ name }}</div>
-                        <div class="m-cals">{{ data.cal }} kcal</div>
-                        <div class="m-desc">{{ data.desc }}</div>
-                    </div>
-                {% endfor %}
-            </div>
+
+            <table class="diet-table">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        {% for m in weekly_plan.Monday %}
+                            <th>{{ m.meal }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day, meals in weekly_plan.items %}
+                    <tr>
+                        <td class="day-cell">{{ day }}</td>
+                        {% for m in meals %}
+                        <td class="meal-cell">
+                            <div class="food-name">{{ m.food }}</div>
+                            <div class="food-qty"><i class="fas fa-utensils"></i> {{ m.qty }}</div>
+                            <div class="macro-badge">
+                                <span class="cal-tag">{{ m.cal }} kcal</span>
+                                <div class="macro-dots">
+                                    <span class="dot p" title="Protein: {{ m.p }}g">P:{{ m.p }}</span>
+                                    <span class="dot c" title="Carbs: {{ m.c }}g">C:{{ m.c }}</span>
+                                    <span class="dot f" title="Fats: {{ m.f }}g">F:{{ m.f }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <script>
-    // --- 1. PROGRESS CHART ---
+    // --- 1. PROGRESS CHART (BMI) ---
     const ctxProgress = document.getElementById('progressChart').getContext('2d');
-    
-    // Parse JSON data from Django
     const labels = JSON.parse('{{ chart_labels|safe }}');
-    const weights = JSON.parse('{{ chart_weights|safe }}');
+    const bmis = JSON.parse('{{ chart_bmis|safe }}');
     
     new Chart(ctxProgress, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Patient Weight (kg)',
-                data: weights,
+                label: 'Patient BMI', 
+                data: bmis,
                 borderColor: '#3b82f6',
                 backgroundColor: 'rgba(59, 130, 246, 0.1)',
                 borderWidth: 3,
@@ -317,13 +378,8 @@
                 tooltip: { mode: 'index', intersect: false }
             },
             scales: {
-                y: {
-                    beginAtZero: false,
-                    grid: { color: '#f1f5f9' }
-                },
-                x: {
-                    grid: { display: false }
-                }
+                y: { beginAtZero: false, grid: { color: '#f1f5f9' } },
+                x: { grid: { display: false } }
             }
         }
     });
