@@ -3,215 +3,415 @@
 
 {% block content %}
 <style>
-    /* --- Page Specific Styles --- */
-    .form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: #ffffff;
-        padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        position: relative; /* For positioning the back button */
-        border-top: 5px solid #1e4c8c; /* Professional Blue Top Border */
+    :root {
+        --hospital-primary: #0891b2;
+        --hospital-secondary: #06b6d4;
+        --hospital-accent: #22d3ee;
+        --hospital-success: #10b981;
+        --hospital-dark: #0f172a;
+        --hospital-light: #f8fafc;
+        --glass-bg: rgba(255, 255, 255, 0.95);
     }
 
-    /* Back Button Styling */
-    .back-btn {
+    /* --- Page Container & Layout --- */
+    .registration-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        padding-bottom: 50px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* --- Premium Header Section --- */
+    .form-header {
+        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(8, 145, 178, 0.2);
+    }
+
+    .form-header::before {
+        content: '+';
         position: absolute;
-        top: 30px;
-        left: 30px;
+        top: -20px;
+        right: 5%;
+        font-size: 150px;
+        color: rgba(255, 255, 255, 0.05);
+        font-weight: 100;
+        animation: rotateCross 20s linear infinite;
+    }
+
+    @keyframes rotateCross {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .form-header h2 {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        letter-spacing: -0.5px;
+    }
+
+    .form-header p {
+        opacity: 0.9;
+        font-weight: 300;
+        font-size: 16px;
+    }
+
+    /* --- Form Container (Glassmorphism) --- */
+    .form-container {
+        background: var(--glass-bg);
+        padding: 50px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+    }
+
+    /* --- Back Button --- */
+    .back-nav {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #f0f4f8;
-        color: #0b2545;
+        gap: 8px;
+        color: var(--hospital-primary);
         text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 25px;
+        padding: 8px 16px;
+        background: #f1f5f9;
+        border-radius: 12px;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .back-btn:hover {
-        background-color: #1e4c8c;
+    .back-nav:hover {
+        background: var(--hospital-primary);
         color: white;
-        transform: translateX(-3px);
+        transform: translateX(-5px);
     }
 
-    .form-title {
-        text-align: center;
-        color: #0b2545;
-        font-weight: 700;
-        margin-bottom: 30px;
-        margin-top: 10px;
-        font-size: 28px;
-    }
-
+    /* --- Form Elements --- */
     .form-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Two columns */
-        gap: 20px;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 5px;
     }
 
     .form-group.full-width {
-        grid-column: span 2; /* Make address take full width */
+        grid-column: span 2;
     }
 
-    label {
-        display: block;
+    .label-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin-bottom: 8px;
-        font-weight: 600;
-        color: #555;
+    }
+
+    .label-container i {
+        color: var(--hospital-primary);
         font-size: 14px;
     }
 
-    input[type="text"],
-    input[type="number"],
-    input[type="tel"],
+    label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    input,
     select,
     textarea {
         width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #e0e6ed;
-        border-radius: 8px;
+        padding: 14px 15px 14px 45px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
         font-size: 15px;
-        background-color: #f8f9fa;
-        transition: border-color 0.3s, box-shadow 0.3s;
-        box-sizing: border-box;
+        background: #f8fafc;
+        color: #1e293b;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: 'Inter', sans-serif;
+    }
+
+    textarea {
+        padding-left: 15px;
+        /* Address textarea doesn't need left icon as much, but let's be consistent if we add one */
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-        border-color: #48cae4; /* Medical Cyan */
-        box-shadow: 0 0 0 3px rgba(72, 202, 228, 0.1);
+        border-color: var(--hospital-primary);
+        background: white;
         outline: none;
-        background-color: #fff;
-    }
-
-    .submit-btn {
-        width: 100%;
-        padding: 15px;
-        background: linear-gradient(135deg, #0b2545, #1e4c8c);
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        margin-top: 10px;
-    }
-
-    .submit-btn:hover {
+        box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(11, 37, 69, 0.3);
     }
 
-    /* Mobile Responsive */
+    input:focus~i,
+    select:focus~i {
+        color: var(--hospital-primary);
+    }
+
+    /* --- Submit Button --- */
+    .submit-button {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+    }
+
+    .submit-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(16, 185, 129, 0.3);
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .submit-button i {
+        font-size: 20px;
+    }
+
+    /* --- Responsive --- */
     @media (max-width: 768px) {
-        .form-grid { grid-template-columns: 1fr; } /* Stack columns on mobile */
-        .form-group.full-width { grid-column: span 1; }
-        .form-container { padding: 25px; }
-        .back-btn { top: 20px; left: 20px; }
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full-width {
+            grid-column: span 1;
+        }
+
+        .form-container {
+            padding: 30px 20px;
+        }
+
+        .form-header {
+            padding: 30px 20px;
+        }
     }
 </style>
 
-<div class="form-container">
-    <a href="{% url 'home' %}" class="back-btn" title="Back to Selection">
+<div class="registration-wrapper">
+    <!-- Back Navigation -->
+    <a href="{% url 'home' %}" class="back-nav">
         <i class="fas fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
     </a>
 
-    <h2 class="form-title">New Patient Registration</h2>
+    <!-- Premium Header -->
+    <div class="form-header">
+        <h2>🏥 Patient Registration</h2>
+        <p>Complete the clinical profile to generate a precision diet plan</p>
+    </div>
 
-    <form method="post">
-        {% csrf_token %}
-        
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Patient Name</label>
-                <input type="text" name="name" placeholder="Enter full name" required>
+    <!-- Form Container -->
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-grid">
+                <!-- Row 1 -->
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-user"></i>
+                        <label>Patient Full Name</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" name="name" placeholder="John Doe" required>
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-phone"></i>
+                        <label>Contact Number</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="tel" name="phone" pattern="[0-9]{10}" placeholder="9876543210" required>
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-birthday-cake"></i>
+                        <label>Patient Age</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="number" name="age" placeholder="Age in years" required>
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-venus-mars"></i>
+                        <label>Gender</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <select name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                </div>
+
+                <!-- Row 3 (Full Width) -->
+                <div class="form-group full-width">
+                    <div class="label-container">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <label>Residential Address</label>
+                    </div>
+                    <textarea name="address" rows="2" placeholder="Street, City, State, Zip Code" required></textarea>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-ruler-vertical"></i>
+                        <label>Height (cm)</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="number" name="height" step="0.1" placeholder="e.g. 175" required>
+                        <i class="fas fa-arrows-alt-v"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-weight"></i>
+                        <label>Current Weight (kg)</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="number" name="weight" step="0.1" placeholder="e.g. 70.5" required>
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                </div>
+
+                <!-- Row 5 -->
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-tint"></i>
+                        <label>Blood Pressure</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" name="bp" placeholder="e.g. 120/80" required>
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-utensils"></i>
+                        <label>Dietary Preference</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <select name="dietary" required>
+                            <option value="Non-Veg">Non-Vegetarian</option>
+                            <option value="Veg">Vegetarian</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Eggetarian">Eggetarian</option>
+                        </select>
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                </div>
+
+                <!-- Row 6 -->
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-clock"></i>
+                        <label>Meal Frequency</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <select name="plan_type" required>
+                            <option value="3-Meal">3 Meals (Std)</option>
+                            <option value="5-Meal">5 Meals (Small Intervals)</option>
+                        </select>
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-container">
+                        <i class="fas fa-running"></i>
+                        <label>Physical Activity</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <select name="activity" required>
+                            <option value="1.2">Sedentary (No exercise)</option>
+                            <option value="1.375">Light (1-3 days/week)</option>
+                            <option value="1.55">Moderate (3-5 days/week)</option>
+                            <option value="1.725">Very Active (Daily)</option>
+                        </select>
+                        <i class="fas fa-fire"></i>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" name="phone" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
-            </div>
-
-            <div class="form-group">
-                <label>Age</label>
-                <input type="number" name="age" placeholder="Years" required>
-            </div>
-
-            <div class="form-group">
-                <label>Gender</label>
-                <select name="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-
-            <div class="form-group full-width">
-                <label>Address</label>
-                <textarea name="address" rows="2" placeholder="Patient's full address" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Height (cm)</label>
-                <input type="number" name="height" step="0.1" placeholder="e.g. 175" required>
-            </div>
-
-            <div class="form-group">
-                <label>Weight (kg)</label>
-                <input type="number" name="weight" step="0.1" placeholder="e.g. 70.5" required>
-            </div>
-
-            <div class="form-group">
-                <label>Blood Pressure</label>
-                <input type="text" name="bp" placeholder="e.g. 120/80" required>
-            </div>
-
-            <div class="form-group">
-                <label>Dietary Preference</label>
-                <select name="dietary" required>
-                    <option value="Non-Veg">Non-Vegetarian</option>
-                    <option value="Veg">Vegetarian</option>
-                    <option value="Vegan">Vegan</option>
-                    <option value="Eggetarian">Eggetarian</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Diet Frequency</label>
-                <select name="plan_type" required>
-                    <option value="3-Meal">3 Meals (Breakfast, Lunch, Dinner)</option>
-                    <option value="5-Meal">5 Meals (Includes Snacks)</option>
-                </select>
-            </div>
-
-            <div class="form-group full-width">
-                <label>Activity Level</label>
-                <select name="activity" required>
-                    <option value="1.2">Sedentary (Little/No exercise)</option>
-                    <option value="1.375">Lightly Active (1-3 days/week)</option>
-                    <option value="1.55">Moderately Active (3-5 days/week)</option>
-                    <option value="1.725">Very Active (6-7 days/week)</option>
-                </select>
-            </div>
-
-        </div>
-
-        <button type="submit" class="submit-btn">
-            <i class="fas fa-file-medical-alt" style="margin-right: 8px;"></i>
-            Register & Calculate Diet
-        </button>
-    </form>
+            <!-- Submit Action -->
+            <button type="submit" class="submit-button">
+                <i class="fas fa-calculator"></i>
+                <span>Analyze Vitals & Generate Plan</span>
+            </button>
+        </form>
+    </div>
 </div>
-
 {% endblock %}

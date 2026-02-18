@@ -6,31 +6,33 @@ class Patient(models.Model):
     phone = models.CharField(max_length=15, unique=True)
     address = models.TextField()
     
-    # Clinical Data
-    medical_history = models.CharField(max_length=200, default="None", help_text="diabetes, renal, cardiac")
-    allergies = models.CharField(max_length=200, default="None", help_text="Comma separated ingredients")
-
+    # Note: Medical history removed as per new "Body Type" logic
+    
     def __str__(self):
         return f"{self.name} ({self.phone})"
 
 class Checkup(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     age = models.IntegerField()
-    height = models.FloatField()
-    weight = models.FloatField()
-    bp = models.CharField(max_length=20)
-    activity = models.FloatField()
+    height = models.FloatField(help_text="cm")
+    weight = models.FloatField(help_text="kg")
+    activity = models.FloatField(help_text="Multiplier (1.2 - 1.9)")
+    
+    # Preferences
     dietary = models.CharField(max_length=50, default="Non-Veg") 
     plan_type = models.CharField(max_length=20, default="3-Meal")
     
-    # Metrics
+    # Computed Metrics
     bmi = models.FloatField()
     bmr = models.FloatField()
     tdee = models.FloatField()
-    category = models.CharField(max_length=20)
-    carbs = models.FloatField()
-    protein = models.FloatField()
-    fat = models.FloatField()
+    category = models.CharField(max_length=20) # Underweight, Normal, Overweight, Obese
+    
+    # Target Macros (Computed)
+    protein_target = models.FloatField(default=0)
+    carbs_target = models.FloatField(default=0)
+    fat_target = models.FloatField(default=0)
+    
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -44,26 +46,19 @@ class FoodItem(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     diet_type = models.CharField(max_length=20, choices=DIET_TYPE)
     
-    # Nutrition (Per Unit)
+    # Nutrition (Per Serving Base)
     calories = models.IntegerField()
     protein = models.FloatField()
     carbs = models.FloatField()
     fat = models.FloatField()
-    sodium = models.FloatField(default=0, help_text="mg")
-    sugar = models.FloatField(default=0, help_text="g")
     
-    # --- NEW CLINICAL FIELDS (These were missing!) ---
-    potassium = models.FloatField(default=0, help_text="mg (Renal)")
-    phosphorus = models.FloatField(default=0, help_text="mg (Renal)")
-    ingredients = models.TextField(default="", help_text="For allergy check")
-    unit_name = models.CharField(max_length=20, default="Serving", help_text="e.g. Idli, Cup")
-    serving_desc = models.CharField(max_length=50, default="1 Serving")  # <--- This caused your error
-
-    # Flags
-    is_diabetes_safe = models.BooleanField(default=False)
-    is_renal_safe = models.BooleanField(default=False)     
-    is_cardiac_safe = models.BooleanField(default=False)   
-    is_hypertension_safe = models.BooleanField(default=False) 
+    # Critical Filtering Fields
+    fiber = models.FloatField(default=0, help_text="Important for Obese/Weight Loss")
+    sugar = models.FloatField(default=0, help_text="Filter for unhealthy items")
+    
+    # Portion Logic
+    unit_name = models.CharField(max_length=20, default="Serving", help_text="e.g. Cup, Nos")
+    serving_desc = models.CharField(max_length=50, default="1 Serving")
     
     def __str__(self):
         return f"{self.name} ({self.calories} kcal)"
@@ -74,8 +69,8 @@ class AssignedMeal(models.Model):
     meal_type = models.CharField(max_length=20)
     food_item = models.ForeignKey(FoodItem, on_delete=models.CASCADE)
     
-    # Stores the calculated portion
-    quantity_text = models.CharField(max_length=50, default="1 Serving") 
+    # Dynamic Portion Results
+    quantity_text = models.CharField(max_length=50) # e.g. "2.5 Cups"
     total_calories = models.IntegerField()
 
     def __str__(self):

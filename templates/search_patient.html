@@ -2,73 +2,497 @@
 {% load static %}
 
 {% block content %}
-<div style="max-width: 800px; margin: 0 auto;">
-    
-    <div style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; margin-bottom: 30px;">
-        <h2 style="color: #0f172a; margin-bottom: 10px;">Find Patient Records</h2>
-        <p style="color: #64748b; margin-bottom: 30px;">Enter registered Phone Number or Name to view medical history.</p>
+<style>
+    :root {
+        --hospital-primary: #0891b2;
+        --hospital-secondary: #06b6d4;
+        --hospital-accent: #22d3ee;
+        --hospital-success: #10b981;
+        --hospital-dark: #0f172a;
+        --hospital-light: #f8fafc;
+        --glass-bg: rgba(255, 255, 255, 0.95);
+    }
 
-        <form method="GET" action="{% url 'search_patient' %}" style="display: flex; gap: 10px; justify-content: center;">
-            <input type="text" name="q" placeholder="e.g. 9876543210" value="{{ query|default:'' }}" required
-                style="padding: 15px; width: 60%; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px;">
-            <button type="submit" 
-                style="background: #3b82f6; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: 600; cursor: pointer;">
-                <i class="fas fa-search"></i> Search
+    .search-wrapper {
+        max-width: 850px;
+        margin: 0 auto;
+        padding-bottom: 50px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* --- Premium Header Section --- */
+    .form-header {
+        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
+        color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(8, 145, 178, 0.2);
+    }
+
+    .form-header::before {
+        content: '+';
+        position: absolute;
+        top: -20px;
+        right: 5%;
+        font-size: 150px;
+        color: rgba(255, 255, 255, 0.05);
+        font-weight: 100;
+        animation: rotateCross 20s linear infinite;
+    }
+
+    @keyframes rotateCross {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .form-header h2 {
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+    }
+
+    .form-header p {
+        opacity: 0.9;
+        font-weight: 300;
+        font-size: 15px;
+    }
+
+    /* --- Search Area (Glassmorphism) --- */
+    .search-card {
+        background: var(--glass-bg);
+        padding: 40px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-bottom: 35px;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 0;
+        /* Removing gap to create a unified search input */
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .search-form:focus-within {
+        border-color: var(--hospital-primary);
+        box-shadow: 0 10px 25px rgba(8, 145, 178, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .search-input-wrapper {
+        position: relative;
+        flex-grow: 1;
+    }
+
+    .search-input-wrapper i {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 18px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 16px 20px 16px 55px;
+        border: none;
+        font-size: 16px;
+        background: white;
+        color: var(--hospital-dark);
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+    }
+
+    .search-input:focus {
+        outline: none;
+    }
+
+    .search-button {
+        background: var(--hospital-primary);
+        color: white;
+        border: none;
+        padding: 0 30px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .search-button:hover {
+        background: #0e7490;
+    }
+
+    /* --- Results List --- */
+    .results-container {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .results-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--hospital-dark);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .results-title i {
+        color: var(--hospital-success);
+    }
+
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .result-item:last-child {
+        border-bottom: none;
+    }
+
+    .result-item:hover {
+        background: #f8fafc;
+        transform: translateX(5px);
+    }
+
+    .patient-info strong {
+        display: block;
+        font-size: 17px;
+        color: var(--hospital-dark);
+        margin-bottom: 4px;
+    }
+
+    .patient-info span {
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .view-btn {
+        background: #eff6ff;
+        color: var(--hospital-primary);
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .view-btn:hover {
+        background: var(--hospital-primary);
+        color: white;
+        box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
+    }
+
+    /* --- Medical History Timeline --- */
+    .history-card {
+        margin-top: 40px;
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .history-header h3 {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--hospital-dark);
+    }
+
+    .add-btn {
+        color: var(--hospital-primary);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.3s;
+    }
+
+    .add-btn:hover {
+        color: #0e7490;
+    }
+
+    .report-grid {
+        display: grid;
+        gap: 20px;
+    }
+
+    .report-item {
+        display: block;
+        background: #f8fafc;
+        padding: 25px;
+        border-radius: 16px;
+        text-decoration: none;
+        color: inherit;
+        border-left: 5px solid var(--hospital-primary);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .report-item:hover {
+        transform: scale(1.02) translateX(10px);
+        background: white;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        border-left-color: var(--hospital-success);
+    }
+
+    .report-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .report-id {
+        font-weight: 800;
+        color: var(--hospital-dark);
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .report-date {
+        color: #94a3b8;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .report-stats {
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 500;
+    }
+
+    .stat-tag {
+        background: white;
+        padding: 4px 10px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: #94a3b8;
+        padding: 50px 20px;
+    }
+
+    /* Back Nav */
+    .back-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--hospital-primary);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 25px;
+        padding: 8px 16px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .back-nav:hover {
+        background: var(--hospital-primary);
+        color: white;
+        transform: translateX(-5px);
+    }
+
+    @media (max-width: 640px) {
+        .search-form {
+            flex-direction: column;
+            border-radius: 14px;
+            overflow: visible;
+            border: none;
+        }
+
+        .search-input {
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            padding: 16px 20px 16px 55px;
+        }
+
+        .search-button {
+            border-radius: 14px;
+            padding: 16px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .report-stats {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
+<div class="search-wrapper">
+    <!-- Back Nav -->
+    <a href="{% url 'home' %}" class="back-nav">
+        <i class="fas fa-arrow-left"></i>
+        <span>Dashboard</span>
+    </a>
+
+    <!-- Header -->
+    <div class="form-header">
+        <h2>🏥 Medical Archives</h2>
+        <p>Access patient records and diagnostic history</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-card">
+        <form method="GET" action="{% url 'search_patient' %}" class="search-form">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" name="q" class="search-input" placeholder="Enter Phone or Name..."
+                    value="{{ query|default:'' }}" required>
+            </div>
+            <button type="submit" class="search-button">
+                <span>Analyze</span>
+                <i class="fas fa-arrow-right"></i>
             </button>
         </form>
 
         {% if error_message %}
-        <div style="margin-top: 20px; background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 8px; border: 1px solid #fecaca;">
+        <div
+            style="margin-top: 25px; background: #fee2e2; color: #dc2626; padding: 12px 20px; border-radius: 12px; border: 1px solid #fecaca; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
             <i class="fas fa-exclamation-circle"></i> {{ error_message }}
         </div>
         {% endif %}
     </div>
 
+    <!-- Results List -->
     {% if patients %}
-    <div style="background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0;">
-        <h3 style="margin-bottom: 20px;">Search Results</h3>
+    <div class="results-container">
+        <div class="results-title">
+            <i class="fas fa-user-check"></i>
+            Patient Search Results
+        </div>
         {% for p in patients %}
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #f1f5f9;">
-            <div>
-                <div style="font-weight: 700; font-size: 18px;">{{ p.name }}</div>
-                <div style="color: #64748b; font-size: 14px;">{{ p.phone }} | {{ p.gender }}</div>
+        <div class="result-item">
+            <div class="patient-info">
+                <strong>{{ p.name }}</strong>
+                <span><i class="fas fa-phone-alt" style="font-size: 12px; margin-right: 5px;"></i> {{ p.phone }} | <i
+                        class="fas fa-venus-mars" style="font-size: 12px; margin-right: 5px;"></i> {{ p.gender }}</span>
             </div>
-            <a href="?view_id={{ p.id }}&q={{ query }}" style="background: #eff6ff; color: #3b82f6; padding: 8px 15px; text-decoration: none; border-radius: 6px; font-weight: 600;">
-                View Records
+            <a href="?view_id={{ p.id }}&q={{ query }}" class="view-btn">
+                <span>Open File</span>
+                <i class="fas fa-folder-open"></i>
             </a>
         </div>
         {% endfor %}
     </div>
     {% endif %}
 
+    <!-- Medical History View -->
     {% if selected_patient %}
-    <div style="margin-top: 30px; background: white; padding: 30px; border-radius: 16px; border: 1px solid #e2e8f0;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3>Medical History: <span style="color: #3b82f6;">{{ selected_patient.name }}</span></h3>
-            <a href="{% url 'new_patient' %}" style="color: #64748b; text-decoration: none; font-size: 14px;">
-                <i class="fas fa-plus"></i> Add New Checkup
+    <div class="history-card">
+        <div class="history-header">
+            <h3><i class="fas fa-file-medical-alt" style="margin-right: 10px; color: var(--hospital-primary);"></i>
+                Profile: <span style="color: var(--hospital-primary);">{{ selected_patient.name }}</span></h3>
+            <a href="{% url 'existing_patient' %}" class="add-btn">
+                <i class="fas fa-plus-circle"></i> Add Update
             </a>
         </div>
-        
+
         {% if history %}
-            <div style="display: grid; gap: 15px;">
-                {% for report in history %}
-                <a href="{% url 'generate_dynamic_diet_plan' selected_patient.id report.id %}" 
-                   style="display: block; background: #f8fafc; padding: 20px; border-radius: 10px; text-decoration: none; color: inherit; border-left: 5px solid #3b82f6; transition: 0.3s;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="font-weight: 700;">Report #{{ report.id }}</span>
-                        <span style="color: #64748b; font-size: 13px;">{{ report.date }}</span>
-                    </div>
-                    <div style="margin-top: 5px; font-size: 14px;">
-                        Weight: {{ report.weight }}kg • BMI: {{ report.bmi }} • Goal: {{ report.category }}
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
+        <div class="report-grid">
+            {% for report in history %}
+            <a href="{% url 'generate_dynamic_diet_plan' selected_patient.id report.id %}" class="report-item">
+                <div class="report-meta">
+                    <span class="report-id">Protocol #{{ report.id }}</span>
+                    <span class="report-date"><i class="far fa-calendar-alt"></i> {{ report.date }}</span>
+                </div>
+                <div class="report-stats">
+                    <span class="stat-tag"><strong>Weight:</strong> {{ report.weight }}kg</span>
+                    <span class="stat-tag"><strong>BMI:</strong> {{ report.bmi }}</span>
+                    <span class="stat-tag"><strong>Category:</strong> {{ report.category }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
         {% else %}
-            <div style="text-align: center; color: #94a3b8; padding: 20px;">
-                No checkup reports found for this patient. <a href="{% url 'new_patient' %}">Create one now?</a>
-            </div>
+        <div class="empty-state">
+            <i class="fas fa-notes-medical"
+                style="font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
+            No checkup reports found. <a href="{% url 'existing_patient' %}"
+                style="color: var(--hospital-primary); font-weight: 700;">Proceed to assessment?</a>
+        </div>
         {% endif %}
     </div>
     {% endif %}

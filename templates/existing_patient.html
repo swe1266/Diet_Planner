@@ -3,114 +3,222 @@
 
 {% block content %}
 <style>
-    /* --- Page Specific Styles --- */
-    .form-container {
-        max-width: 600px;
+    :root {
+        --hospital-primary: #0891b2;
+        --hospital-secondary: #06b6d4;
+        --hospital-accent: #22d3ee;
+        --hospital-success: #10b981;
+        --hospital-dark: #0f172a;
+        --hospital-light: #f8fafc;
+        --glass-bg: rgba(255, 255, 255, 0.95);
+    }
+
+    /* --- Page Container & Layout --- */
+    .view-wrapper {
+        max-width: 800px;
         margin: 0 auto;
-        background: #ffffff;
-        padding: 40px;
-        border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(11, 37, 69, 0.1); /* Deep Blue Shadow */
-        position: relative;
-        border-top: 6px solid #0b2545; /* Dark Navy Top */
+        padding-bottom: 50px;
+        animation: fadeIn 0.8s ease-out;
     }
 
-    /* Floating Back Button */
-    .back-btn {
-        position: absolute;
-        top: 30px;
-        left: 30px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #f1f5f9;
-        color: #0b2545;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: 1px solid #e2e8f0;
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    .back-btn:hover {
-        background-color: #0b2545;
+    /* --- Premium Header Section --- */
+    .form-header {
+        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
         color: white;
-        transform: translateX(-3px);
+        border-radius: 20px 20px 0 0;
+        padding: 40px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(8, 145, 178, 0.2);
     }
 
-    .form-title {
-        text-align: center;
-        color: #0b2545;
-        font-weight: 700;
-        margin-bottom: 10px;
-        margin-top: 10px;
-        font-size: 26px;
+    .form-header::before {
+        content: '+';
+        position: absolute;
+        top: -20px;
+        right: 5%;
+        font-size: 150px;
+        color: rgba(255, 255, 255, 0.05);
+        font-weight: 100;
+        animation: rotateCross 20s linear infinite;
     }
-    
-    .form-subtitle {
-        text-align: center;
-        color: #64748b;
+
+    @keyframes rotateCross {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .form-header h2 {
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+    }
+
+    .form-header p {
+        opacity: 0.9;
+        font-weight: 300;
+        font-size: 15px;
+    }
+
+    /* --- Back Button --- */
+    .back-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--hospital-primary);
+        text-decoration: none;
+        font-weight: 600;
         font-size: 14px;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
+        padding: 8px 16px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        transition: all 0.3s ease;
     }
 
-    /* Form Inputs */
+    .back-nav:hover {
+        background: var(--hospital-primary);
+        color: white;
+        transform: translateX(-5px);
+    }
+
+    /* --- Search Container (Glassmorphism) --- */
+    .search-container {
+        background: var(--glass-bg);
+        padding: 40px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        text-align: center;
+    }
+
     .form-group {
-        margin-bottom: 20px;
+        text-align: left;
+        margin-bottom: 25px;
     }
 
     label {
         display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #334155;
-        font-size: 14px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
     }
 
-    input[type="text"],
-    input[type="number"],
-    input[type="tel"],
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 18px;
+        transition: all 0.3s ease;
+    }
+
+    input,
     select {
         width: 100%;
-        padding: 12px 15px;
+        padding: 14px 15px 14px 45px;
         border: 2px solid #e2e8f0;
-        border-radius: 10px;
+        border-radius: 12px;
         font-size: 15px;
-        background-color: #f8fafc;
-        transition: all 0.3s;
-        box-sizing: border-box;
-        color: #0f172a;
+        background: #f8fafc;
+        color: #1e293b;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: 'Inter', sans-serif;
     }
 
-    input:focus, select:focus {
-        border-color: #3b82f6;
-        background-color: #fff;
+    input:focus,
+    select:focus {
+        border-color: var(--hospital-primary);
+        background: white;
         outline: none;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
+        transform: translateY(-2px);
     }
 
-    /* Buttons */
-    .btn-primary {
+    input:focus~i {
+        color: var(--hospital-primary);
+    }
+
+    .search-btn {
         width: 100%;
-        padding: 15px;
-        background: linear-gradient(135deg, #0b2545, #1e4c8c);
+        padding: 16px;
+        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 100%);
         color: white;
-        font-size: 16px;
-        font-weight: 600;
         border: none;
         border-radius: 12px;
+        font-size: 17px;
+        font-weight: 700;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        margin-top: 10px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 10px 20px rgba(8, 145, 178, 0.2);
     }
 
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(11, 37, 69, 0.25);
+    .search-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(8, 145, 178, 0.3);
     }
 
-    /* --- MODAL STYLES --- */
+    .error-msg {
+        background: #fee2e2;
+        color: #dc2626;
+        padding: 12px;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        display: none;
+        border: 1px solid #fecaca;
+        animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-5px);
+        }
+
+        75% {
+            transform: translateX(5px);
+        }
+    }
+
+    /* --- MODAL DESIGN --- */
     .modal-overlay {
         display: none;
         position: fixed;
@@ -119,174 +227,279 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(15, 23, 42, 0.7); /* Dark overlay */
-        backdrop-filter: blur(5px);
+        background-color: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(8px);
     }
 
     .modal-content {
-        background-color: #ffffff;
-        margin: 5% auto;
-        border-radius: 16px;
+        background: var(--hospital-light);
+        margin: 5vh auto;
+        border-radius: 20px;
         width: 90%;
-        max-width: 700px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        animation: slideUp 0.4s ease;
+        max-width: 750px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         overflow: hidden;
     }
 
     @keyframes slideUp {
-        from { transform: translateY(50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+        from {
+            transform: translateY(100px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 
     .modal-header {
-        background: #0b2545;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         color: white;
-        padding: 20px 30px;
+        padding: 24px 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
     .close-btn {
-        color: rgba(255,255,255,0.7);
-        font-size: 28px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 30px;
         cursor: pointer;
-        transition: 0.2s;
+        transition: 0.3s;
     }
-    .close-btn:hover { color: white; }
 
-    .modal-body { padding: 30px; }
+    .close-btn:hover {
+        color: white;
+        transform: rotate(90deg);
+    }
 
-    .info-grid {
+    .modal-body {
+        padding: 35px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* Patient Info Card */
+    .patient-summary {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        background: #f1f5f9;
-        padding: 20px;
-        border-radius: 12px;
-        margin-bottom: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+        margin-bottom: 35px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
-    
-    .info-item label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; }
-    .info-item span { font-size: 15px; font-weight: 600; color: #0f172a; }
+
+    .summary-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .summary-item label {
+        font-size: 11px;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    .summary-item span {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--hospital-dark);
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--hospital-dark);
+        font-weight: 800;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f1f5f9;
+        font-size: 18px;
+    }
+
+    .section-title i {
+        color: var(--hospital-primary);
+    }
 
     .update-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
     }
-    .full-width { grid-column: span 2; }
-    
-    .error-msg {
-        background-color: #fee2e2;
-        color: #ef4444;
-        padding: 12px;
-        border-radius: 8px;
-        text-align: center;
-        margin-top: 15px;
-        font-size: 14px;
-        display: none;
+
+    .full-width {
+        grid-column: span 2;
+    }
+
+    .update-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+    }
+
+    .update-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
     }
 </style>
 
-<div class="form-container">
-    <a href="{% url 'home' %}" class="back-btn" title="Back to Dashboard">
+<div class="view-wrapper">
+    <!-- Back Navigation -->
+    <a href="{% url 'home' %}" class="back-nav">
         <i class="fas fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
     </a>
 
-    <h2 class="form-title">Update Patient</h2>
-    <p class="form-subtitle">Search for an existing patient to update their vitals.</p>
-    
-    <div class="form-group">
-        <label>Registered Phone Number</label>
-        <input type="tel" id="searchInput" placeholder="Enter 10-digit number" autofocus>
+    <!-- Header Section -->
+    <div class="form-header">
+        <h2>🏥 Protocol Update</h2>
+        <p>Search for a patient using their registered clinical ID</p>
     </div>
-    
-    <button onclick="fetchPatient()" class="btn-primary">
-        <i class="fas fa-search" style="margin-right: 8px;"></i> Search Patient
-    </button>
-    
-    <div id="errorMsg" class="error-msg"></div>
+
+    <!-- Search Card -->
+    <div class="search-container">
+        <div class="form-group">
+            <label>Registered Phone Number</label>
+            <div class="input-wrapper">
+                <input type="tel" id="searchInput" placeholder="Enter 10-digit mobile number" autofocus>
+                <i class="fas fa-phone"></i>
+            </div>
+        </div>
+
+        <button onclick="fetchPatient()" class="search-btn">
+            <i class="fas fa-search"></i>
+            Search Patient Records
+        </button>
+
+        <div id="errorMsg" class="error-msg"></div>
+    </div>
 </div>
 
+<!-- Patient Result Modal -->
 <div id="patientModal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 style="margin:0; font-size: 18px;">Patient Found</h3>
+            <h3 style="margin:0; font-size: 20px; font-weight: 700;">
+                <i class="fas fa-user-check" style="margin-right: 10px; color: var(--hospital-success);"></i> Records
+                Found
+            </h3>
             <span class="close-btn" onclick="closeModal()">&times;</span>
         </div>
 
         <div class="modal-body">
-            <div class="info-grid">
-                <div class="info-item"><label>Name</label><span id="pName"></span></div>
-                <div class="info-item"><label>Gender</label><span id="pGender"></span></div>
-                <div class="info-item"><label>Phone</label><span id="pPhone"></span></div>
-                <div class="info-item"><label>Previous Diet</label><span id="pDiet"></span></div>
-                <div class="info-item full-width"><label>Address</label><span id="pAddress"></span></div>
+            <!-- Patient Case Summary -->
+            <div class="patient-summary">
+                <div class="summary-item"><label>Name</label><span id="pName"></span></div>
+                <div class="summary-item"><label>Gender</label><span id="pGender"></span></div>
+                <div class="summary-item"><label>Clinical Contact</label><span id="pPhone"></span></div>
+                <div class="summary-item"><label>Active Protocol</label><span id="pDiet"></span></div>
+                <div class="summary-item full-width"><label>Residential Records</label><span id="pAddress"></span></div>
             </div>
 
-            <h4 style="color: #0b2545; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
-                Enter New Vitals
-            </h4>
+            <div class="section-title">
+                <i class="fas fa-stethoscope"></i>
+                Update Current Vitals & Assessment
+            </div>
 
+            <!-- Update Form -->
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="patient_id" id="hiddenPatientId">
-                
+
                 <div class="update-grid">
                     <div class="form-group">
-                        <label>Current Age</label>
-                        <input type="number" name="age" id="inputAge" required>
+                        <label>Patient Age</label>
+                        <div class="input-wrapper">
+                            <input type="number" name="age" id="inputAge" required>
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label>New Height (cm)</label>
-                        <input type="number" name="height" id="inputHeight" step="0.1" required>
+                        <label>Current Height (cm)</label>
+                        <div class="input-wrapper">
+                            <input type="number" name="height" id="inputHeight" step="0.1" required>
+                            <i class="fas fa-ruler-vertical"></i>
+                        </div>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label>New Weight (kg)</label>
-                        <input type="number" name="weight" id="inputWeight" step="0.1" required>
+                        <label>Current Weight (kg)</label>
+                        <div class="input-wrapper">
+                            <input type="number" name="weight" id="inputWeight" step="0.1" required>
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Blood Pressure</label>
-                        <input type="text" name="bp" placeholder="e.g. 120/80" required>
+                        <div class="input-wrapper">
+                            <input type="text" name="bp" placeholder="e.g. 120/80" required>
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>Dietary Preference</label>
-                        <select name="dietary" id="inputDiet" required>
-                            <option value="Non-Veg">Non-Vegetarian</option>
-                            <option value="Veg">Vegetarian</option>
-                            <option value="Vegan">Vegan</option>
-                            <option value="Eggetarian">Eggetarian</option>
-                        </select>
+                        <div class="input-wrapper">
+                            <select name="dietary" id="inputDiet" required>
+                                <option value="Non-Veg">Non-Vegetarian</option>
+                                <option value="Veg">Vegetarian</option>
+                                <option value="Vegan">Vegan</option>
+                                <option value="Eggetarian">Eggetarian</option>
+                            </select>
+                            <i class="fas fa-leaf"></i>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Diet Frequency</label>
-                        <select name="plan_type" id="inputPlan" required>
-                            <option value="3-Meal">3 Meals (Breakfast, Lunch, Dinner)</option>
-                            <option value="5-Meal">5 Meals (Includes Snacks)</option>
-                        </select>
+                        <label>Meal Frequency</label>
+                        <div class="input-wrapper">
+                            <select name="plan_type" id="inputPlan" required>
+                                <option value="3-Meal">3 Meals (Std)</option>
+                                <option value="5-Meal">5 Meals (Sml)</option>
+                            </select>
+                            <i class="fas fa-clock"></i>
+                        </div>
                     </div>
 
                     <div class="form-group full-width">
-                        <label>Activity Level</label>
-                        <select name="activity" required>
-                            <option value="1.2">Sedentary (Little/No exercise)</option>
-                            <option value="1.375">Lightly Active (1-3 days/week)</option>
-                            <option value="1.55">Moderately Active (3-5 days/week)</option>
-                            <option value="1.725">Very Active (6-7 days/week)</option>
-                        </select>
+                        <label>Activity Intensity</label>
+                        <div class="input-wrapper">
+                            <select name="activity" required>
+                                <option value="1.2">Sedentary (Low)</option>
+                                <option value="1.375">Lightly Active (Mid)</option>
+                                <option value="1.55">Moderately Active (High)</option>
+                                <option value="1.725">Very Active (Elite)</option>
+                            </select>
+                            <i class="fas fa-fire"></i>
+                        </div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-save" style="margin-right: 8px;"></i>
-                    Update & Generate Plan
+                <button type="submit" class="update-btn">
+                    <i class="fas fa-sync-alt"></i>
+                    Recalculate & Sync Records
                 </button>
             </form>
         </div>
@@ -298,54 +511,54 @@
         let phone = document.getElementById('searchInput').value;
         let errorMsg = document.getElementById('errorMsg');
 
-        if(phone === "") {
-            errorMsg.innerText = "Please enter a phone number.";
+        if (phone === "") {
+            errorMsg.innerText = "Please enter a valid phone number.";
             errorMsg.style.display = "block";
             return;
         }
 
         fetch(`/get_patient_details/?phone=${phone}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.exists) {
-                errorMsg.style.display = "none";
-                
-                // 1. Populate Static Info
-                document.getElementById('pName').innerText = data.name;
-                document.getElementById('pGender').innerText = data.gender;
-                document.getElementById('pPhone').innerText = phone;
-                document.getElementById('pAddress').innerText = data.address;
-                document.getElementById('pDiet').innerText = data.last_dietary; // Shows Last Preference
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    errorMsg.style.display = "none";
 
-                // 2. Populate Form Inputs for Editing
-                document.getElementById('hiddenPatientId').value = data.id;
-                document.getElementById('inputAge').value = data.age;
-                document.getElementById('inputHeight').value = data.last_height;
-                document.getElementById('inputWeight').value = data.last_weight;
-                
-                // 3. Auto-select their previous choices
-                document.getElementById('inputDiet').value = data.last_dietary; 
-                document.getElementById('inputPlan').value = data.last_plan; 
+                    // 1. Populate Static Summary
+                    document.getElementById('pName').innerText = data.name;
+                    document.getElementById('pGender').innerText = data.gender;
+                    document.getElementById('pPhone').innerText = phone;
+                    document.getElementById('pAddress').innerText = data.address;
+                    document.getElementById('pDiet').innerText = data.last_dietary;
 
-                // Show Modal
-                document.getElementById('patientModal').style.display = "block";
-            } else {
-                errorMsg.innerText = "Patient not found. Please register new patient.";
+                    // 2. Populate Form
+                    document.getElementById('hiddenPatientId').value = data.id;
+                    document.getElementById('inputAge').value = data.age;
+                    document.getElementById('inputHeight').value = data.last_height;
+                    document.getElementById('inputWeight').value = data.last_weight;
+
+                    // 3. Sync Defaults
+                    document.getElementById('inputDiet').value = data.last_dietary;
+                    document.getElementById('inputPlan').value = data.last_plan;
+
+                    // Open View
+                    document.getElementById('patientModal').style.display = "block";
+                } else {
+                    errorMsg.innerText = "Patient record not found. Please verify ID or register new case.";
+                    errorMsg.style.display = "block";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                errorMsg.innerText = "Search Engine Error. Please contact technician.";
                 errorMsg.style.display = "block";
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            errorMsg.innerText = "System Error. Try again later.";
-            errorMsg.style.display = "block";
-        });
+            });
     }
 
     function closeModal() {
         document.getElementById('patientModal').style.display = "none";
     }
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == document.getElementById('patientModal')) {
             closeModal();
         }

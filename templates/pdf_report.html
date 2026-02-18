@@ -1,166 +1,256 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
         @page {
             size: A4;
-            margin: 2cm;
-        }
-        body {
-            font-family: Helvetica, Arial, sans-serif;
-            color: #333;
-            line-height: 1.6;
-        }
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #0b2545;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            color: #0b2545;
-            margin: 0;
-            font-size: 24px;
-            text-transform: uppercase;
-        }
-        .header p {
-            margin: 5px 0 0;
-            font-size: 12px;
-            color: #666;
-        }
-        
-        /* Patient Info Grid */
-        .info-table {
-            width: 100%;
-            margin-bottom: 30px;
-            border-collapse: collapse;
-        }
-        .info-table td {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
-        .label {
-            font-weight: bold;
-            color: #0b2545;
-            width: 30%;
+            margin: 1.5cm;
         }
 
-        /* Vitals Section */
-        .vitals-box {
-            background-color: #f0f8ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            text-align: center;
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            line-height: 1.4;
         }
-        .vitals-title {
+
+        .report-header {
+            text-align: center;
+            border-bottom: 3px solid #0891b2;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .clinic-name {
+            color: #0891b2;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .clinic-sub {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .section-title {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            border-left: 4px solid #0891b2;
+        }
+
+        .info-grid {
+            width: 100%;
+        }
+
+        .info-grid td {
+            padding: 5px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #475569;
+            width: 25%;
+            font-size: 11px;
+        }
+
+        .val {
+            font-size: 11px;
+        }
+
+        .vitals-summary {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .vitals-summary td {
+            background-color: #f8fafc;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .v-val {
             font-size: 16px;
             font-weight: bold;
-            margin-bottom: 10px;
-            color: #0b2545;
-            text-align: left;
+            color: #0891b2;
+            display: block;
         }
-        
-        /* Meal Table */
-        .meal-table {
+
+        .v-lbl {
+            font-size: 9px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .diet-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
-        .meal-table th {
-            background-color: #0b2545;
+
+        .diet-table th {
+            background-color: #0891b2;
             color: white;
-            padding: 10px;
+            padding: 8px;
             text-align: left;
-            font-size: 12px;
+            font-size: 10px;
+            border: 1px solid #0891b2;
         }
-        .meal-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            font-size: 12px;
+
+        .diet-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            font-size: 9.5px;
+            vertical-align: top;
         }
-        
+
+        .day-label {
+            background-color: #f8fafc;
+            font-weight: bold;
+            width: 65px;
+        }
+
+        .food-name {
+            font-weight: bold;
+            margin-bottom: 2px;
+            color: #0f172a;
+        }
+
+        .food-qty {
+            color: #64748b;
+            font-style: italic;
+            font-size: 8.5px;
+            margin-bottom: 4px;
+        }
+
+        .food-macros {
+            font-size: 8px;
+            color: #0891b2;
+            font-weight: bold;
+        }
+
         .footer {
             position: fixed;
-            bottom: 0;
+            bottom: -30px;
             left: 0;
             right: 0;
             text-align: center;
-            font-size: 10px;
-            color: #999;
-            border-top: 1px solid #eee;
+            font-size: 8px;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
             padding-top: 10px;
+        }
+
+        .signature-area {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .sig-line {
+            border-top: 1px solid #1e293b;
+            width: 180px;
+            margin-left: auto;
+            margin-bottom: 5px;
         }
     </style>
 </head>
+
 <body>
 
-    <div class="header">
-        <h1>LifeCare Nutrition Clinic</h1>
-        <p>123 Health Avenue, Medical District, NY 10012 | +1 (555) 019-2834</p>
+    <div class="report-header">
+        <div class="clinic-name">Clinical Nutrition Report</div>
+        <div class="clinic-sub">Generated via Hospital Diet Management System | Patient ID #{{ patient.id }}</div>
     </div>
 
-    <table class="info-table">
+    <div class="section-title">PATIENT INFORMATION</div>
+    <table class="info-grid">
         <tr>
             <td class="label">Patient Name:</td>
-            <td>{{ patient.name }}</td>
+            <td class="val">{{ patient.name }}</td>
             <td class="label">Report Date:</td>
-            <td>{{ checkup.date|date:"M d, Y" }}</td>
+            <td class="val">{{ checkup.date|date:"F d, Y" }}</td>
         </tr>
         <tr>
-            <td class="label">Patient ID:</td>
-            <td>#{{ patient.id }}</td>
             <td class="label">Age / Gender:</td>
-            <td>{{ checkup.age }} / {{ patient.gender }}</td>
+            <td class="val">{{ checkup.age }} yrs / {{ patient.gender }}</td>
+            <td class="label">Clinical Goal:</td>
+            <td class="val" style="color: #0891b2; font-weight: bold;">{{ diet_goal }}</td>
         </tr>
         <tr>
-            <td class="label">Diet Preference:</td>
-            <td>{{ checkup.dietary }}</td>
-            <td class="label">Plan Type:</td>
-            <td>{{ checkup.plan_type }}</td>
+            <td class="label">Dietary Preference:</td>
+            <td class="val">{{ checkup.dietary }}</td>
+            <td class="label">Plan Structure:</td>
+            <td class="val">{{ checkup.plan_type }}</td>
         </tr>
     </table>
 
-    <div class="vitals-title">CLINICAL VITALS</div>
-    <table class="info-table">
+    <div class="section-title">ANTHROPOMETRIC ASSESSMENT</div>
+    <table class="vitals-summary">
         <tr>
-            <td><strong>BMI:</strong> {{ checkup.bmi }} ({{ checkup.category }})</td>
-            <td><strong>Weight:</strong> {{ checkup.weight }} kg</td>
-            <td><strong>Height:</strong> {{ checkup.height }} cm</td>
-            <td><strong>TDEE:</strong> {{ checkup.tdee }} kcal</td>
+            <td>
+                <span class="v-val">{{ checkup.bmi }}</span>
+                <span class="v-lbl">BMI ({{ checkup.category }})</span>
+            </td>
+            <td>
+                <span class="v-val">{{ checkup.weight }} kg</span>
+                <span class="v-lbl">Current Weight</span>
+            </td>
+            <td>
+                <span class="v-val">{{ target_calories }} kcal</span>
+                <span class="v-lbl">Daily Target Intake</span>
+            </td>
+            <td>
+                <span class="v-val">{{ checkup.tdee }} kcal</span>
+                <span class="v-lbl">Calculated TDEE</span>
+            </td>
         </tr>
     </table>
 
-    <div class="vitals-title" style="margin-top: 20px;">PRESCRIBED DIET CHART</div>
-    <table class="meal-table">
+    <div class="section-title">7-DAY CLINICAL DIET SCHEDULE</div>
+    <table class="diet-table">
         <thead>
             <tr>
-                <th width="20%">Meal Time</th>
-                <th width="15%">Calories</th>
-                <th>Recommended Items</th>
+                <th>Day</th>
+                {% for m in weekly_plan.Monday %}
+                <th>{{ m.meal }}</th>
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
-            {% for name, data in meals.items %}
+            {% for day, meals in weekly_plan.items %}
             <tr>
-                <td><strong>{{ name }}</strong></td>
-                <td>{{ data.cal }} kcal</td>
-                <td>{{ data.desc }}</td>
+                <td class="day-label">{{ day }}</td>
+                {% for m in meals %}
+                <td>
+                    <div class="food-name">{{ m.food }}</div>
+                    <div class="food-qty">{{ m.qty }}</div>
+                    <div class="food-macros">
+                        {{ m.cal }} kcal | P:{{ m.p }}g
+                    </div>
+                </td>
+                {% endfor %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <div style="margin-top: 50px; float: right; text-align: center; width: 200px;">
-        <div style="border-bottom: 1px solid #000; margin-bottom: 5px;"></div>
-        <div style="font-size: 12px; font-weight: bold;">Dr. {{ user.username|title }}</div>
-        <div style="font-size: 10px;">Senior Nutritionist</div>
+    <div class="signature-area">
+        <div class="sig-line"></div>
+        <div style="font-size: 11px; font-weight: bold;">Dr. {{ user.username|title }}</div>
+        <div style="font-size: 8px; color: #64748b;">Senior Clinical Nutritionist</div>
     </div>
 
     <div class="footer">
-        This report is computer-generated. For medical advice, please consult your physician.
+        Medical Disclaimer: This diet plan is computer-generated based on clinical history and anthropometric data.
+        Individual metabolism may vary. Please consult your physician for specific medical conditions.
     </div>
 
 </body>
+
 </html>

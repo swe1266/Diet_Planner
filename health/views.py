@@ -107,25 +107,52 @@ def delete_checkup(request, checkup_id):
 @login_required
 def new_patient(request):
     if request.method == 'POST':
-        name = request.POST['name']; gender = request.POST['gender']; phone = request.POST['phone']
-        address = request.POST['address']; dietary = request.POST['dietary']; plan_type = request.POST['plan_type']
-        age = int(request.POST['age']); height_cm = float(request.POST['height']); weight = float(request.POST['weight'])
-        bp = request.POST['bp']; activity = float(request.POST['activity'])
+        name = request.POST['name']
+        gender = request.POST['gender']
+        phone = request.POST['phone']
+        address = request.POST['address']
+        dietary = request.POST['dietary']
+        plan_type = request.POST['plan_type']
+        age = int(request.POST['age'])
+        height_cm = float(request.POST['height'])
+        weight = float(request.POST['weight'])
+        activity = float(request.POST['activity'])
+        
+        # Calculate Metrics using the new Engine
+        bmi, bmr, tdee, category, target_calories = calculate_metrics(
+            weight, height_cm, age, gender, activity
+        )
+        
+        # Calculate Macro Targets
+        carbs_target = target_calories * 0.4 / 4
+        protein_target = target_calories * 0.3 / 4
+        fat_target = target_calories * 0.3 / 9
 
-        height_m = height_cm / 100; bmi = round(weight / (height_m ** 2), 2)
-        if gender.lower() == 'male': bmr = 88.36 + (13.4 * weight) + (4.8 * height_cm) - (5.7 * age)
-        else: bmr = 447.6 + (9.2 * weight) + (3.1 * height_cm) - (4.3 * age)
-        bmr = round(bmr, 2); tdee = round(bmr * activity, 2)
-
-        if bmi < 18.5: category = "Underweight"
-        elif bmi < 25: category = "Normal"
-        elif bmi < 30: category = "Overweight"
-        else: category = "Obese"
-
-        carbs = round((tdee * 0.5) / 4, 2); protein = round((tdee * 0.2) / 4, 2); fat = round((tdee * 0.3) / 9, 2)
-
-        patient, created = Patient.objects.get_or_create(phone=phone, defaults={'name': name, 'gender': gender, 'address': address})
-        checkup = Checkup.objects.create(patient=patient, age=age, height=height_cm, weight=weight, bp=bp, activity=activity, dietary=dietary, plan_type=plan_type, bmi=bmi, bmr=bmr, tdee=tdee, category=category, carbs=carbs, protein=protein, fat=fat)
+        patient, created = Patient.objects.get_or_create(
+            phone=phone, 
+            defaults={'name': name, 'gender': gender, 'address': address}
+        )
+        
+        checkup = Checkup.objects.create(
+            patient=patient,
+            age=age,
+            height=height_cm,
+            weight=weight,
+            activity=activity,
+            dietary=dietary,
+            plan_type=plan_type,
+            
+            # Computed Metrics
+            bmi=bmi,
+            bmr=bmr,
+            tdee=tdee,
+            category=category,
+            
+            # Macro Targets
+            protein_target=protein_target,
+            carbs_target=carbs_target,
+            fat_target=fat_target
+        )
         
         return redirect('generate_dynamic_diet_plan', patient_id=patient.id, checkup_id=checkup.id)
     return render(request, 'new_patient.html')
@@ -136,21 +163,43 @@ def existing_patient(request):
         patient_id = request.POST['patient_id']
         patient = get_object_or_404(Patient, id=patient_id)
         
-        age = int(request.POST['age']); height_cm = float(request.POST['height']); weight = float(request.POST['weight'])
-        bp = request.POST['bp']; activity = float(request.POST['activity']); dietary = request.POST['dietary']; plan_type = request.POST['plan_type']
+        age = int(request.POST['age'])
+        height_cm = float(request.POST['height'])
+        weight = float(request.POST['weight'])
+        activity = float(request.POST['activity'])
+        dietary = request.POST['dietary']
+        plan_type = request.POST['plan_type']
         
-        height_m = height_cm / 100; bmi = round(weight / (height_m ** 2), 2)
-        if patient.gender.lower() == 'male': bmr = 88.36 + (13.4 * weight) + (4.8 * height_cm) - (5.7 * age)
-        else: bmr = 447.6 + (9.2 * weight) + (3.1 * height_cm) - (4.3 * age)
-        bmr = round(bmr, 2); tdee = round(bmr * activity, 2)
+        # Calculate Metrics
+        bmi, bmr, tdee, category, target_calories = calculate_metrics(
+            weight, height_cm, age, patient.gender, activity
+        )
+        
+        # Calculate Targets
+        carbs_target = target_calories * 0.4 / 4
+        protein_target = target_calories * 0.3 / 4
+        fat_target = target_calories * 0.3 / 9
 
-        if bmi < 18.5: category = "Underweight"
-        elif bmi < 25: category = "Normal"
-        elif bmi < 30: category = "Overweight"
-        else: category = "Obese"
-        carbs = round((tdee * 0.5) / 4, 2); protein = round((tdee * 0.2) / 4, 2); fat = round((tdee * 0.3) / 9, 2)
-
-        checkup = Checkup.objects.create(patient=patient, age=age, height=height_cm, weight=weight, bp=bp, activity=activity, dietary=dietary, plan_type=plan_type, bmi=bmi, bmr=bmr, tdee=tdee, category=category, carbs=carbs, protein=protein, fat=fat)
+        checkup = Checkup.objects.create(
+            patient=patient,
+            age=age,
+            height=height_cm,
+            weight=weight,
+            activity=activity,
+            dietary=dietary,
+            plan_type=plan_type,
+            
+            # Computed
+            bmi=bmi,
+            bmr=bmr,
+            tdee=tdee,
+            category=category,
+            
+            # Targets
+            protein_target=protein_target,
+            carbs_target=carbs_target,
+            fat_target=fat_target
+        )
         return redirect('generate_dynamic_diet_plan', patient_id=patient.id, checkup_id=checkup.id)
     return render(request, 'existing_patient.html')
 
@@ -159,62 +208,100 @@ def existing_patient(request):
 # 4. CLINICAL ALGORITHM (SAFETY + PRECISION)
 # ==========================================
 
-def filter_food_pool(category, diet_pref, patient, is_dia, is_ren, is_card, is_hyp):
+# ==========================================
+# 4. CLINICAL ALGORITHM (BODY TYPE & DYNAMIC PORTION)
+# ==========================================
+
+def calculate_metrics(weight, height, age, gender, activity):
     """
-    ALGORITHM GATE 1: SAFETY & CLINICAL FILTERS
-    Removes dangerous foods based on allergies and diseases.
+    ENGINE A: METRIC CALCULATION
+    Returns: BMI, BMR, TDEE, Category, TARGET_CALORIES
     """
-    items = FoodItem.objects.filter(category=category)
+    # 1. BMI
+    height_m = height / 100
+    bmi = round(weight / (height_m ** 2), 2)
     
-    # 1. Diet Preference
+    # 2. BMR (Mifflin-St Jeor)
+    if gender.lower() == 'header': # Fallback if typo, but usually 'male'/'female'
+        s = 5
+    else:
+        s = 5 if gender.lower() == 'male' else -161
+    
+    bmr = (10 * weight) + (6.25 * height) - (5 * age) + s
+    bmr = round(bmr, 2)
+    
+    # 3. TDEE
+    tdee = round(bmr * activity, 2)
+    
+    # 4. Category & Target
+    if bmi < 18.5:
+        category = "Underweight"
+        target = tdee + 300 # Surplus
+    elif bmi < 25:
+        category = "Normal"
+        target = tdee # Maintenance
+    elif bmi < 30:
+        category = "Overweight"
+        target = tdee - 500 # Deficit
+    else:
+        category = "Obese"
+        target = tdee - 500 # Deficit
+        
+    # Safety Constraint
+    if target < 1200: target = 1200
+    
+    return bmi, bmr, tdee, category, int(target)
+
+def smart_filter(category, meal_type, diet_pref, bmi_category):
+    """
+    ENGINE B: SMART FILTER
+    Filters foods based on Body Type Logic.
+    """
+    # Base Filter
+    items = FoodItem.objects.filter(category=meal_type)
+    
+    # Diet Pref
     if diet_pref == 'Veg': items = items.filter(diet_type__in=['Veg', 'Vegan'])
     elif diet_pref == 'Vegan': items = items.filter(diet_type='Vegan')
-
-    # 2. Allergy Filter (String Matching)
-    # Check if patient has allergies listed in DB
-    if hasattr(patient, 'allergies') and patient.allergies and patient.allergies.lower() != 'none':
-        allergens = [a.strip().lower() for a in patient.allergies.split(',')]
-        for allergen in allergens:
-            # Exclude if allergen matches ingredient
-            items = items.exclude(ingredients__icontains=allergen)
-
-    # 3. Disease-Specific Nutrient Ceilings (Strict Medical Limits)
-    if is_ren: 
-        # Renal: Low Protein, Potassium < 200, Phosphorus < 150
-        items = items.filter(potassium__lt=200, phosphorus__lt=150)
     
-    if is_card or is_hyp:
-        # Cardiac/Hypertension: Low Sodium, Low Fat
-        items = items.filter(sodium__lt=300)
-
-    if is_dia:
-        # Diabetes: Low Sugar
-        items = items.filter(sugar__lt=5)
-
+    # Body Type Logic
+    if bmi_category in ['Obese', 'Overweight']:
+        # GOAL: Satiety & Insulin Control
+        # Reject High Sugar (> 8g)
+        items = items.exclude(sugar__gt=8)
+        # Prioritize Fiber > 3g OR Protein > 5g (We filter in memory for complex OR)
+        # For simplicity in Django ORM, we can chain or use Q, but let's filter strict for now
+        # OR logic: Keep items that have good fiber OR good protein
+        items = items.filter(Q(fiber__gte=3) | Q(protein__gte=5))
+        
+    elif bmi_category == 'Underweight':
+        # GOAL: Calorie Density
+        # Reject Low Calorie (< 100) to ensure they eat enough
+        items = items.filter(calories__gte=100)
+        
+    # Normal: No restrictions beyond meal type
+    
     return list(items)
 
-def calculate_smart_portion(food, target_calories):
+def dynamic_portion_solver(food, meal_target_cal):
     """
-    ALGORITHM GATE 2: DYNAMIC PORTIONING
-    Adjusts the quantity of ANY safe food to match the target calories.
+    ENGINE C: DYNAMIC PORTION MATH
+    Adjusts portion to meet the meal target.
     """
     base_cal = food.calories
     if base_cal <= 0: return "1 Serving", 0
     
-    # Calculate ratio (Target / Base)
-    count = target_calories / base_cal
+    # Raw Count
+    count = meal_target_cal / base_cal
     
-    # Rounding Logic based on Unit Type
-    if food.unit_name.lower() in ['pcs', 'nos', 'idli', 'egg', 'slice', 'set']:
-        # Discrete items: Round to nearest 0.5 or 1
-        final_count = round(count * 2) / 2 
-        if final_count < 1: final_count = 1
-    else:
-        # Volume items (Cup/Bowl): Round to nearest 0.5
-        final_count = round(count * 2) / 2
-        if final_count < 0.5: final_count = 0.5
-
-    # Format output
+    # Constraints
+    if count > 3.0: count = 3.0
+    if count < 0.5: count = 0.5
+    
+    # Rounding to nearest 0.5
+    final_count = round(count * 2) / 2
+    
+    # Format
     qty_text = f"{final_count} {food.unit_name}"
     total_cal = int(final_count * base_cal)
     
@@ -225,7 +312,142 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     patient = get_object_or_404(Patient, id=patient_id)
     checkup = get_object_or_404(Checkup, id=checkup_id)
     
-    # --- 1. Clinical Targets ---
+    # --- 1. RE-CALCULATE METRICS (Ensure fresh logic) ---
+    bmi, bmr, tdee, category, target_calories = calculate_metrics(
+        checkup.weight, checkup.height, checkup.age, patient.gender, checkup.activity
+    )
+    
+    # Update Checkup Model with new calculations
+    checkup.bmi = bmi
+    checkup.bmr = bmr
+    checkup.tdee = tdee
+    checkup.category = category
+    # (We could save target here if model had a field, using loose vars for now)
+    
+    # Define Macro Split (40/30/30 generic for now, can be tweaked)
+    checkup.carbs_target = target_calories * 0.4 / 4
+    checkup.protein_target = target_calories * 0.3 / 4
+    checkup.fat_target = target_calories * 0.3 / 9
+    checkup.save()
+
+    # Determine Diet Goal based on BMI (Consistent with Metric Engine)
+    diet_goal = "Maintenance"
+    if bmi >= 25: diet_goal = "Weight Loss"
+    elif bmi < 18.5: diet_goal = "Weight Gain"
+    if checkup.plan_type == '3-Meal':
+        splits = {'Breakfast': 0.30, 'Lunch': 0.40, 'Dinner': 0.30}
+    else:
+        splits = {'Breakfast': 0.25, 'Snack': 0.10, 'Lunch': 0.30, 'Dinner': 0.25}
+
+    # --- 3. GENERATION LOOP ---
+    existing_meals = AssignedMeal.objects.filter(checkup=checkup)
+    
+    # If incomplete, reset
+    if existing_meals.exists() and existing_meals.count() < 7 * len(splits):
+        existing_meals.delete() # Full reset for new logic
+    
+    if not AssignedMeal.objects.filter(checkup=checkup).exists():
+        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        
+        # Pre-fetch pools to optimize
+        pools = {}
+        for meal in splits.keys():
+            pools[meal] = smart_filter(meal, meal, checkup.dietary, category)
+            # Shuffle deterministically
+            random.Random(f"{patient.id}_{meal}").shuffle(pools[meal])
+            
+        for day in days:
+            for meal_name, pct in splits.items():
+                meal_target = target_calories * pct
+                pool = pools[meal_name]
+                
+                if pool:
+                    # Pick unique (rotate)
+                    selected_food = pool.pop(0)
+                    pools[meal_name].append(selected_food) # Rotate back to end
+                    
+                    # Solve Portion
+                    qty_str, final_cal = dynamic_portion_solver(selected_food, meal_target)
+                    
+                    AssignedMeal.objects.create(
+                        checkup=checkup, day=day, meal_type=meal_name,
+                        food_item=selected_food,
+                        quantity_text=qty_str,
+                        total_calories=final_cal
+                    )
+
+    # --- 4. RETRIEVAL & DISPLAY ---
+    weekly_plan = {}
+    db_meals = AssignedMeal.objects.filter(checkup=checkup)
+    days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    
+    for day in days_order:
+        day_meals = db_meals.filter(day=day)
+        day_list = []
+        for m in day_meals.order_by('id'):
+            day_list.append({
+                'meal': m.meal_type, 'food': m.food_item.name,
+                'qty': m.quantity_text,
+                'cal': m.total_calories, 
+                'p': m.food_item.protein, 'c': m.food_item.carbs, 'f': m.food_item.fat
+            })
+        weekly_plan[day] = day_list
+
+    # Charts History
+    history = Checkup.objects.filter(patient=patient).order_by('-id')
+    graph_data = Checkup.objects.filter(patient=patient).order_by('id')
+    c_labels = [f"#{h.id}" for h in graph_data]
+    c_bmis = [float(h.bmi) for h in graph_data]
+
+    # --- 5. AGGREGATES & SHOPPING LIST ---
+    weekly_totals = {'cal':0, 'p':0, 'c':0, 'f':0, 'fiber':0, 'sugar':0}
+    shopping_list = {}
+    
+    for m in db_meals:
+        weekly_totals['cal'] += m.total_calories
+        weekly_totals['p'] += m.food_item.protein
+        weekly_totals['c'] += m.food_item.carbs
+        weekly_totals['f'] += m.food_item.fat
+        # Default 0 if missing in DB
+        weekly_totals['fiber'] += getattr(m.food_item, 'fiber', 0)
+        weekly_totals['sugar'] += getattr(m.food_item, 'sugar', 0)
+        
+        # Shopping List Logic
+        fname = m.food_item.name
+        if fname in shopping_list:
+            shopping_list[fname]['qty'] += 1
+        else:
+            shopping_list[fname] = {
+                'qty': 1, 
+                'unit': m.food_item.unit_name,
+                'cat': m.food_item.category
+            }
+            
+    # Daily Averages
+    daily_avg = {k: round(v / 7, 1) for k, v in weekly_totals.items()}
+    
+    # Weight Projection (Simplistic: 7700kcal = 1kg)
+    # Weekly Deficit/Surplus = (TDEE - DailyAvg) * 7
+    weekly_cal_diff = (tdee - daily_avg['cal']) * 7
+    projected_weight_change = round(weekly_cal_diff / 7700, 2) # Negative = Loss
+
+    context = {
+        'patient': patient, 'checkup': checkup, 'history': history,
+        'diet_goal': diet_goal, 'target_calories': int(target_calories),
+        'weekly_plan': weekly_plan,
+        'daily_avg': daily_avg,
+        'shopping_list': shopping_list,
+        'projected_change': projected_weight_change,
+        'c_labels': c_labels, 'c_bmis': c_bmis
+    }
+    return render(request, 'patient_report.html', context)
+
+@login_required
+def download_pdf(request, checkup_id):
+    checkup = get_object_or_404(Checkup, id=checkup_id)
+    patient = checkup.patient
+    
+    # Re-calculate clinical targets (Ensure consistency with dashboard)
     tdee = checkup.tdee
     bmi = checkup.bmi
     target_calories = tdee
@@ -240,68 +462,7 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     
     if target_calories < 1200: target_calories = 1200
 
-    if checkup.plan_type == '3-Meal':
-        splits = {'Breakfast': 0.30, 'Lunch': 0.40, 'Dinner': 0.30}
-    else:
-        splits = {'Breakfast': 0.25, 'Snack': 0.10, 'Lunch': 0.30, 'Dinner': 0.25}
-
-    # Identify Conditions
-    med_hist = getattr(patient, 'medical_history', '').lower()
-    is_dia = 'diabetes' in med_hist or 'Obese' in checkup.category
-    is_ren = 'renal' in med_hist or 'kidney' in med_hist
-    is_card = 'cardiac' in med_hist or 'heart' in med_hist
-    is_hyp = 'hypertension' in med_hist or 'bp' in med_hist
-
-    # --- 2. PERSISTENCE & GENERATION ---
-    existing_meals = AssignedMeal.objects.filter(checkup=checkup)
-    
-    # Auto-Repair incomplete plans
-    if existing_meals.exists() and existing_meals.count() < 7:
-        existing_meals.delete()
-        existing_meals = AssignedMeal.objects.none()
-
-    if not existing_meals.exists():
-        # Step A: Create filtered pools for every meal type
-        food_pools = {}
-        for meal_name in splits.keys():
-            # Get safe foods (Ignore calories for now, we calculate portion later)
-            candidates = filter_food_pool(meal_name, checkup.dietary, patient, is_dia, is_ren, is_card, is_hyp)
-            
-            # Deterministic Shuffle (Seeded by ID + Meal Name)
-            random.Random(f"{patient.id}_{meal_name}").shuffle(candidates)
-            food_pools[meal_name] = candidates
-
-        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        
-        for day in days:
-            for meal_name, pct in splits.items():
-                meal_target = target_calories * pct
-                pool = food_pools.get(meal_name, [])
-                
-                if pool:
-                    # Step B: Pick Unique Food
-                    selected_food = pool.pop(0)
-                    
-                    # Refill pool if empty to prevent crashes next day
-                    if not pool:
-                        pool = filter_food_pool(meal_name, checkup.dietary, patient, is_dia, is_ren, is_card, is_hyp)
-                        random.Random(f"{patient.id}_{meal_name}").shuffle(pool)
-                        food_pools[meal_name] = pool
-
-                    # Step C: Calculate Precise Portion
-                    qty_str, final_cal = calculate_smart_portion(selected_food, meal_target)
-
-                    AssignedMeal.objects.create(
-                        checkup=checkup, day=day, meal_type=meal_name,
-                        food_item=selected_food,
-                        quantity_text=qty_str, 
-                        total_calories=final_cal
-                    )
-                else:
-                    # Fallback (Only happens if 0 foods match safety criteria)
-                    pass 
-
-    # --- 3. RETRIEVAL & DISPLAY ---
+    # Retrieve full weekly plan
     weekly_plan = {}
     db_meals = AssignedMeal.objects.filter(checkup=checkup)
     days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -312,37 +473,20 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
         for m in day_meals.order_by('id'):
             day_list.append({
                 'meal': m.meal_type, 'food': m.food_item.name,
-                'qty': m.quantity_text, # Using calculated portion
+                'qty': m.quantity_text,
                 'cal': m.total_calories, 
                 'p': m.food_item.protein, 'c': m.food_item.carbs, 'f': m.food_item.fat
             })
         weekly_plan[day] = day_list
-
-    # Charts
-    history = Checkup.objects.filter(patient=patient).order_by('-id')
-    graph_data = Checkup.objects.filter(patient=patient).order_by('id')
-    c_labels = [f"#{h.id}" for h in graph_data]
-    c_bmis = [float(h.bmi) for h in graph_data]
-
-    context = {
-        'patient': patient, 'checkup': checkup, 'history': history,
-        'diet_goal': diet_goal, 'target_calories': int(target_calories),
-        'weekly_plan': weekly_plan,
-        'chart_labels': json.dumps(c_labels), 'chart_bmis': json.dumps(c_bmis),
-    }
-    return render(request, 'patient_report.html', context)
-
-@login_required
-def download_pdf(request, checkup_id):
-    checkup = get_object_or_404(Checkup, id=checkup_id)
-    patient = checkup.patient
-    db_meals = AssignedMeal.objects.filter(checkup=checkup, day='Monday')
-    pdf_meals = {}
-    for m in db_meals:
-        # Use the stored quantity text for PDF too
-        pdf_meals[m.meal_type] = {'desc': f"{m.food_item.name} ({m.quantity_text})", 'cal': m.total_calories}
     
-    context = {'patient': patient, 'checkup': checkup, 'meals': pdf_meals}
+    context = {
+        'patient': patient, 
+        'checkup': checkup, 
+        'weekly_plan': weekly_plan,
+        'target_calories': int(target_calories),
+        'diet_goal': diet_goal
+    }
+    
     template_path = 'pdf_report.html'
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="Report_{patient.name}_{checkup.id}.pdf"'
