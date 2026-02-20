@@ -342,8 +342,8 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     # --- 3. GENERATION LOOP ---
     existing_meals = AssignedMeal.objects.filter(checkup=checkup)
     
-    # If incomplete, reset
-    if existing_meals.exists() and existing_meals.count() < 7 * len(splits):
+    # If incomplete or structure mismatch, reset
+    if existing_meals.exists() and existing_meals.count() != 7 * len(splits):
         existing_meals.delete() # Full reset for new logic
     
     if not AssignedMeal.objects.filter(checkup=checkup).exists():

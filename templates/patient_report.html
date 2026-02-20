@@ -494,8 +494,9 @@
                         </div>
                     </div>
                     <div class="action-buttons">
-                        <a href="#" onclick="window.print()" class="btn-clinical btn-pdf"><i class="fas fa-print"></i>
-                            Print</a>
+                        <a href="{% url 'download_pdf' checkup.id %}" class="btn-clinical btn-pdf"><i
+                                class="fas fa-file-pdf"></i>
+                            Download PDF</a>
                         <a href="{% url 'regenerate_plan' checkup.id %}" class="btn-clinical btn-sync"><i
                                 class="fas fa-sync"></i> Update</a>
                         <a href="{% url 'delete_checkup' checkup.id %}" class="btn-clinical btn-del"
