@@ -1,222 +1,664 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <title>Clinical Diet Report - {{ patient.name }}</title>
     <style>
+        /* ================================================================
+   PAGE SETUP
+================================================================ */
         @page {
             size: A4;
-            margin: 1.5cm;
+            margin: 1.0cm 1.2cm 2.0cm 1.2cm;
+
+            @frame footer_frame {
+                -pdf-frame-content: page_footer;
+                bottom: 0cm;
+                margin-left: 1.2cm;
+                margin-right: 1.2cm;
+                height: 1.6cm;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: Helvetica, Arial, sans-serif;
+            font-size: 9pt;
             color: #1e293b;
             line-height: 1.4;
         }
 
-        .report-header {
-            text-align: center;
+        /* ================================================================
+   LETTERHEAD
+================================================================ */
+        .header-table {
+            width: 100%;
             border-bottom: 3px solid #0891b2;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            border-collapse: collapse;
+        }
+
+        .logo-td {
+            width: 46px;
+            vertical-align: middle;
+            padding-right: 8px;
+        }
+
+        .logo-circle {
+            width: 42px;
+            height: 42px;
+            background-color: #0891b2;
+            text-align: center;
+            padding-top: 7px;
+        }
+
+        .logo-plus {
+            font-size: 22pt;
+            font-weight: bold;
+            color: white;
+            line-height: 1;
+        }
+
+        .clinic-td {
+            vertical-align: middle;
         }
 
         .clinic-name {
-            color: #0891b2;
-            font-size: 28px;
+            font-size: 17pt;
             font-weight: bold;
-            margin-bottom: 5px;
+            color: #0891b2;
         }
 
         .clinic-sub {
-            font-size: 11px;
+            font-size: 7.5pt;
             color: #64748b;
+            margin-top: 2px;
         }
 
-        .section-title {
-            background-color: #f1f5f9;
-            color: #0f172a;
-            padding: 8px 12px;
-            font-size: 14px;
+        .badge-td {
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        .report-badge {
+            background-color: #0891b2;
+            color: white;
+            font-size: 9pt;
             font-weight: bold;
-            margin: 20px 0 10px 0;
+            padding: 4px 10px;
+        }
+
+        .badge-sub {
+            font-size: 7pt;
+            color: #94a3b8;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        /* ================================================================
+   SECTION TITLES
+================================================================ */
+        .section-bar {
+            width: 100%;
+            background-color: #0f172a;
+            color: white;
+            font-size: 8pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            margin-top: 10px;
+            margin-bottom: 6px;
             border-left: 4px solid #0891b2;
         }
 
-        .info-grid {
+        /* ================================================================
+   PATIENT INFO TABLE
+================================================================ */
+        .info-table {
             width: 100%;
-        }
-
-        .info-grid td {
-            padding: 5px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .label {
-            font-weight: bold;
-            color: #475569;
-            width: 25%;
-            font-size: 11px;
-        }
-
-        .val {
-            font-size: 11px;
-        }
-
-        .vitals-summary {
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .vitals-summary td {
+            border-collapse: collapse;
             background-color: #f8fafc;
-            padding: 12px;
-            text-align: center;
             border: 1px solid #e2e8f0;
         }
 
-        .v-val {
-            font-size: 16px;
+        .info-table td {
+            padding: 4px 8px;
+            font-size: 8.5pt;
+            border-bottom: 1px solid #e8edf5;
+            vertical-align: top;
+        }
+
+        .info-label {
+            color: #64748b;
             font-weight: bold;
+            font-size: 7.5pt;
+            text-transform: uppercase;
+            width: 20%;
+            white-space: nowrap;
+            background-color: #eef2f7;
+        }
+
+        .info-val {
+            color: #0f172a;
+            font-weight: 600;
+            width: 30%;
+        }
+
+        .info-val-accent {
             color: #0891b2;
+            font-weight: 700;
+            width: 30%;
+        }
+
+        /* ================================================================
+   VITALS METRICS — 5 equal columns, no spacing tricks
+================================================================ */
+        .vitals-outer {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2px;
+        }
+
+        .vitals-outer td {
+            padding: 3px;
+            vertical-align: top;
+        }
+
+        .vbox {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            text-align: center;
+            padding: 8px 4px;
+        }
+
+        .vbox-blue {
+            border-top: 3px solid #0891b2;
+        }
+
+        .vbox-green {
+            border-top: 3px solid #10b981;
+        }
+
+        .vbox-orange {
+            border-top: 3px solid #f59e0b;
+        }
+
+        .vbox-red {
+            border-top: 3px solid #ef4444;
+        }
+
+        .vbox-purple {
+            border-top: 3px solid #8b5cf6;
+        }
+
+        .v-num {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #0f172a;
             display: block;
+            line-height: 1.1;
+        }
+
+        .v-unit {
+            font-size: 7.5pt;
+            font-weight: normal;
+            color: #64748b;
         }
 
         .v-lbl {
-            font-size: 9px;
-            color: #64748b;
+            font-size: 6.5pt;
+            color: #94a3b8;
             text-transform: uppercase;
+            margin-top: 2px;
+            display: block;
         }
 
+        .v-sub {
+            font-size: 7pt;
+            color: #64748b;
+            margin-top: 3px;
+            display: block;
+        }
+
+        /* ================================================================
+   MACRO TARGETS — use table background instead of nested divs
+================================================================ */
+        .macro-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e2e8f0;
+        }
+
+        .macro-table td {
+            padding: 5px 8px;
+            vertical-align: middle;
+        }
+
+        .macro-table tr {
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .macro-name-td {
+            font-size: 8.5pt;
+            font-weight: bold;
+            color: #475569;
+            text-transform: uppercase;
+            width: 26%;
+            background-color: #f8fafc;
+        }
+
+        .macro-bar-wrap {
+            width: 57%;
+            vertical-align: middle;
+        }
+
+        /* Bar is a 2-cell table: filled | remainder */
+        .bar-table {
+            width: 100%;
+            height: 10px;
+            border-collapse: collapse;
+            background-color: #e2e8f0;
+        }
+
+        .bar-fill {
+            height: 10px;
+        }
+
+        .macro-g-td {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #0f172a;
+            text-align: right;
+            width: 17%;
+        }
+
+        /* ================================================================
+   DIET TABLE
+================================================================ */
         .diet-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            table-layout: fixed;
+            font-size: 8pt;
         }
 
         .diet-table th {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            padding: 6px 5px;
+            text-align: center;
+            font-size: 7pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid #1e293b;
+        }
+
+        .diet-table th.day-th {
             background-color: #0891b2;
-            color: white;
-            padding: 8px;
             text-align: left;
-            font-size: 10px;
-            border: 1px solid #0891b2;
+            padding-left: 8px;
+            width: 52px;
         }
 
         .diet-table td {
             border: 1px solid #e2e8f0;
-            padding: 8px;
-            font-size: 9.5px;
+            padding: 6px 5px;
             vertical-align: top;
+            text-align: left;
         }
 
-        .day-label {
+        .diet-table tr.even-row td {
             background-color: #f8fafc;
+        }
+
+        .day-td {
+            background-color: #eef6fb;
             font-weight: bold;
-            width: 65px;
+            color: #0369a1;
+            font-size: 7.5pt;
+            white-space: nowrap;
+            width: 52px;
+            padding-left: 8px;
         }
 
         .food-name {
             font-weight: bold;
-            margin-bottom: 2px;
             color: #0f172a;
+            font-size: 8pt;
         }
 
         .food-qty {
             color: #64748b;
+            font-size: 7pt;
             font-style: italic;
-            font-size: 8.5px;
-            margin-bottom: 4px;
         }
 
-        .food-macros {
-            font-size: 8px;
+        .food-cal {
+            color: #0369a1;
+            font-weight: bold;
+            font-size: 7pt;
+            background-color: #e0f2fe;
+            padding: 1px 4px;
+        }
+
+        .food-mac {
+            color: #94a3b8;
+            font-size: 6.5pt;
+        }
+
+        .target-row td {
+            background-color: #0891b2;
+            color: white;
+            font-weight: bold;
+            font-size: 7.5pt;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #0369a1;
+        }
+
+        .target-row td.target-label {
+            text-align: left;
+            padding-left: 8px;
+        }
+
+        /* ================================================================
+   GUIDELINES TABLE
+================================================================ */
+        .guide-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .guide-td {
+            width: 33%;
+            vertical-align: top;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            font-size: 8pt;
+        }
+
+        .guide-title {
+            font-weight: bold;
+            color: #0891b2;
+            font-size: 8.5pt;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #d1d5db;
+            margin-bottom: 5px;
+        }
+
+        .guide-item {
+            color: #374151;
+            margin-bottom: 3px;
+            font-size: 7.5pt;
+        }
+
+        .gi-ok {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .gi-no {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .gi-h2o {
             color: #0891b2;
             font-weight: bold;
         }
 
-        .footer {
-            position: fixed;
-            bottom: -30px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 8px;
-            color: #94a3b8;
+        /* ================================================================
+   SIGNATURE BLOCK
+================================================================ */
+        .sig-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
             border-top: 1px solid #e2e8f0;
-            padding-top: 10px;
         }
 
-        .signature-area {
-            margin-top: 40px;
+        .sig-table td {
+            padding-top: 10px;
+            vertical-align: bottom;
+        }
+
+        .sig-disclaimer {
+            font-size: 7pt;
+            color: #94a3b8;
+            line-height: 1.4;
+            max-width: 55%;
+        }
+
+        .sig-right {
             text-align: right;
         }
 
         .sig-line {
-            border-top: 1px solid #1e293b;
+            border-top: 1.5px solid #0f172a;
             width: 180px;
             margin-left: auto;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+        }
+
+        .sig-name {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .sig-title {
+            font-size: 7.5pt;
+            color: #64748b;
+        }
+
+        /* ================================================================
+   PAGE FOOTER
+================================================================ */
+        #page_footer {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 5px;
+            display: table;
+            width: 100%;
+        }
+
+        .ft-left {
+            display: table-cell;
+            text-align: left;
+            font-size: 6.5pt;
+            color: #94a3b8;
+            vertical-align: middle;
+        }
+
+        .ft-right {
+            display: table-cell;
+            text-align: right;
+            font-size: 6.5pt;
+            color: #94a3b8;
+            vertical-align: middle;
+        }
+
+        /* page break control */
+        tr {
+            page-break-inside: avoid;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="report-header">
-        <div class="clinic-name">Clinical Nutrition Report</div>
-        <div class="clinic-sub">Generated via Hospital Diet Management System | Patient ID #{{ patient.id }}</div>
+    <!-- ================================================================
+     FIXED PAGE FOOTER
+================================================================ -->
+    <div id="page_footer">
+        <div class="ft-left">LifeCare Clinical Nutrition System &nbsp;|&nbsp; Confidential Patient Document
+            &nbsp;|&nbsp; Report ID: #{{ checkup.id }}</div>
+        <div class="ft-right">Medical Disclaimer: Auto-generated from clinical data. Individual results may vary.
+            Consult your physician.</div>
     </div>
 
-    <div class="section-title">PATIENT INFORMATION</div>
-    <table class="info-grid">
-        <tr>
-            <td class="label">Patient Name:</td>
-            <td class="val">{{ patient.name }}</td>
-            <td class="label">Report Date:</td>
-            <td class="val">{{ checkup.date|date:"F d, Y" }}</td>
-        </tr>
-        <tr>
-            <td class="label">Age / Gender:</td>
-            <td class="val">{{ checkup.age }} yrs / {{ patient.gender }}</td>
-            <td class="label">Clinical Goal:</td>
-            <td class="val" style="color: #0891b2; font-weight: bold;">{{ diet_goal }}</td>
-        </tr>
-        <tr>
-            <td class="label">Dietary Preference:</td>
-            <td class="val">{{ checkup.dietary }}</td>
-            <td class="label">Plan Structure:</td>
-            <td class="val">{{ checkup.plan_type }}</td>
-        </tr>
-    </table>
 
-    <div class="section-title">ANTHROPOMETRIC ASSESSMENT</div>
-    <table class="vitals-summary">
+    <!-- ================================================================
+     LETTERHEAD
+================================================================ -->
+    <table class="header-table" cellpadding="0" cellspacing="0">
         <tr>
-            <td>
-                <span class="v-val">{{ checkup.bmi }}</span>
-                <span class="v-lbl">BMI ({{ checkup.category }})</span>
+            <td class="logo-td">
+                <div class="logo-circle">
+                    <div class="logo-plus">+</div>
+                </div>
             </td>
-            <td>
-                <span class="v-val">{{ checkup.weight }} kg</span>
-                <span class="v-lbl">Current Weight</span>
+            <td class="clinic-td">
+                <div class="clinic-name">LifeCare Clinic</div>
+                <div class="clinic-sub">Department of Clinical Nutrition &amp; Dietetics &nbsp;|&nbsp; Est. 2018
+                    &nbsp;|&nbsp; ISO 9001 Certified</div>
             </td>
-            <td>
-                <span class="v-val">{{ target_calories }} kcal</span>
-                <span class="v-lbl">Daily Target Intake</span>
-            </td>
-            <td>
-                <span class="v-val">{{ checkup.tdee }} kcal</span>
-                <span class="v-lbl">Calculated TDEE</span>
+            <td class="badge-td">
+                <div class="report-badge">CLINICAL DIET REPORT</div>
+                <div class="badge-sub">Date: {{ checkup.date|date:"F d, Y" }}<br>Patient ID: #{{ patient.id }}
+                    &nbsp;|&nbsp; Report: #{{ checkup.id }}</div>
             </td>
         </tr>
     </table>
 
-    <div class="section-title">7-DAY CLINICAL DIET SCHEDULE</div>
-    <table class="diet-table">
+
+    <!-- ================================================================
+     PATIENT INFORMATION
+================================================================ -->
+    <div class="section-bar">Patient Information</div>
+    <table class="info-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="info-label">Full Name</td>
+            <td class="info-val">{{ patient.name }}</td>
+            <td class="info-label">Report Date</td>
+            <td class="info-val-accent">{{ checkup.date|date:"F d, Y" }}</td>
+        </tr>
+        <tr>
+            <td class="info-label">Age / Gender</td>
+            <td class="info-val">{{ checkup.age }} yrs &nbsp;/&nbsp; {{ patient.gender }}</td>
+            <td class="info-label">Clinical Goal</td>
+            <td class="info-val-accent">{{ diet_goal }}</td>
+        </tr>
+        <tr>
+            <td class="info-label">Contact</td>
+            <td class="info-val">{{ patient.phone }}</td>
+            <td class="info-label">Dietary Pref.</td>
+            <td class="info-val">{{ checkup.dietary }}</td>
+        </tr>
+        <tr>
+            <td class="info-label">Address</td>
+            <td class="info-val">{{ patient.address }}</td>
+            <td class="info-label">Blood Pressure</td>
+            <td class="info-val" style="color:#ef4444;">{{ checkup.blood_pressure }}</td>
+        </tr>
+    </table>
+
+
+    <!-- ================================================================
+     VITALS
+================================================================ -->
+    <div class="section-bar">Anthropometric &amp; Metabolic Assessment</div>
+    <table class="vitals-outer" cellpadding="0" cellspacing="3">
+        <tr>
+            <td style="width:20%;">
+                <div class="vbox vbox-blue">
+                    <span class="v-num">{{ checkup.bmi }}</span>
+                    <span class="v-lbl">BMI Index</span>
+                    <span class="v-sub" style="color:{{ bmi_color }}; font-weight:bold;">{{ checkup.category }}</span>
+                </div>
+            </td>
+            <td style="width:20%;">
+                <div class="vbox vbox-green">
+                    <span class="v-num">{{ checkup.weight }}<span class="v-unit"> kg</span></span>
+                    <span class="v-lbl">Current Weight</span>
+                    <span class="v-sub">Height: {{ checkup.height }} cm</span>
+                </div>
+            </td>
+            <td style="width:20%;">
+                <div class="vbox vbox-orange">
+                    <span class="v-num">{{ checkup.bmr|floatformat:0 }}<span class="v-unit"> kcal</span></span>
+                    <span class="v-lbl">Basal Metabolic Rate</span>
+                    <span class="v-sub">Mifflin-St Jeor</span>
+                </div>
+            </td>
+            <td style="width:20%;">
+                <div class="vbox vbox-red">
+                    <span class="v-num">{{ checkup.tdee|floatformat:0 }}<span class="v-unit"> kcal</span></span>
+                    <span class="v-lbl">TDEE</span>
+                    <span class="v-sub">{{ activity_label }}</span>
+                </div>
+            </td>
+            <td style="width:20%;">
+                <div class="vbox vbox-purple">
+                    <span class="v-num">{{ target_calories }}<span class="v-unit"> kcal</span></span>
+                    <span class="v-lbl">Daily Target</span>
+                    <span class="v-sub">Avg: {{ daily_avg_cal }} kcal/day</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- ================================================================
+     MACRO TARGETS — coloured table bars (no nested divs)
+================================================================ -->
+    <div class="section-bar">Prescribed Daily Macro Targets (40 / 30 / 30 Split)</div>
+    <table class="macro-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="macro-name-td">Carbohydrates (40%)</td>
+            <td class="macro-bar-wrap">
+                <table class="bar-table" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="bar-fill" style="background-color:#f59e0b; width:40%;"></td>
+                        <td style="width:60%;"></td>
+                    </tr>
+                </table>
+            </td>
+            <td class="macro-g-td">{{ carbs_g }} g</td>
+        </tr>
+        <tr>
+            <td class="macro-name-td">Protein (30%)</td>
+            <td class="macro-bar-wrap">
+                <table class="bar-table" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="bar-fill" style="background-color:#0891b2; width:30%;"></td>
+                        <td style="width:70%;"></td>
+                    </tr>
+                </table>
+            </td>
+            <td class="macro-g-td">{{ protein_g }} g</td>
+        </tr>
+        <tr>
+            <td class="macro-name-td">Healthy Fats (30%)</td>
+            <td class="macro-bar-wrap">
+                <table class="bar-table" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="bar-fill" style="background-color:#10b981; width:30%;"></td>
+                        <td style="width:70%;"></td>
+                    </tr>
+                </table>
+            </td>
+            <td class="macro-g-td">{{ fat_g }} g</td>
+        </tr>
+    </table>
+
+
+    <!-- ================================================================
+     7-DAY DIET SCHEDULE
+================================================================ -->
+    <div class="section-bar">7-Day Personalised Nutrition Schedule ({{ checkup.plan_type }})</div>
+    <table class="diet-table" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th>Day</th>
+                <th class="day-th">Day</th>
                 {% for m in weekly_plan.Monday %}
                 <th>{{ m.meal }}</th>
                 {% endfor %}
@@ -224,32 +666,103 @@
         </thead>
         <tbody>
             {% for day, meals in weekly_plan.items %}
-            <tr>
-                <td class="day-label">{{ day }}</td>
+            <tr {% if forloop.counter|divisibleby:2 %}class="even-row" {% endif %}>
+                <td class="day-td">{{ day|slice:":3" }}</td>
                 {% for m in meals %}
                 <td>
                     <div class="food-name">{{ m.food }}</div>
                     <div class="food-qty">{{ m.qty }}</div>
-                    <div class="food-macros">
-                        {{ m.cal }} kcal | P:{{ m.p }}g
-                    </div>
+                    <div class="food-cal">{{ m.cal }} kcal</div>
+                    <div class="food-mac">P:{{ m.p }}g C:{{ m.c }}g F:{{ m.f }}g</div>
                 </td>
                 {% endfor %}
             </tr>
             {% endfor %}
+            <tr class="target-row">
+                <td class="target-label">Target</td>
+                {% for m in weekly_plan.Monday %}
+                <td>{{ target_calories }} kcal/day</td>
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 
-    <div class="signature-area">
-        <div class="sig-line"></div>
-        <div style="font-size: 11px; font-weight: bold;">Dr. {{ user.username|title }}</div>
-        <div style="font-size: 8px; color: #64748b;">Senior Clinical Nutritionist</div>
-    </div>
 
-    <div class="footer">
-        Medical Disclaimer: This diet plan is computer-generated based on clinical history and anthropometric data.
-        Individual metabolism may vary. Please consult your physician for specific medical conditions.
-    </div>
+    <!-- ================================================================
+     CLINICAL GUIDELINES
+================================================================ -->
+    <div class="section-bar">Clinical Guidelines &amp; Hydration Protocol</div>
+    <table class="guide-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <!-- DO's -->
+            <td class="guide-td">
+                <div class="guide-title">Recommended Practices</div>
+                {% if checkup.category == 'Obese' or checkup.category == 'Overweight' %}
+                <div class="guide-item"><span class="gi-ok">+</span> Eat slowly; allow 20 min for satiety</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Include 25-30g dietary fibre daily</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Avoid refined sugars &amp; processed carbs</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Walk 30 minutes post-lunch daily</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Drink water 30 min before each meal</div>
+                {% elif checkup.category == 'Underweight' %}
+                <div class="guide-item"><span class="gi-ok">+</span> Eat every 3 hours to maintain surplus</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Include healthy fats: nuts, avocado</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Strength training to build muscle</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Add full-fat dairy &amp; whole grains</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Pre-sleep protein snack (milk/paneer)</div>
+                {% else %}
+                <div class="guide-item"><span class="gi-ok">+</span> Maintain portion consistency all 7 days</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Eat at consistent times each day</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Include seasonal fruits &amp; vegetables</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Moderate exercise 4-5 days/week</div>
+                <div class="guide-item"><span class="gi-ok">+</span> Limit sodium to less than 2300mg/day</div>
+                {% endif %}
+            </td>
+
+            <!-- DON'Ts -->
+            <td class="guide-td">
+                <div class="guide-title">Avoid / Restrict</div>
+                <div class="guide-item"><span class="gi-no">x</span> Skipping meals or fasting beyond 6h</div>
+                <div class="guide-item"><span class="gi-no">x</span> Carbonated beverages &amp; packaged juices</div>
+                <div class="guide-item"><span class="gi-no">x</span> Fried / deep-fried snack foods</div>
+                <div class="guide-item"><span class="gi-no">x</span> Late-night eating (after 9 PM)</div>
+                <div class="guide-item"><span class="gi-no">x</span> Alcohol and tobacco in any form</div>
+            </td>
+
+            <!-- HYDRATION -->
+            <td class="guide-td">
+                <div class="guide-title">Hydration Protocol</div>
+                <div class="guide-item"><span class="gi-h2o">~</span> 2 glasses warm water on empty stomach</div>
+                <div class="guide-item"><span class="gi-h2o">~</span> 1 glass water 30 min before meals</div>
+                <div class="guide-item"><span class="gi-h2o">~</span> Daily minimum: 8-10 glasses (2-2.5 L)</div>
+                <div class="guide-item"><span class="gi-h2o">~</span> Coconut water / ORS on exercise days</div>
+                <div class="guide-item"><span class="gi-h2o">~</span> Avoid cold water during meals</div>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- ================================================================
+     SIGNATURE BLOCK
+================================================================ -->
+    <table class="sig-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="width:55%; vertical-align:bottom;">
+                <div class="sig-disclaimer">
+                    This report is generated by the LifeCare Clinical Nutrition System using
+                    medically validated algorithms (BMI, Mifflin-St Jeor BMR, TDEE). It is
+                    intended as a structured dietary guideline and must be reviewed by a
+                    qualified healthcare professional before implementation.
+                </div>
+            </td>
+            <td class="sig-right" style="width:45%; vertical-align:bottom;">
+                <div class="sig-line"></div>
+                <div class="sig-name">{{ dietitian_name }}</div>
+                <div class="sig-title">Registered Clinical Dietitian</div>
+                <div class="sig-title" style="color:#94a3b8;">LifeCare Clinic &nbsp;|&nbsp; {{ checkup.date|date:"d M Y"
+                    }}</div>
+            </td>
+        </tr>
+    </table>
 
 </body>
 

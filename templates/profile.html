@@ -1,0 +1,735 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% if messages %}
+<div style="margin-bottom:20px;">
+    {% for msg in messages %}
+    <div style="padding:14px 20px; border-radius:12px; font-weight:600; font-size:14px; display:flex; align-items:center; gap:10px;
+        {% if msg.tags == 'error' %}background:#fee2e2; color:#991b1b; border:1px solid #fca5a5;
+        {% else %}background:#d1fae5; color:#065f46; border:1px solid #6ee7b7;{% endif %}">
+        <i class="fas {% if msg.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %}"></i>
+        {{ msg }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<style>
+    :root {
+        --p-primary: #0891b2;
+        --p-dark: #0f172a;
+        --p-light: #f8fafc;
+        --p-accent: #06b6d4;
+    }
+
+    /* ── PAGE LAYOUT ── */
+    .profile-page {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 28px;
+        animation: fadeUp .6s ease-out both;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    /* ── LEFT CARD ── */
+    .pf-card {
+        background: #fff;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        border: 1.5px solid #e2e8f0;
+    }
+
+    .pf-cover {
+        height: 110px;
+        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 60%, #22d3ee 100%);
+        position: relative;
+    }
+
+    .pf-cover::after {
+        content: '+';
+        position: absolute;
+        right: 20px;
+        top: -10px;
+        font-size: 120px;
+        color: rgba(255, 255, 255, 0.07);
+        font-weight: 100;
+        line-height: 1;
+    }
+
+    .pf-avatar-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: -40px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .pf-avatar-circle {
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0891b2, #06b6d4);
+        border: 4px solid #fff;
+        box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        color: #fff;
+    }
+
+    .pf-id-section {
+        text-align: center;
+        padding: 14px 24px 24px;
+    }
+
+    .pf-name {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--p-dark);
+        margin-bottom: 4px;
+    }
+
+    .pf-title {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .pf-badge-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+    }
+
+    .pf-badge {
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-role {
+        background: #eff6ff;
+        color: #1e40af;
+    }
+
+    .badge-super {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-active {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    /* Info rows */
+    .pf-info-list {
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .pf-info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 13px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        transition: background .2s;
+    }
+
+    .pf-info-row:hover {
+        background: #f8fafc;
+    }
+
+    .pf-info-row i {
+        width: 20px;
+        color: var(--p-primary);
+        font-size: 14px;
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+
+    .pf-info-label {
+        font-size: 11px;
+        color: #94a3b8;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .pf-info-value {
+        font-size: 13px;
+        color: var(--p-dark);
+        font-weight: 600;
+        margin-top: 2px;
+        word-break: break-all;
+    }
+
+    /* Action btn */
+    .pf-action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: calc(100% - 32px);
+        margin: 16px;
+        padding: 12px;
+        background: linear-gradient(135deg, #0891b2, #06b6d4);
+        color: #fff;
+        border: none;
+        border-radius: 14px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .3s;
+        box-shadow: 0 4px 12px rgba(8, 145, 178, 0.25);
+    }
+
+    .pf-action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(8, 145, 178, 0.35);
+    }
+
+    /* ── RIGHT COLUMN ── */
+    .pf-right {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    /* Stat chips */
+    .pf-stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .pf-stat-chip {
+        background: #fff;
+        border-radius: 18px;
+        padding: 22px 18px;
+        text-align: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+        border: 1.5px solid #e2e8f0;
+        transition: all .3s;
+    }
+
+    .pf-stat-chip:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        border-color: var(--p-accent);
+    }
+
+    .pf-chip-icon {
+        font-size: 26px;
+        margin-bottom: 8px;
+    }
+
+    .pf-chip-num {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--p-dark);
+    }
+
+    .pf-chip-lbl {
+        font-size: 11px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-top: 4px;
+    }
+
+    /* Section card */
+    .pf-section-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+        border: 1.5px solid #e2e8f0;
+    }
+
+    .pf-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--p-dark);
+        margin-bottom: 22px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .pf-section-title i {
+        color: var(--p-primary);
+        font-size: 18px;
+    }
+
+    /* BMI bars */
+    .bmi-bar-row {
+        margin-bottom: 16px;
+    }
+
+    .bmi-bar-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+    .bmi-track {
+        height: 10px;
+        background: #f1f5f9;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .bmi-fill {
+        height: 100%;
+        border-radius: 20px;
+        transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Recent activity */
+    .pf-activity-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 13px 0;
+        border-bottom: 1px solid #f8fafc;
+    }
+
+    .pf-activity-item:last-child {
+        border: none;
+    }
+
+    .pf-act-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+    .pf-act-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--p-dark);
+    }
+
+    .pf-act-meta {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 2px;
+    }
+
+    .pf-act-bmi {
+        margin-left: auto;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 10px;
+        white-space: nowrap;
+    }
+
+    /* ── CHANGE PASSWORD FORM ── */
+    .pw-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .pw-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .pw-field.full {
+        grid-column: 1 / -1;
+    }
+
+    .pw-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .pw-input {
+        padding: 12px 16px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--p-dark);
+        transition: border-color .2s, box-shadow .2s;
+        outline: none;
+    }
+
+    .pw-input:focus {
+        border-color: var(--p-primary);
+        box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12);
+    }
+
+    .pw-submit {
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg, #0891b2, #06b6d4);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all .3s;
+        box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
+        margin-top: 4px;
+    }
+
+    .pw-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(8, 145, 178, 0.35);
+    }
+
+    @media (max-width: 960px) {
+        .profile-page {
+            grid-template-columns: 1fr;
+        }
+
+        .pf-stats-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .pw-form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+{% with total=bmi_stats.Underweight|add:bmi_stats.Normal|add:bmi_stats.Overweight|add:bmi_stats.Obese %}
+
+<div class="profile-page">
+
+    <!-- ===== LEFT: IDENTITY CARD ===== -->
+    <div>
+        <div class="pf-card">
+            <!-- Cover gradient -->
+            <div class="pf-cover"></div>
+
+            <!-- Avatar -->
+            <div class="pf-avatar-wrap">
+                <div class="pf-avatar-circle">
+                    <i class="fas fa-user-md"></i>
+                </div>
+            </div>
+
+            <!-- Name & role -->
+            <div class="pf-id-section">
+                <div class="pf-name">Dr. {{ user.username|title }}</div>
+                <div class="pf-title">
+                    {% if user.is_superuser %}System Administrator{% else %}Clinical Nutritionist{% endif %}
+                </div>
+                <div class="pf-badge-row">
+                    <span class="pf-badge badge-role">
+                        {% if user.is_superuser %}Admin{% else %}Physician{% endif %}
+                    </span>
+                    {% if user.is_superuser %}
+                    <span class="pf-badge badge-super">⭐ Superuser</span>
+                    {% endif %}
+                    <span class="pf-badge badge-active">● Active</span>
+                </div>
+            </div>
+
+            <!-- Account details -->
+            <div class="pf-info-list">
+                <div class="pf-info-row">
+                    <i class="fas fa-user-circle"></i>
+                    <div>
+                        <div class="pf-info-label">Username</div>
+                        <div class="pf-info-value">{{ user.username }}</div>
+                    </div>
+                </div>
+                <div class="pf-info-row">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <div class="pf-info-label">Email Address</div>
+                        <div class="pf-info-value">{{ user.email|default:"Not configured" }}</div>
+                    </div>
+                </div>
+                <div class="pf-info-row">
+                    <i class="fas fa-calendar-plus"></i>
+                    <div>
+                        <div class="pf-info-label">Account Created</div>
+                        <div class="pf-info-value">{{ date_joined|date:"d M Y" }}</div>
+                    </div>
+                </div>
+                <div class="pf-info-row">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <div>
+                        <div class="pf-info-label">Last Login</div>
+                        <div class="pf-info-value">
+                            {% if last_login %}
+                            {{ last_login|date:"d M Y, h:i A" }}
+                            {% else %}—{% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="pf-info-row">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <div class="pf-info-label">Account Status</div>
+                        <div class="pf-info-value" style="color: #10b981;">
+                            {% if user.is_active %}✔ Active &amp; Verified{% else %}⚠ Inactive{% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="pf-info-row">
+                    <i class="fas fa-hospital"></i>
+                    <div>
+                        <div class="pf-info-label">Department</div>
+                        <div class="pf-info-value">Clinical Nutrition &amp; Wellness</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Go to dashboard btn -->
+            <a href="{% url 'home' %}" class="pf-action-btn">
+                <i class="fas fa-chart-pie"></i> Go to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== RIGHT COLUMN ===== -->
+    <div class="pf-right">
+
+        <!-- STAT CHIPS -->
+        <div class="pf-stats-row">
+            <div class="pf-stat-chip">
+                <div class="pf-chip-icon">🧑‍⚕️</div>
+                <div class="pf-chip-num">{{ total_patients }}</div>
+                <div class="pf-chip-lbl">Total Patients</div>
+            </div>
+            <div class="pf-stat-chip">
+                <div class="pf-chip-icon">📋</div>
+                <div class="pf-chip-num">{{ total_checkups }}</div>
+                <div class="pf-chip-lbl">Total Checkups</div>
+            </div>
+            <div class="pf-stat-chip">
+                <div class="pf-chip-icon">📅</div>
+                <div class="pf-chip-num">{{ today_checkups }}</div>
+                <div class="pf-chip-lbl">Today's Visits</div>
+            </div>
+            <div class="pf-stat-chip">
+                <div class="pf-chip-icon">⚖️</div>
+                <div class="pf-chip-num">{{ avg_bmi }}</div>
+                <div class="pf-chip-lbl">Avg BMI</div>
+            </div>
+        </div>
+
+        <!-- BMI DISTRIBUTION -->
+        <div class="pf-section-card">
+            <div class="pf-section-title">
+                <i class="fas fa-chart-bar"></i>
+                Patient BMI Breakdown
+            </div>
+
+            <div class="bmi-bar-row">
+                <div class="bmi-bar-header">
+                    <span>🔵 Underweight</span>
+                    <span>{{ bmi_stats.Underweight }}
+                        {% if total %}({% widthratio bmi_stats.Underweight total 100 %}%){% endif %}
+                    </span>
+                </div>
+                <div class="bmi-track">
+                    <div class="bmi-fill"
+                        style="width:{% if total %}{% widthratio bmi_stats.Underweight total 100 %}%{% else %}0%{% endif %}; background:#3b82f6;">
+                    </div>
+                </div>
+            </div>
+            <div class="bmi-bar-row">
+                <div class="bmi-bar-header">
+                    <span>🟢 Normal</span>
+                    <span>{{ bmi_stats.Normal }}
+                        {% if total %}({% widthratio bmi_stats.Normal total 100 %}%){% endif %}
+                    </span>
+                </div>
+                <div class="bmi-track">
+                    <div class="bmi-fill"
+                        style="width:{% if total %}{% widthratio bmi_stats.Normal total 100 %}%{% else %}0%{% endif %}; background:#10b981;">
+                    </div>
+                </div>
+            </div>
+            <div class="bmi-bar-row">
+                <div class="bmi-bar-header">
+                    <span>🟡 Overweight</span>
+                    <span>{{ bmi_stats.Overweight }}
+                        {% if total %}({% widthratio bmi_stats.Overweight total 100 %}%){% endif %}
+                    </span>
+                </div>
+                <div class="bmi-track">
+                    <div class="bmi-fill"
+                        style="width:{% if total %}{% widthratio bmi_stats.Overweight total 100 %}%{% else %}0%{% endif %}; background:#f59e0b;">
+                    </div>
+                </div>
+            </div>
+            <div class="bmi-bar-row">
+                <div class="bmi-bar-header">
+                    <span>🔴 Obese</span>
+                    <span>{{ bmi_stats.Obese }}
+                        {% if total %}({% widthratio bmi_stats.Obese total 100 %}%){% endif %}
+                    </span>
+                </div>
+                <div class="bmi-track">
+                    <div class="bmi-fill"
+                        style="width:{% if total %}{% widthratio bmi_stats.Obese total 100 %}%{% else %}0%{% endif %}; background:#ef4444;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECENT CHECKUP ACTIVITY -->
+        <div class="pf-section-card">
+            <div class="pf-section-title">
+                <i class="fas fa-history"></i>
+                Recent Patient Checkups
+            </div>
+
+            {% if recent_checkups %}
+            {% for c in recent_checkups %}
+            <div class="pf-activity-item">
+                <div class="pf-act-icon" style="
+                        {% if c.category == 'Obese' %}background:#fee2e2; color:#ef4444;
+                        {% elif c.category == 'Overweight' %}background:#fef3c7; color:#f59e0b;
+                        {% elif c.category == 'Normal' %}background:#d1fae5; color:#10b981;
+                        {% else %}background:#dbeafe; color:#3b82f6;{% endif %}">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div>
+                    <div class="pf-act-name">{{ c.patient.name }}</div>
+                    <div class="pf-act-meta">
+                        {{ c.date|date:"d M Y" }} &nbsp;·&nbsp;
+                        Weight: {{ c.weight }} kg &nbsp;·&nbsp;
+                        {{ c.plan_type }}
+                    </div>
+                </div>
+                <div class="pf-act-bmi" style="
+                        {% if c.category == 'Obese' %}background:#fee2e2; color:#ef4444;
+                        {% elif c.category == 'Overweight' %}background:#fef3c7; color:#f59e0b;
+                        {% elif c.category == 'Normal' %}background:#d1fae5; color:#10b981;
+                        {% else %}background:#dbeafe; color:#3b82f6;{% endif %}">
+                    BMI {{ c.bmi }}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div style="text-align:center; padding:30px; color:#94a3b8;">
+                <i class="fas fa-inbox" style="font-size:28px; margin-bottom:10px; display:block;"></i>
+                No checkups recorded yet.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- CHANGE PASSWORD -->
+        <div class="pf-section-card" id="change-password">
+            <div class="pf-section-title">
+                <i class="fas fa-lock"></i>
+                Change Password
+            </div>
+            <form method="post" action="{% url 'change_password' %}">
+                {% csrf_token %}
+                <div class="pw-form-grid">
+                    <div class="pw-field full">
+                        <label class="pw-label">Current Password</label>
+                        <input type="password" name="old_password" class="pw-input"
+                            placeholder="Enter your current password" required>
+                    </div>
+                    <div class="pw-field">
+                        <label class="pw-label">New Password</label>
+                        <input type="password" name="new_password1" id="np1" class="pw-input"
+                            placeholder="Min. 6 characters" required>
+                    </div>
+                    <div class="pw-field">
+                        <label class="pw-label">Confirm New Password</label>
+                        <input type="password" name="new_password2" id="np2" class="pw-input"
+                            placeholder="Repeat new password" required>
+                    </div>
+                    <div class="pw-field full">
+                        <button type="submit" class="pw-submit" id="pwSubmitBtn">
+                            <i class="fas fa-key"></i> Update Password
+                        </button>
+                        <div id="pw-match-hint" style="font-size:12px; margin-top:8px; display:none;"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div><!-- end right -->
+</div><!-- end profile-page -->
+
+{% endwith %}
+
+<script>
+    // Live password match check
+    var np1 = document.getElementById('np1');
+    var np2 = document.getElementById('np2');
+    var hint = document.getElementById('pw-match-hint');
+
+    function checkMatch() {
+        if (!np2.value) { hint.style.display = 'none'; return; }
+        hint.style.display = 'block';
+        if (np1.value === np2.value) {
+            hint.innerHTML = '<span style="color:#10b981;"><i class="fas fa-check-circle"></i> Passwords match</span>';
+            np2.style.borderColor = '#10b981';
+        } else {
+            hint.innerHTML = '<span style="color:#ef4444;"><i class="fas fa-times-circle"></i> Passwords do not match</span>';
+            np2.style.borderColor = '#ef4444';
+        }
+    }
+    np1.addEventListener('input', checkMatch);
+    np2.addEventListener('input', checkMatch);
+
+    // Scroll to change-password if hash present
+    if (window.location.hash === '#change-password') {
+        setTimeout(function () {
+            var el = document.getElementById('change-password');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+    }
+</script>
+
+{% endblock %}

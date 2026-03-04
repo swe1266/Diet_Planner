@@ -4,498 +4,1071 @@
 {% block content %}
 <style>
     :root {
-        --hospital-primary: #0891b2;
-        --hospital-secondary: #06b6d4;
-        --hospital-accent: #22d3ee;
-        --hospital-success: #10b981;
-        --hospital-dark: #0f172a;
-        --hospital-light: #f8fafc;
-        --glass-bg: rgba(255, 255, 255, 0.95);
+        --p: #0891b2;
+        --p2: #06b6d4;
+        --dark: #0f172a;
+        --light: #f8fafc;
     }
 
-    .search-wrapper {
-        max-width: 850px;
+    /* PAGE SHELL */
+    .sp-page {
+        max-width: 1050px;
         margin: 0 auto;
-        padding-bottom: 50px;
-        animation: fadeIn 0.8s ease-out;
+        padding-bottom: 60px;
+        animation: spFade .5s ease-out both;
     }
 
-    @keyframes fadeIn {
+    @keyframes spFade {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(18px);
         }
 
         to {
             opacity: 1;
-            transform: translateY(0);
+            transform: none;
         }
     }
 
-    /* --- Premium Header Section --- */
-    .form-header {
-        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
-        color: white;
-        border-radius: 20px 20px 0 0;
-        padding: 40px;
-        text-align: center;
+    /* HERO HEADER */
+    .sp-hero {
+        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 55%, #22d3ee 100%);
+        border-radius: 22px;
+        padding: 44px 48px 36px;
+        color: #fff;
+        margin-bottom: 28px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(8, 145, 178, 0.2);
+        box-shadow: 0 20px 40px rgba(8, 145, 178, 0.22);
     }
 
-    .form-header::before {
+    .sp-hero::before {
         content: '+';
         position: absolute;
-        top: -20px;
-        right: 5%;
-        font-size: 150px;
-        color: rgba(255, 255, 255, 0.05);
+        right: 48px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 140px;
+        opacity: .06;
         font-weight: 100;
-        animation: rotateCross 20s linear infinite;
     }
 
-    @keyframes rotateCross {
-        from {
-            transform: rotate(0deg);
-        }
-
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .form-header h2 {
-        font-size: 30px;
+    .sp-hero h2 {
+        font-size: 28px;
         font-weight: 800;
-        margin-bottom: 8px;
-        letter-spacing: -0.5px;
+        margin: 0 0 6px;
+        letter-spacing: -.5px;
     }
 
-    .form-header p {
-        opacity: 0.9;
-        font-weight: 300;
+    .sp-hero p {
         font-size: 15px;
+        opacity: .85;
+        font-weight: 300;
+        margin: 0;
     }
 
-    /* --- Search Area (Glassmorphism) --- */
-    .search-card {
-        background: var(--glass-bg);
-        padding: 40px;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        margin-bottom: 35px;
+    /* FILTER PANEL */
+    .sp-filters {
+        background: #fff;
+        border-radius: 20px;
+        padding: 28px 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, .07);
+        border: 1.5px solid #e2e8f0;
+        margin-bottom: 25px;
     }
 
-    .search-form {
+    .sp-filter-label {
+        font-size: 11px;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    /* Text search row */
+    .sp-search-row {
         display: flex;
-        gap: 0;
-        /* Removing gap to create a unified search input */
-        max-width: 600px;
-        margin: 0 auto;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .sp-search-box {
+        flex: 1;
         position: relative;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        border-radius: 14px;
-        overflow: hidden;
-        border: 2px solid #e2e8f0;
-        transition: all 0.3s ease;
     }
 
-    .search-form:focus-within {
-        border-color: var(--hospital-primary);
-        box-shadow: 0 10px 25px rgba(8, 145, 178, 0.15);
-        transform: translateY(-2px);
-    }
-
-    .search-input-wrapper {
-        position: relative;
-        flex-grow: 1;
-    }
-
-    .search-input-wrapper i {
+    .sp-search-box i {
         position: absolute;
-        left: 20px;
+        left: 16px;
         top: 50%;
         transform: translateY(-50%);
         color: #94a3b8;
-        font-size: 18px;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 16px 20px 16px 55px;
-        border: none;
         font-size: 16px;
-        background: white;
-        color: var(--hospital-dark);
-        font-family: 'Inter', sans-serif;
+        pointer-events: none;
+    }
+
+    .sp-search-box input {
+        width: 100%;
+        padding: 13px 16px 13px 46px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 13px;
+        font-size: 15px;
+        font-family: inherit;
         font-weight: 500;
-    }
-
-    .search-input:focus {
+        color: var(--dark);
+        background: var(--light);
         outline: none;
+        transition: border-color .2s, box-shadow .2s;
+        box-sizing: border-box;
     }
 
-    .search-button {
-        background: var(--hospital-primary);
-        color: white;
-        border: none;
-        padding: 0 30px;
+    .sp-search-box input:focus {
+        border-color: var(--p);
+        box-shadow: 0 0 0 3px rgba(8, 145, 178, .1);
+    }
+
+    /* Filter chips row */
+    .sp-chips-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: end;
+    }
+
+    .sp-chip-group {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+    }
+
+    /* BMI filter buttons */
+    .sp-chip {
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 12px;
         font-weight: 700;
+        border: 2px solid transparent;
         cursor: pointer;
-        transition: background 0.3s ease;
+        transition: all .2s;
+        font-family: inherit;
+    }
+
+    .chip-all {
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #e2e8f0;
+    }
+
+    .chip-under {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border-color: #bfdbfe;
+    }
+
+    .chip-normal {
+        background: #d1fae5;
+        color: #065f46;
+        border-color: #6ee7b7;
+    }
+
+    .chip-over {
+        background: #fef3c7;
+        color: #92400e;
+        border-color: #fde68a;
+    }
+
+    .chip-obese {
+        background: #fee2e2;
+        color: #991b1b;
+        border-color: #fca5a5;
+    }
+
+    .sp-chip.active-chip {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+        transform: translateY(-1px);
+    }
+
+    .chip-all.active-chip {
+        background: #64748b;
+        color: #fff;
+        border-color: #64748b;
+    }
+
+    .chip-under.active-chip {
+        background: #1d4ed8;
+        color: #fff;
+        border-color: #1d4ed8;
+    }
+
+    .chip-normal.active-chip {
+        background: #065f46;
+        color: #fff;
+        border-color: #065f46;
+    }
+
+    .chip-over.active-chip {
+        background: #92400e;
+        color: #fff;
+        border-color: #92400e;
+    }
+
+    .chip-obese.active-chip {
+        background: #991b1b;
+        color: #fff;
+        border-color: #991b1b;
+    }
+
+    /* Date range select */
+    .sp-date-select {
+        width: 100%;
+        padding: 11px 16px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 13px;
+        font-size: 13px;
+        font-family: inherit;
+        font-weight: 600;
+        color: var(--dark);
+        background: var(--light);
+        outline: none;
+        cursor: pointer;
+        transition: border-color .2s;
+    }
+
+    .sp-date-select:focus {
+        border-color: var(--p);
+    }
+
+    /* Search button */
+    .sp-search-btn {
+        padding: 13px 28px;
+        background: linear-gradient(135deg, var(--p), var(--p2));
+        color: #fff;
+        border: none;
+        border-radius: 13px;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
         display: flex;
         align-items: center;
         gap: 8px;
-        font-size: 15px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        transition: all .3s;
+        box-shadow: 0 4px 12px rgba(8, 145, 178, .25);
+        white-space: nowrap;
     }
 
-    .search-button:hover {
-        background: #0e7490;
+    .sp-search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(8, 145, 178, .35);
     }
 
-    /* --- Results List --- */
-    .results-container {
-        background: white;
-        border-radius: 20px;
-        padding: 30px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        animation: slideIn 0.5s ease-out;
+    /* Clear link */
+    .sp-clear-btn {
+        padding: 11px 18px;
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 13px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all .2s;
     }
 
-    @keyframes slideIn {
-        from {
-            transform: translateY(20px);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
+    .sp-clear-btn:hover {
+        background: #fef2f2;
+        color: #dc2626;
+        border-color: #fca5a5;
     }
 
-    .results-title {
+    /* RESULTS HEADER */
+    .sp-results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .sp-results-title {
         font-size: 18px;
         font-weight: 800;
-        color: var(--hospital-dark);
-        margin-bottom: 20px;
+        color: var(--dark);
         display: flex;
         align-items: center;
         gap: 10px;
     }
 
-    .results-title i {
-        color: var(--hospital-success);
-    }
-
-    .result-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .result-item:last-child {
-        border-bottom: none;
-    }
-
-    .result-item:hover {
-        background: #f8fafc;
-        transform: translateX(5px);
-    }
-
-    .patient-info strong {
-        display: block;
-        font-size: 17px;
-        color: var(--hospital-dark);
-        margin-bottom: 4px;
-    }
-
-    .patient-info span {
-        font-size: 14px;
+    .sp-results-count {
+        font-size: 13px;
         color: #64748b;
-        font-weight: 500;
-    }
-
-    .view-btn {
-        background: #eff6ff;
-        color: var(--hospital-primary);
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 10px;
-        font-weight: 700;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .view-btn:hover {
-        background: var(--hospital-primary);
-        color: white;
-        box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
-    }
-
-    /* --- Medical History Timeline --- */
-    .history-card {
-        margin-top: 40px;
-        background: white;
-        padding: 35px;
+        font-weight: 600;
+        background: #f1f5f9;
+        padding: 5px 14px;
         border-radius: 20px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
-    .history-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #f1f5f9;
-    }
-
-    .history-header h3 {
-        font-size: 20px;
-        font-weight: 800;
-        color: var(--hospital-dark);
-    }
-
-    .add-btn {
-        color: var(--hospital-primary);
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 700;
+    /* PATIENT CARD */
+    .sp-patient-card {
+        background: #fff;
+        border-radius: 18px;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, .05);
+        padding: 20px 24px;
         display: flex;
         align-items: center;
-        gap: 6px;
-        transition: color 0.3s;
-    }
-
-    .add-btn:hover {
-        color: #0e7490;
-    }
-
-    .report-grid {
-        display: grid;
-        gap: 20px;
-    }
-
-    .report-item {
-        display: block;
-        background: #f8fafc;
-        padding: 25px;
-        border-radius: 16px;
-        text-decoration: none;
-        color: inherit;
-        border-left: 5px solid var(--hospital-primary);
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        gap: 16px;
+        margin-bottom: 12px;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
         position: relative;
         overflow: hidden;
     }
 
-    .report-item:hover {
-        transform: scale(1.02) translateX(10px);
-        background: white;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-        border-left-color: var(--hospital-success);
+    .sp-patient-card:hover {
+        transform: translateX(4px) translateY(-2px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, .1);
+        border-color: var(--p);
     }
 
-    .report-meta {
+    .sp-patient-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        border-radius: 4px 0 0 4px;
+    }
+
+    .cat-Underweight::before {
+        background: #3b82f6;
+    }
+
+    .cat-Normal::before {
+        background: #10b981;
+    }
+
+    .cat-Overweight::before {
+        background: #f59e0b;
+    }
+
+    .cat-Obese::before {
+        background: #ef4444;
+    }
+
+    .cat-unknown::before {
+        background: #cbd5e1;
+    }
+
+    /* Avatar */
+    .sp-pat-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        flex-shrink: 0;
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 12px;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 700;
     }
 
-    .report-id {
-        font-weight: 800;
-        color: var(--hospital-dark);
-        font-size: 16px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+    .av-Underweight {
+        background: #dbeafe;
+        color: #1d4ed8;
     }
 
-    .report-date {
-        color: #94a3b8;
-        font-size: 13px;
-        font-weight: 600;
+    .av-Normal {
+        background: #d1fae5;
+        color: #065f46;
     }
 
-    .report-stats {
-        display: flex;
-        gap: 20px;
-        font-size: 14px;
+    .av-Overweight {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .av-Obese {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .av-unknown {
+        background: #f1f5f9;
         color: #64748b;
-        font-weight: 500;
     }
 
-    .stat-tag {
-        background: white;
-        padding: 4px 10px;
-        border-radius: 8px;
-        border: 1px solid #e2e8f0;
+    /* Patient main info */
+    .sp-pat-main {
+        flex: 1;
+        min-width: 0;
     }
 
-    .empty-state {
-        text-align: center;
-        color: #94a3b8;
-        padding: 50px 20px;
+    .sp-pat-name {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    /* Back Nav */
-    .back-nav {
+    .sp-pat-meta {
+        font-size: 13px;
+        color: #64748b;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .sp-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .sp-meta-item i {
+        font-size: 11px;
+    }
+
+    /* Health badge */
+    .sp-health-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 800;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        color: var(--hospital-primary);
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 14px;
-        margin-bottom: 25px;
-        padding: 8px 16px;
+        gap: 5px;
+        white-space: nowrap;
+    }
+
+    .badge-Underweight {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .badge-Normal {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .badge-Overweight {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-Obese {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .badge-unknown {
         background: #f1f5f9;
-        border-radius: 12px;
-        transition: all 0.3s ease;
+        color: #64748b;
     }
 
-    .back-nav:hover {
-        background: var(--hospital-primary);
-        color: white;
-        transform: translateX(-5px);
+    /* BMI chip */
+    .sp-bmi-chip {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 8px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #374151;
     }
 
-    @media (max-width: 640px) {
-        .search-form {
-            flex-direction: column;
-            border-radius: 14px;
-            overflow: visible;
-            border: none;
+    /* Stats mini */
+    .sp-pat-stats {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    /* Visits badge */
+    .sp-visits-tag {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        background: #f1f5f9;
+        padding: 3px 10px;
+        border-radius: 8px;
+        white-space: nowrap;
+    }
+
+    /* Action buttons */
+    .sp-action-row {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .sp-btn {
+        padding: 9px 16px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: inherit;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all .2s;
+        white-space: nowrap;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--p), var(--p2));
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(8, 145, 178, .2);
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0 6px 16px rgba(8, 145, 178, .35);
+        transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .btn-ghost:hover {
+        background: var(--p);
+        color: #fff;
+    }
+
+    /* EMPTY / ERROR STATE */
+    .sp-empty {
+        text-align: center;
+        padding: 60px 20px;
+        background: #fff;
+        border-radius: 20px;
+        border: 1.5px dashed #e2e8f0;
+    }
+
+    .sp-empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .sp-empty-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 8px;
+    }
+
+    .sp-empty-sub {
+        font-size: 14px;
+        color: #94a3b8;
+    }
+
+    .sp-error {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 14px 20px;
+        border-radius: 14px;
+        border: 1px solid #fca5a5;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* PATIENT DETAIL HISTORY */
+    .sp-detail-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 30px;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, .07);
+    }
+
+    .sp-detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .sp-detail-header h3 {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--dark);
+        margin: 0;
+    }
+
+    .sp-add-visit {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--p);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 10px;
+        background: #eff6ff;
+        transition: all .2s;
+    }
+
+    .sp-add-visit:hover {
+        background: var(--p);
+        color: #fff;
+    }
+
+    .sp-visit-card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        background: #f8fafc;
+        border-radius: 14px;
+        padding: 20px 22px;
+        margin-bottom: 12px;
+        border-left: 5px solid var(--p);
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        position: relative;
+    }
+
+    .sp-visit-card.v-Obese {
+        border-left-color: #ef4444;
+    }
+
+    .sp-visit-card.v-Overweight {
+        border-left-color: #f59e0b;
+    }
+
+    .sp-visit-card.v-Normal {
+        border-left-color: #10b981;
+    }
+
+    .sp-visit-card.v-Underweight {
+        border-left-color: #3b82f6;
+    }
+
+    .sp-visit-card:hover {
+        transform: scale(1.01) translateX(6px);
+        background: #fff;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+    }
+
+    .sp-visit-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .sp-visit-id {
+        font-weight: 800;
+        color: var(--dark);
+        font-size: 15px;
+    }
+
+    .sp-visit-date {
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
+    .sp-visit-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .sp-stat-tag {
+        background: #fff;
+        padding: 4px 12px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        font-size: 13px;
+        color: #475569;
+    }
+
+    /* Health dot indicators */
+    .health-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 4px;
+        vertical-align: middle;
+    }
+
+    .dot-red {
+        background: #ef4444;
+    }
+
+    .dot-yellow {
+        background: #f59e0b;
+    }
+
+    .dot-green {
+        background: #10b981;
+    }
+
+    .dot-blue {
+        background: #3b82f6;
+    }
+
+    .dot-gray {
+        background: #94a3b8;
+    }
+
+    @media (max-width: 700px) {
+        .sp-hero {
+            padding: 28px 22px;
         }
 
-        .search-input {
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            margin-bottom: 10px;
-            padding: 16px 20px 16px 55px;
+        .sp-chips-row {
+            grid-template-columns: 1fr;
         }
 
-        .search-button {
-            border-radius: 14px;
-            padding: 16px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .report-stats {
+        .sp-patient-card {
             flex-wrap: wrap;
+        }
+
+        .sp-action-row {
+            width: 100%;
+        }
+
+        .sp-btn {
+            flex: 1;
+            justify-content: center;
         }
     }
 </style>
 
-<div class="search-wrapper">
-    <!-- Back Nav -->
-    <a href="{% url 'home' %}" class="back-nav">
-        <i class="fas fa-arrow-left"></i>
-        <span>Dashboard</span>
+<div class="sp-page">
+
+    <!-- BACK NAV -->
+    <a href="{% url 'home' %}" style="display:inline-flex; align-items:center; gap:8px; color:var(--p);
+        text-decoration:none; font-weight:700; font-size:13px; padding:8px 16px;
+        background:#f1f5f9; border-radius:12px; margin-bottom:22px;
+        transition: all .2s;" onmouseover="this.style.background='var(--p)'; this.style.color='#fff';"
+        onmouseout="this.style.background='#f1f5f9'; this.style.color='var(--p)';">
+        <i class="fas fa-arrow-left"></i> Dashboard
     </a>
 
-    <!-- Header -->
-    <div class="form-header">
-        <h2>🏥 Medical Archives</h2>
-        <p>Access patient records and diagnostic history</p>
+    <!-- HERO -->
+    <div class="sp-hero">
+        <h2><i class="fas fa-search" style="margin-right:10px;"></i> Medical Archives &amp; Patient Search</h2>
+        <p>Search by name, phone &middot; Filter by BMI category &middot; Filter by visit date</p>
     </div>
 
-    <!-- Search Section -->
-    <div class="search-card">
-        <form method="GET" action="{% url 'search_patient' %}" class="search-form">
-            <div class="search-input-wrapper">
-                <i class="fas fa-search"></i>
-                <input type="text" name="q" class="search-input" placeholder="Enter Phone or Name..."
-                    value="{{ query|default:'' }}" required>
+    <!-- FILTER PANEL -->
+    {% if not selected_patient %}
+    <div class="sp-filters">
+        <form method="GET" action="{% url 'search_patient' %}" id="searchForm">
+
+            <!-- Text search -->
+            <div style="margin-bottom:18px;">
+                <label class="sp-filter-label"><i class="fas fa-font" style="margin-right:4px;"></i> Search by Name or
+                    Phone</label>
+                <div class="sp-search-row">
+                    <div class="sp-search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" name="q" id="searchQ" value="{{ query }}"
+                            placeholder="Type patient name or phone number...">
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="search-button">
-                <span>Analyze</span>
-                <i class="fas fa-arrow-right"></i>
-            </button>
+
+            <div class="sp-chips-row">
+                <!-- BMI category chips -->
+                <div>
+                    <label class="sp-filter-label"><i class="fas fa-tag" style="margin-right:4px;"></i> BMI Category
+                        Filter</label>
+                    <input type="hidden" name="bmi_filter" id="bmiFilterInput" value="{{ bmi_filter }}">
+                    <div class="sp-chip-group" id="bmiChipGroup">
+                        <button type="button" class="sp-chip chip-all {% if not bmi_filter %}active-chip{% endif %}"
+                            onclick="setBmi('')">All</button>
+                        <button type="button"
+                            class="sp-chip chip-under {% if bmi_filter == 'Underweight' %}active-chip{% endif %}"
+                            onclick="setBmi('Underweight')"><span class="health-dot dot-blue"></span>
+                            Underweight</button>
+                        <button type="button"
+                            class="sp-chip chip-normal {% if bmi_filter == 'Normal' %}active-chip{% endif %}"
+                            onclick="setBmi('Normal')"><span class="health-dot dot-green"></span> Normal</button>
+                        <button type="button"
+                            class="sp-chip chip-over {% if bmi_filter == 'Overweight' %}active-chip{% endif %}"
+                            onclick="setBmi('Overweight')"><span class="health-dot dot-yellow"></span>
+                            Overweight</button>
+                        <button type="button"
+                            class="sp-chip chip-obese {% if bmi_filter == 'Obese' %}active-chip{% endif %}"
+                            onclick="setBmi('Obese')"><span class="health-dot dot-red"></span> Obese</button>
+                    </div>
+                </div>
+
+                <!-- Date range -->
+                <div>
+                    <label class="sp-filter-label"><i class="fas fa-calendar-alt" style="margin-right:4px;"></i> Visited
+                        Within</label>
+                    <select name="date_range" class="sp-date-select" id="dateRangeSelect">
+                        <option value="" {% if not date_range %}selected{% endif %}>All Time</option>
+                        <option value="today" {% if date_range == 'today' %}selected{% endif %}>Today</option>
+                        <option value="week" {% if date_range == 'week' %}selected{% endif %}>Last 7 Days</option>
+                        <option value="month" {% if date_range == 'month' %}selected{% endif %}>Last 30 Days</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Action row -->
+            <div style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
+                <button type="submit" class="sp-search-btn">
+                    <i class="fas fa-search"></i> Search Patients
+                </button>
+                {% if any_filter %}
+                <a href="{% url 'search_patient' %}" class="sp-clear-btn">
+                    <i class="fas fa-times"></i> Clear Filters
+                </a>
+                {% endif %}
+            </div>
+
         </form>
-
-        {% if error_message %}
-        <div
-            style="margin-top: 25px; background: #fee2e2; color: #dc2626; padding: 12px 20px; border-radius: 12px; border: 1px solid #fecaca; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <i class="fas fa-exclamation-circle"></i> {{ error_message }}
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- Results List -->
-    {% if patients %}
-    <div class="results-container">
-        <div class="results-title">
-            <i class="fas fa-user-check"></i>
-            Patient Search Results
-        </div>
-        {% for p in patients %}
-        <div class="result-item">
-            <div class="patient-info">
-                <strong>{{ p.name }}</strong>
-                <span><i class="fas fa-phone-alt" style="font-size: 12px; margin-right: 5px;"></i> {{ p.phone }} | <i
-                        class="fas fa-venus-mars" style="font-size: 12px; margin-right: 5px;"></i> {{ p.gender }}</span>
-            </div>
-            <a href="?view_id={{ p.id }}&q={{ query }}" class="view-btn">
-                <span>Open File</span>
-                <i class="fas fa-folder-open"></i>
-            </a>
-        </div>
-        {% endfor %}
     </div>
     {% endif %}
 
-    <!-- Medical History View -->
+    <!-- ERROR MESSAGE -->
+    {% if error_message %}
+    <div class="sp-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        {{ error_message }}
+    </div>
+    {% endif %}
+
+    <!-- RESULTS LIST -->
+    {% if patients_data %}
+    <div>
+        <div class="sp-results-header">
+            <div class="sp-results-title">
+                <i class="fas fa-user-check" style="color:#10b981;"></i>
+                Search Results
+            </div>
+            <span class="sp-results-count">{{ patients_data|length }} patient{{ patients_data|length|pluralize }}</span>
+        </div>
+
+        {% for row in patients_data %}
+        {% with p=row.patient l=row.latest v=row.total_visits %}
+        <div class="sp-patient-card cat-{% if l %}{{ l.category }}{% else %}unknown{% endif %}">
+
+            <!-- Avatar with initial -->
+            <div class="sp-pat-avatar av-{% if l %}{{ l.category }}{% else %}unknown{% endif %}">
+                {{ p.name|slice:":1"|upper }}
+            </div>
+
+            <!-- Name & meta -->
+            <div class="sp-pat-main">
+                <div class="sp-pat-name">{{ p.name }}</div>
+                <div class="sp-pat-meta">
+                    <span class="sp-meta-item">
+                        <i class="fas fa-phone-alt" style="color:#0891b2;"></i> {{ p.phone }}
+                    </span>
+                    <span class="sp-meta-item">
+                        <i class="fas fa-venus-mars" style="color:#8b5cf6;"></i> {{ p.gender }}
+                    </span>
+                    {% if l %}
+                    <span class="sp-meta-item">
+                        <i class="fas fa-calendar-check" style="color:#10b981;"></i>
+                        Last visit: {{ l.date|date:"d M Y" }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Health badge + BMI + visits -->
+            <div class="sp-pat-stats">
+                {% if l %}
+                <span class="sp-health-badge badge-{{ l.category }}">
+                    {% if l.category == 'Obese' %}<span class="health-dot dot-red"></span>
+                    {% elif l.category == 'Overweight' %}<span class="health-dot dot-yellow"></span>
+                    {% elif l.category == 'Normal' %}<span class="health-dot dot-green"></span>
+                    {% else %}<span class="health-dot dot-blue"></span>{% endif %}
+                    {{ l.category }}
+                </span>
+                <span class="sp-bmi-chip">BMI {{ l.bmi }}</span>
+                {% else %}
+                <span class="sp-health-badge badge-unknown"><span class="health-dot dot-gray"></span> No Checkup</span>
+                {% endif %}
+                <span class="sp-visits-tag">{{ v }} visit{{ v|pluralize }}</span>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="sp-action-row">
+                <a href="?view_id={{ p.id }}&amp;q={{ query }}&amp;bmi_filter={{ bmi_filter }}&amp;date_range={{ date_range }}"
+                    class="sp-btn btn-ghost" title="View patient history">
+                    <i class="fas fa-folder-open"></i> File
+                </a>
+                {% if l %}
+                <a href="{% url 'generate_dynamic_diet_plan' p.id l.id %}" class="sp-btn btn-primary"
+                    title="Open latest report">
+                    <i class="fas fa-file-medical"></i> Report
+                </a>
+                {% endif %}
+            </div>
+
+        </div>
+        {% endwith %}
+        {% endfor %}
+    </div>
+
+    <!-- NO SEARCHES YET -->
+    {% elif not any_filter and not selected_patient %}
+    <div class="sp-empty">
+        <span class="sp-empty-icon"><i class="fas fa-hospital" style="color:#cbd5e1;"></i></span>
+        <div class="sp-empty-title">Search or Filter Patients</div>
+        <div class="sp-empty-sub">Use the panel above to search by name/phone, filter by BMI category, or select a date
+            range.</div>
+    </div>
+    {% endif %}
+
+    <!-- SINGLE PATIENT DETAIL VIEW -->
     {% if selected_patient %}
-    <div class="history-card">
-        <div class="history-header">
-            <h3><i class="fas fa-file-medical-alt" style="margin-right: 10px; color: var(--hospital-primary);"></i>
-                Profile: <span style="color: var(--hospital-primary);">{{ selected_patient.name }}</span></h3>
-            <a href="{% url 'existing_patient' %}" class="add-btn">
-                <i class="fas fa-plus-circle"></i> Add Update
+    <div style="margin-bottom:20px;">
+        <a href="{% url 'search_patient' %}?q={{ query }}&amp;bmi_filter={{ bmi_filter }}&amp;date_range={{ date_range }}"
+            style="display:inline-flex; align-items:center; gap:8px; color:var(--p);
+               text-decoration:none; font-weight:700; font-size:13px; padding:8px 16px;
+               background:#eff6ff; border-radius:12px; transition: all .2s;"
+            onmouseover="this.style.background='var(--p)'; this.style.color='#fff';"
+            onmouseout="this.style.background='#eff6ff'; this.style.color='var(--p)';">
+            <i class="fas fa-arrow-left"></i> Back to Results
+        </a>
+    </div>
+
+    <div class="sp-detail-card">
+        <div class="sp-detail-header">
+            <h3>
+                <i class="fas fa-file-medical-alt" style="color:var(--p); margin-right:10px;"></i>
+                {{ selected_patient.name }}'s Medical File
+            </h3>
+            <a href="{% url 'existing_patient' %}" class="sp-add-visit">
+                <i class="fas fa-plus-circle"></i> Add New Visit
             </a>
         </div>
 
+        <!-- Patient quick info -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:24px; padding:18px;
+            background:#f8fafc; border-radius:14px; border:1px solid #f1f5f9;">
+            <div>
+                <div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">
+                    Phone</div>
+                <div style="font-weight:700;color:var(--dark);margin-top:3px;">{{ selected_patient.phone }}</div>
+            </div>
+            <div>
+                <div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">
+                    Gender</div>
+                <div style="font-weight:700;color:var(--dark);margin-top:3px;">{{ selected_patient.gender }}</div>
+            </div>
+            <div>
+                <div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">
+                    Address</div>
+                <div style="font-weight:700;color:var(--dark);margin-top:3px;">{{ selected_patient.address|truncatechars:30 }}</div>
+            </div>
+            <div>
+                <div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">
+                    Total Visits</div>
+                <div style="font-weight:700;color:var(--p);margin-top:3px;">{{ history|length }} checkup{{ history|length|pluralize }}</div>
+            </div>
+        </div>
+
+        <!-- Checkup timeline -->
         {% if history %}
-        <div class="report-grid">
+        <div>
             {% for report in history %}
-            <a href="{% url 'generate_dynamic_diet_plan' selected_patient.id report.id %}" class="report-item">
-                <div class="report-meta">
-                    <span class="report-id">Protocol #{{ report.id }}</span>
-                    <span class="report-date"><i class="far fa-calendar-alt"></i> {{ report.date }}</span>
+            <a href="{% url 'generate_dynamic_diet_plan' selected_patient.id report.id %}"
+                class="sp-visit-card v-{{ report.category }}">
+                <div class="sp-visit-top">
+                    <span class="sp-visit-id">
+                        Protocol #{{ report.id }}
+                        &nbsp;
+                        <span class="sp-health-badge badge-{{ report.category }}" style="font-size:11px;">
+                            {% if report.category == 'Obese' %}<span class="health-dot dot-red"></span>
+                            {% elif report.category == 'Overweight' %}<span class="health-dot dot-yellow"></span>
+                            {% elif report.category == 'Normal' %}<span class="health-dot dot-green"></span>
+                            {% else %}<span class="health-dot dot-blue"></span>{% endif %}
+                            {{ report.category }}
+                        </span>
+                    </span>
+                    <span class="sp-visit-date"><i class="far fa-calendar-alt"></i> {{ report.date|date:"d M Y" }}</span>
                 </div>
-                <div class="report-stats">
-                    <span class="stat-tag"><strong>Weight:</strong> {{ report.weight }}kg</span>
-                    <span class="stat-tag"><strong>BMI:</strong> {{ report.bmi }}</span>
-                    <span class="stat-tag"><strong>Category:</strong> {{ report.category }}</span>
+                <div class="sp-visit-stats">
+                    <span class="sp-stat-tag"><strong>Weight:</strong> {{ report.weight }} kg</span>
+                    <span class="sp-stat-tag"><strong>BMI:</strong> {{ report.bmi }}</span>
+                    <span class="sp-stat-tag"><strong>Height:</strong> {{ report.height }} cm</span>
+                    <span class="sp-stat-tag"><strong>Plan:</strong> {{ report.plan_type }}</span>
+                    <span class="sp-stat-tag"><strong>Diet:</strong> {{ report.dietary }}</span>
+                    <span class="sp-stat-tag"><strong>TDEE:</strong> {{ report.tdee|floatformat:0 }} kcal</span>
                 </div>
             </a>
             {% endfor %}
         </div>
         {% else %}
-        <div class="empty-state">
-            <i class="fas fa-notes-medical"
-                style="font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
-            No checkup reports found. <a href="{% url 'existing_patient' %}"
-                style="color: var(--hospital-primary); font-weight: 700;">Proceed to assessment?</a>
+        <div class="sp-empty" style="border:none; padding:40px 20px;">
+            <span class="sp-empty-icon"><i class="fas fa-clipboard-list" style="color:#cbd5e1;"></i></span>
+            <div class="sp-empty-title">No Checkup Records</div>
+            <div class="sp-empty-sub">
+                <a href="{% url 'existing_patient' %}" style="color:var(--p); font-weight:700;">
+                    Start the first assessment &rarr;
+                </a>
+            </div>
         </div>
         {% endif %}
     </div>
     {% endif %}
 
 </div>
+
+<script>
+    // BMI Chip toggle
+    function setBmi(val) {
+        document.getElementById('bmiFilterInput').value = val;
+        document.querySelectorAll('.sp-chip').forEach(function (c) {
+            c.classList.remove('active-chip');
+        });
+        var map = {
+            '': 'chip-all',
+            'Underweight': 'chip-under',
+            'Normal': 'chip-normal',
+            'Overweight': 'chip-over',
+            'Obese': 'chip-obese'
+        };
+        var targetClass = map[val] || 'chip-all';
+        document.querySelectorAll('.' + targetClass).forEach(function (c) {
+            c.classList.add('active-chip');
+        });
+    }
+
+    // Live search as user types (debounced)
+    var searchTimer;
+    var searchEl = document.getElementById('searchQ');
+    if (searchEl) {
+        searchEl.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+            var v = this.value.trim();
+            if (v.length === 0 || v.length >= 2) {
+                searchTimer = setTimeout(function () {
+                    document.getElementById('searchForm').submit();
+                }, 600);
+            }
+        });
+    }
+</script>
+
 {% endblock %}

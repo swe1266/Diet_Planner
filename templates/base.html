@@ -366,6 +366,7 @@
             }
         }
     </style>
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body class="">
@@ -374,7 +375,7 @@
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="logo-icon">
-                <i class="fas fa-plus-medical"></i>
+                <i class="fas fa-kit-medical"></i>
             </div>
             <span class="logo-text">LifeCare</span>
         </div>
@@ -392,6 +393,13 @@
                     class="nav-link {% if request.resolver_match.url_name == 'new_patient' %}active{% endif %}">
                     <i class="fas fa-user-plus"></i>
                     <span>Add Patient</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'patients' %}"
+                    class="nav-link {% if request.resolver_match.url_name == 'patients' %}active{% endif %}">
+                    <i class="fas fa-users"></i>
+                    <span>All Patients</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -415,7 +423,7 @@
                 {% csrf_token %}
                 <button type="submit" class="logout-btn">
                     <i class="fas fa-power-off"></i>
-                    <span>Termination</span>
+                    <span>Sign Out</span>
                 </button>
             </form>
         </div>
@@ -425,17 +433,91 @@
     <nav class="topbar">
         <div class="topbar-left">
             <i class="fas fa-bars-staggered menu-toggle" onclick="toggleSidebar()"></i>
-            <h2 class="page-header">Clinical Nutrition Dashboard</h2>
+            <h2 class="page-header">
+                {% if request.resolver_match.url_name == 'home' %}Analytics Hub
+                {% elif request.resolver_match.url_name == 'new_patient' %}Patient Registration
+                {% elif request.resolver_match.url_name == 'patients' %}All Patients
+                {% elif request.resolver_match.url_name == 'existing_patient' %}Protocol Update
+                {% elif request.resolver_match.url_name == 'search_patient' %}Medical Archives
+                {% elif request.resolver_match.url_name == 'generate_dynamic_diet_plan' %}Diet Plan Report
+                {% elif request.resolver_match.url_name == 'profile' %}My Profile
+                {% elif request.resolver_match.url_name == 'contact' %}Contact
+                {% else %}LifeCare Dashboard{% endif %}
+            </h2>
         </div>
 
         <div class="topbar-right">
-            <div class="user-pill">
+            <!-- Profile Dropdown Trigger -->
+            <div class="user-pill" id="profilePill" onclick="toggleProfileMenu()"
+                style="cursor:pointer; position:relative;">
                 <div style="text-align: right;">
                     <div style="font-weight: 700; font-size: 14px;">{{ user.username|title|default:"Guest" }}</div>
                     <span class="role-badge">{% if user.is_superuser %}Admin{% else %}Physician{% endif %}</span>
                 </div>
                 <div class="avatar">
                     <i class="fas fa-user-md"></i>
+                </div>
+
+                <!-- Dropdown Panel -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <!-- Header -->
+                    <div class="pd-header">
+                        <div class="pd-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="pd-info">
+                            <div class="pd-name">Dr. {{ user.username|title|default:"Administrator" }}</div>
+                            <div class="pd-role">{% if user.is_superuser %}System Administrator{% else %}Clinical
+                                Nutritionist{% endif %}</div>
+                            <div class="pd-email">{{ user.email|default:"—" }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div class="pd-stats">
+                        <a href="{% url 'profile' %}" class="pd-stat-link">
+                            <div class="pd-stat">
+                                <i class="fas fa-users"></i>
+                                <span>My Profile</span>
+                            </div>
+                        </a>
+                        <a href="{% url 'home' %}" class="pd-stat-link">
+                            <div class="pd-stat">
+                                <i class="fas fa-chart-pie"></i>
+                                <span>Dashboard</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Menu Links -->
+                    <div class="pd-menu">
+                        <a href="{% url 'profile' %}" class="pd-item">
+                            <i class="fas fa-id-badge"></i>
+                            <span>View Full Profile</span>
+                            <i class="fas fa-chevron-right pd-arrow"></i>
+                        </a>
+                        <a href="{% url 'profile' %}#change-password" class="pd-item">
+                            <i class="fas fa-lock"></i>
+                            <span>Change Password</span>
+                            <i class="fas fa-chevron-right pd-arrow"></i>
+                        </a>
+                        <a href="{% url 'new_patient' %}" class="pd-item">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Add New Patient</span>
+                            <i class="fas fa-chevron-right pd-arrow"></i>
+                        </a>
+                    </div>
+
+                    <!-- Sign Out -->
+                    <div class="pd-footer">
+                        <form action="{% url 'logout' %}" method="post" style="margin:0;">
+                            {% csrf_token %}
+                            <button type="submit" class="pd-signout">
+                                <i class="fas fa-power-off"></i>
+                                Sign Out
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -446,6 +528,191 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    <style>
+        /* ===== PROFILE DROPDOWN ===== */
+        .user-pill {
+            position: relative;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 14px);
+            right: 0;
+            width: 300px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            z-index: 9999;
+            overflow: hidden;
+            animation: pdSlideIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            transform-origin: top right;
+        }
+
+        @keyframes pdSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .profile-dropdown.pd-open {
+            display: block;
+        }
+
+        /* Header */
+        .pd-header {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 100%);
+            padding: 22px 20px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .pd-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .pd-name {
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .pd-role {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .pd-email {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 11px;
+            margin-top: 2px;
+            word-break: break-all;
+        }
+
+        /* Stats row */
+        .pd-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .pd-stat-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .pd-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 14px 10px;
+            font-size: 12px;
+            color: #475569;
+            font-weight: 600;
+            transition: background .2s;
+        }
+
+        .pd-stat:hover {
+            background: #f8fafc;
+        }
+
+        .pd-stat i {
+            font-size: 18px;
+            color: #0891b2;
+        }
+
+        .pd-stat-link:not(:last-child) .pd-stat {
+            border-right: 1px solid #f1f5f9;
+        }
+
+        /* Menu */
+        .pd-menu {
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .pd-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+        }
+
+        .pd-item:hover {
+            background: #f0f9ff;
+            color: #0891b2;
+        }
+
+        .pd-item i:first-child {
+            width: 18px;
+            color: #0891b2;
+            font-size: 14px;
+        }
+
+        .pd-arrow {
+            margin-left: auto;
+            font-size: 10px;
+            color: #cbd5e1;
+        }
+
+        .pd-item:hover .pd-arrow {
+            color: #0891b2;
+        }
+
+        /* Footer */
+        .pd-footer {
+            padding: 12px 16px;
+        }
+
+        .pd-signout {
+            width: 100%;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all .3s;
+        }
+
+        .pd-signout:hover {
+            background: #ef4444;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+        }
+    </style>
 
     <script>
         function toggleSidebar() {
@@ -464,8 +731,243 @@
                 }
             });
         });
+
+        // Profile dropdown toggle
+        function toggleProfileMenu() {
+            var dd = document.getElementById('profileDropdown');
+            dd.classList.toggle('pd-open');
+        }
+
+        // Close dropdown when clicking anywhere outside
+        document.addEventListener('click', function (e) {
+            var pill = document.getElementById('profilePill');
+            var dd = document.getElementById('profileDropdown');
+            if (pill && dd && !pill.contains(e.target)) {
+                dd.classList.remove('pd-open');
+            }
+        });
     </script>
 
+
+    <!-- =====================================================
+         GLOBAL TOAST NOTIFICATION SYSTEM
+         Automatically picks up Django messages + JS API
+         ===================================================== -->
+    <div id="toastContainer" style="
+        position: fixed; bottom: 28px; right: 28px;
+        z-index: 99999;
+        display: flex; flex-direction: column; gap: 12px;
+        pointer-events: none;
+    "></div>
+
+    <!-- Django messages rendered as toasts -->
+    {% if messages %}
+    <script>
+        (function () {
+            var msgs = [
+                {% for message in messages %}
+            { text: "{{ message|escapejs }}", level: "{{ message.tags }}" } {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+        ];
+        window._djMsgs = msgs;
+    }) ();
+    </script>
+    {% endif %}
+
+    <style>
+        /* === TOAST STYLES === */
+        .lc-toast {
+            min-width: 300px;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.04);
+            pointer-events: all;
+            position: relative;
+            overflow: hidden;
+            animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .lc-toast.toast-hide {
+            opacity: 0;
+            transform: translateX(40px);
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(60px) scale(0.92);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        /* progress bar */
+        .lc-toast::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            border-radius: 0 0 0 16px;
+            background: var(--toast-color, #0891b2);
+            animation: toastProgress var(--toast-dur, 4s) linear forwards;
+        }
+
+        @keyframes toastProgress {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        .toast-icon-wrap {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            background: var(--toast-icon-bg, #e0f2fe);
+            color: var(--toast-color, #0891b2);
+        }
+
+        .toast-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .toast-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 3px;
+        }
+
+        .toast-msg {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .toast-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: background .2s, color .2s;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            background: #f1f5f9;
+            color: #374151;
+        }
+
+        /* === TYPE THEMES === */
+        .toast-success {
+            --toast-color: #10b981;
+            --toast-icon-bg: #d1fae5;
+        }
+
+        .toast-error {
+            --toast-color: #ef4444;
+            --toast-icon-bg: #fee2e2;
+        }
+
+        .toast-warning {
+            --toast-color: #f59e0b;
+            --toast-icon-bg: #fef3c7;
+        }
+
+        .toast-info {
+            --toast-color: #0891b2;
+            --toast-icon-bg: #e0f2fe;
+        }
+    </style>
+
+    <script>
+        (function () {
+            var ICONS = {
+                success: '<i class="fas fa-check-circle"></i>',
+                error: '<i class="fas fa-times-circle"></i>',
+                warning: '<i class="fas fa-exclamation-triangle"></i>',
+                info: '<i class="fas fa-info-circle"></i>'
+            };
+            var TITLES = { success: 'Success', error: 'Error', warning: 'Warning', info: 'Info' };
+
+            window.showToast = function (msg, type, dur) {
+                type = type || 'info';
+                dur = dur || 4000;
+                var container = document.getElementById('toastContainer');
+                if (!container) return;
+
+                var t = document.createElement('div');
+                t.className = 'lc-toast toast-' + type;
+                t.style.setProperty('--toast-dur', (dur / 1000) + 's');
+                t.innerHTML =
+                    '<div class="toast-icon-wrap">' + (ICONS[type] || ICONS.info) + '</div>' +
+                    '<div class="toast-body">' +
+                    '<div class="toast-title">' + (TITLES[type] || 'Notice') + '</div>' +
+                    '<div class="toast-msg">' + msg + '</div>' +
+                    '</div>' +
+                    '<button class="toast-close" onclick="this.parentElement._dismiss()" title="Dismiss">&times;</button>';
+
+                t._dismiss = function () {
+                    t.classList.add('toast-hide');
+                    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 370);
+                };
+
+                container.appendChild(t);
+
+                // Auto-dismiss
+                setTimeout(function () { if (t.parentNode) t._dismiss(); }, dur);
+            };
+
+            // Map Django message level tags -> type
+            function djLevelToType(tags) {
+                if (!tags) return 'info';
+                tags = tags.toLowerCase();
+                if (tags.indexOf('error') >= 0 || tags.indexOf('danger') >= 0) return 'error';
+                if (tags.indexOf('success') >= 0) return 'success';
+                if (tags.indexOf('warning') >= 0) return 'warning';
+                return 'info';
+            }
+
+            // Render Django messages after DOM ready
+            document.addEventListener('DOMContentLoaded', function () {
+                var msgs = window._djMsgs || [];
+                msgs.forEach(function (m, i) {
+                    setTimeout(function () {
+                        showToast(m.text, djLevelToType(m.level));
+                    }, i * 180);
+                });
+            });
+        })();
+    </script>
 </body>
 
 </html>

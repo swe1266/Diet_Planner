@@ -13,18 +13,22 @@ urlpatterns = [
     path('patients/', views.patients, name='patients'),
     path('contact/', views.contact, name='contact'),
 
+    # Profile & Account
+    path('profile/', views.profile, name='profile'),
+    path('profile/change-password/', views.change_password, name='change_password'),
+
     # Patient Forms
     path('patients/new/', views.new_patient, name='new_patient'),
     path('patients/existing/', views.existing_patient, name='existing_patient'),
     path('patients/search/', views.search_patient, name='search_patient'),
     path('regenerate/<int:checkup_id>/', views.regenerate_plan, name='regenerate_plan'),
+
     # Reports
     path('report/<int:patient_id>/<int:checkup_id>/', views.generate_dynamic_diet_plan, name='generate_dynamic_diet_plan'),
 
     # API for Pop-up Search
     path('get_patient_details/', views.get_patient_details, name='get_patient_details'),
 
-    # --- THIS WAS MISSING ---
     path('delete_checkup/<int:checkup_id>/', views.delete_checkup, name='delete_checkup'),
 
     path('download_pdf/<int:checkup_id>/', views.download_pdf, name='download_pdf'),

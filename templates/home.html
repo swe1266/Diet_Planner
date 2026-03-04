@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+
 {% block content %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
     /* ========================================
@@ -701,7 +704,7 @@
 <!-- HOSPITAL DASHBOARD HEADER -->
 <div class="dashboard-header">
     <div class="header-content">
-        <h1>🏥 Hello, Dr. {{ user.username|title|default:"Administrator" }}!</h1>
+        <h1>Hello, Dr. {{ user.username|title|default:"Administrator" }}!</h1>
         <p>Clinical Nutrition & Wellness Management System</p>
         <div class="header-badge">
             <i class="fas fa-circle" style="color: #10b981; font-size: 8px;"></i> System Online
@@ -738,11 +741,22 @@
     </div>
 
     <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f0fdf4, #bbf7d0); color: #065f46;">
+            <i class="fas fa-weight"></i>
+        </div>
+        <div class="stat-info">
+            <h4>{{ avg_bmi }}</h4>
+            <span>Avg BMI</span>
+        </div>
+        <div class="stat-badge" style="background: #10b981;">Index</div>
+    </div>
+
+    <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #fee2e2, #fecaca); color: #991b1b;">
             <i class="fas fa-heartbeat"></i>
         </div>
         <div class="stat-info">
-            <h4>{{ obese }}</h4>
+            <h4>{{ high_risk_pct }}%</h4>
             <span>High Risk (Obese)</span>
         </div>
         <div class="stat-badge" style="background: #ef4444;">Alert</div>
@@ -751,7 +765,7 @@
 
 <!-- DEPARTMENT NAVIGATION -->
 <div class="section-header">
-    <h3>🏥 Patient Care Departments</h3>
+    <h3>Patient Care Departments</h3>
 </div>
 
 <div class="action-grid">
@@ -760,7 +774,7 @@
             <div class="card-icon-large">
                 <i class="fas fa-user-plus"></i>
             </div>
-            <div class="card-title">Emergency Admission</div>
+            <div class="card-title">Patient Registration</div>
             <div class="card-desc">
                 Register new patient with automatic BMI, BMR, and TDEE calculation. Complete vitals assessment and
                 initial diet plan generation.
@@ -776,7 +790,7 @@
             <div class="card-icon-large">
                 <i class="fas fa-stethoscope"></i>
             </div>
-            <div class="card-title">Vitals & Follow-up</div>
+            <div class="card-title">Checkup & Vitals</div>
             <div class="card-desc">
                 Update patient records with new measurements. Track weight progression, activity changes, and regenerate
                 personalized nutrition plans.
@@ -792,7 +806,7 @@
             <div class="card-icon-large">
                 <i class="fas fa-file-medical"></i>
             </div>
-            <div class="card-title">Medical Archives</div>
+            <div class="card-title">Clinical Archives</div>
             <div class="card-desc">
                 Comprehensive patient history access. Review historical diet plans, weight trends, BMI progression, and
                 complete medical documentation.
@@ -806,179 +820,352 @@
 
 <!-- CLINICAL ANALYTICS -->
 <div class="section-header">
-    <h3>📊 Clinical Analytics & Protocols</h3>
+    <h3>Clinical Analytics Dashboard</h3>
 </div>
 
-<div class="info-section">
+<!-- CHARTS ROW: 3 side-by-side -->
+<div
+    style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 30px; animation: fadeInUp 1s ease-out 0.8s both;">
 
-    <div class="info-card">
+    <!-- CHART 1: BMI Doughnut -->
+    <div class="info-card" style="min-height: 0;">
         <div class="info-header">
             <i class="fas fa-chart-pie"></i>
-            <h3>Population Health Dashboard</h3>
+            <h3>BMI Distribution</h3>
         </div>
-        <div class="chart-container">
-            <canvas id="dashboardChart"></canvas>
+        <div class="chart-container" style="min-height:220px;">
+            <canvas id="bmiDoughnutChart"></canvas>
         </div>
-        <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-top: 15px; font-weight: 500;">
-            <i class="fas fa-sync-alt" style="font-size: 10px;"></i> Real-time BMI distribution across patient
-            population
+        <p style="text-align:center; font-size:11px; color:#94a3b8; margin-top:10px;">
+            <i class="fas fa-circle" style="color:#10b981; font-size:8px;"></i>
+            Live across all {{ total_patients }} patients
         </p>
     </div>
 
-    <div class="info-card">
+    <!-- CHART 2: 6-Month Trend Line -->
+    <div class="info-card" style="min-height: 0;">
         <div class="info-header">
-            <i class="fas fa-calculator"></i>
-            <h3>Medical Calculation Engine</h3>
+            <i class="fas fa-chart-line"></i>
+            <h3>6-Month Trends</h3>
         </div>
-        <p style="font-size: 14px; color: #64748b; margin-bottom: 20px; line-height: 1.6;">
-            Evidence-based algorithms utilizing internationally recognized clinical formulas for precision nutrition
-            planning.
+        <div class="chart-container" style="min-height:220px;">
+            <canvas id="trendLineChart"></canvas>
+        </div>
+        <p style="text-align:center; font-size:11px; color:#94a3b8; margin-top:10px;">
+            <i class="fas fa-circle" style="color:#0891b2; font-size:8px;"></i> Patients
+            &nbsp;&nbsp;
+            <i class="fas fa-circle" style="color:#10b981; font-size:8px;"></i> Checkups
         </p>
-
-        <ul class="tech-list">
-            <li>
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <strong>Mifflin-St Jeor Equation</strong><br>
-                    Gold-standard BMR calculation with 95% accuracy for metabolic rate estimation.
-                </div>
-            </li>
-            <li>
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <strong>Activity Factor Protocol</strong><br>
-                    Harris-Benedict multipliers for TDEE determination based on lifestyle assessment.
-                </div>
-            </li>
-            <li>
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <strong>WHO BMI Standards</strong><br>
-                    Automated classification per World Health Organization international guidelines.
-                </div>
-            </li>
-        </ul>
     </div>
+
+    <!-- CHART 3: Plan-Type Bar -->
+    <div class="info-card" style="min-height: 0;">
+        <div class="info-header">
+            <i class="fas fa-chart-bar"></i>
+            <h3>Diet Plan Types</h3>
+        </div>
+        <div class="chart-container" style="min-height:220px;">
+            <canvas id="planBarChart"></canvas>
+        </div>
+        <p style="text-align:center; font-size:11px; color:#94a3b8; margin-top:10px;">
+            Plan breakdown across all checkups
+        </p>
+    </div>
+
 </div>
 
-<!-- LIVE ACTIVITY FEED -->
+<!-- REAL ACTIVITY FEED -->
 <div class="activity-feed">
-    <div class="info-header" style="border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 20px;">
-        <i class="fas fa-activity" style="color: #0891b2;"></i>
-        <h3>Recent Hospital Activity</h3>
-    </div>
-
-    <div class="activity-item">
-        <div class="activity-icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af;">
-            <i class="fas fa-user-check"></i>
-        </div>
-        <div class="activity-content">
-            <div><strong>New Patient Registered</strong> - Admission completed</div>
-            <div class="activity-time">2 minutes ago</div>
+    <div class="info-header"
+        style="border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 20px; display:flex; align-items:center; gap:15px;">
+        <i class="fas fa-satellite-dish" style="color: #0891b2; font-size:20px;"></i>
+        <div>
+            <h3 style="margin:0; font-size:18px;">Recent Checkup Activity</h3>
+            <p style="margin:2px 0 0; font-size:12px; color:#94a3b8;">Last {{ recent_activity|length }} records from the
+                database</p>
         </div>
     </div>
 
-    <div class="activity-item">
-        <div class="activity-icon" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46;">
-            <i class="fas fa-heartbeat"></i>
-        </div>
-        <div class="activity-content">
-            <div><strong>Vitals Updated</strong> - BMI recalculated for patient #{{ total_patients }}</div>
-            <div class="activity-time">15 minutes ago</div>
-        </div>
-    </div>
+    {% if recent_activity %}
+    {% for item in recent_activity %}
+    <div class="activity-item" style="border-left: 3px solid
+            {% if item.category == 'Obese' %}#ef4444
+            {% elif item.category == 'Overweight' %}#f59e0b
+            {% elif item.category == 'Normal' %}#10b981
+            {% else %}#3b82f6{% endif %};">
 
-    <div class="activity-item">
-        <div class="activity-icon" style="background: linear-gradient(135deg, #cffafe, #a5f3fc); color: #0e7490;">
-            <i class="fas fa-file-medical-alt"></i>
+        <div class="activity-icon" style="background:
+                {% if item.category == 'Obese' %}linear-gradient(135deg,#fee2e2,#fecaca); color:#991b1b;
+                {% elif item.category == 'Overweight' %}linear-gradient(135deg,#fef3c7,#fde68a); color:#92400e;
+                {% elif item.category == 'Normal' %}linear-gradient(135deg,#d1fae5,#a7f3d0); color:#065f46;
+                {% else %}linear-gradient(135deg,#dbeafe,#bfdbfe); color:#1e40af;{% endif %}">
+            <i class="fas fa-user-md"></i>
         </div>
+
         <div class="activity-content">
-            <div><strong>Diet Plan Generated</strong> - Personalized nutrition chart created</div>
-            <div class="activity-time">1 hour ago</div>
+            <div>
+                <strong>{{ item.patient_name }}</strong>
+                &nbsp;&mdash;&nbsp;
+                <span style="font-size:12px; color:#475569;">Checkup #{{ item.id }}</span>
+                &nbsp;
+                <span style="display:inline-block; padding:2px 8px; font-size:10px; font-weight:700; border-radius:10px; background:
+                        {% if item.category == 'Obese' %}#fef2f2; color:#ef4444;
+                        {% elif item.category == 'Overweight' %}#fffbeb; color:#f59e0b;
+                        {% elif item.category == 'Normal' %}#f0fdf4; color:#10b981;
+                        {% else %}#eff6ff; color:#3b82f6;{% endif %}">
+                    {{ item.category }} &bull; BMI {{ item.bmi }}
+                </span>
+            </div>
+            <div class="activity-time" style="margin-top:3px;">
+                <i class="fas fa-calendar-check" style="font-size:10px;"></i>
+                {{ item.date }}
+                {% if item.plan %}&nbsp;&bull;&nbsp;<i class="fas fa-utensils" style="font-size:10px;"></i> {{ item.plan
+                }} plan{% endif %}
+            </div>
         </div>
+
+        <a href="{% url 'generate_dynamic_diet_plan' item.patient_id item.id %}"
+            style="flex-shrink:0; width:34px; height:34px; border-radius:50%; background:#f1f5f9; display:flex; align-items:center; justify-content:center; text-decoration:none; color:#64748b; transition:all .3s ease;"
+            title="View Report" onmouseover="this.style.background='#0891b2'; this.style.color='white';"
+            onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b';">
+            <i class="fas fa-external-link-alt" style="font-size:12px;"></i>
+        </a>
     </div>
+    {% endfor %}
+    {% else %}
+    <div style="text-align:center; padding:40px; color:#94a3b8;">
+        <i class="fas fa-inbox" style="font-size:32px; margin-bottom:12px;"></i>
+        <p>No checkups recorded yet.</p>
+    </div>
+    {% endif %}
 </div>
 
 <script>
-    // === 1. CLOCK LOGIC (Runs first and independently) ===
+    // === 1. CLOCK ===
     function updateClock() {
-        const timeEl = document.getElementById('liveTime');
-        const dateEl = document.getElementById('liveDate');
+        var timeEl = document.getElementById('liveTime');
+        var dateEl = document.getElementById('liveDate');
         if (!timeEl || !dateEl) return;
-
-        const now = new Date();
-
-        // Time 12h format
-        let h = now.getHours();
-        let m = now.getMinutes();
-        const ampm = h >= 12 ? 'PM' : 'AM';
+        var now = new Date();
+        var h = now.getHours();
+        var m = now.getMinutes();
+        var ampm = h >= 12 ? 'PM' : 'AM';
         h = h % 12 || 12;
         m = m < 10 ? '0' + m : m;
         timeEl.textContent = h + ':' + m + ' ' + ampm;
-
-        // Date long format
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        dateEl.textContent = now.toLocaleDateString('en-US', options);
+        var opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.textContent = now.toLocaleDateString('en-US', opts);
     }
-
-    // Start immediately
     updateClock();
     setInterval(updateClock, 1000);
 
-    // === 2. DASHBOARD FEATURES (Wait for DOM) ===
-    document.addEventListener('DOMContentLoaded', function () {
-        // --- Population Chart ---
+    // === 2. CHARTS - wait for window load so Chart.js CDN is ready ===
+    window.addEventListener('load', function () {
+
+        // ---- BMI DOUGHNUT CHART ----
         try {
-            const ctx = document.getElementById('dashboardChart');
-            if (ctx) {
-                // Safeguard: use 0 if data is missing from Django
-                const dataValues = [
-                    parseInt("{{ underweight|default:0 }}") || 0,
-                    parseInt("{{ normal|default:0 }}") || 0,
-                    parseInt("{{ overweight|default:0 }}") || 0,
-                    parseInt("{{ obese|default:0 }}") || 0
+            var bmiCanvas = document.getElementById('bmiDoughnutChart');
+            if (bmiCanvas && typeof Chart !== 'undefined') {
+                var bmiData = [
+                    {{ underweight|default:0 }},
+                    {{ normal|default:0 }},
+                    {{ overweight|default:0 }},
+                    {{ obese|default:0 }}
                 ];
+        var totalPts = bmiData.reduce(function (a, b) { return a + b; }, 0);
 
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
-                        datasets: [{
-                            data: dataValues,
-                            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
-                            borderWidth: 2,
-                            borderColor: '#ffffff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '70%',
-                        plugins: { legend: { display: true, position: 'bottom' } }
-                    }
-                });
+        var centerLabel = {
+            id: 'centerLabel',
+            beforeDraw: function (chart) {
+                var ca = chart.chartArea;
+                var cx = (ca.left + ca.right) / 2;
+                var cy = (ca.top + ca.bottom) / 2;
+                var c = chart.ctx;
+                c.save();
+                c.textAlign = 'center';
+                c.textBaseline = 'middle';
+                c.font = 'bold 26px Outfit,sans-serif';
+                c.fillStyle = '#0f172a';
+                c.fillText(totalPts, cx, cy - 8);
+                c.font = '11px Outfit,sans-serif';
+                c.fillStyle = '#94a3b8';
+                c.fillText('Patients', cx, cy + 12);
+                c.restore();
             }
-        } catch (e) { console.error("Chart Error:", e); }
+        };
 
-        // --- Stat Counters ---
-        try {
-            document.querySelectorAll('.stat-info h4').forEach(stat => {
-                const target = parseInt(stat.textContent) || 0;
-                if (target > 0) {
-                    let current = 0;
-                    const step = Math.ceil(target / 20);
-                    const iter = setInterval(() => {
-                        current += step;
-                        if (current >= target) {
-                            stat.textContent = target;
-                            clearInterval(iter);
-                        } else {
-                            stat.textContent = current;
+        new Chart(bmiCanvas, {
+            type: 'doughnut',
+            plugins: [centerLabel],
+            data: {
+                labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
+                datasets: [{
+                    data: bmiData,
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+                    borderWidth: 3,
+                    borderColor: '#ffffff',
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                animation: { duration: 1200 },
+                plugins: {
+                    legend: {
+                        display: true, position: 'bottom',
+                        labels: { padding: 12, font: { size: 11 }, usePointStyle: true }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (c) {
+                                var pct = totalPts ? Math.round(c.parsed / totalPts * 100) : 0;
+                                return ' ' + c.label + ': ' + c.parsed + ' (' + pct + '%)';
+                            }
                         }
-                    }, 50);
+                    }
                 }
-            });
-        } catch (e) { console.error("Counter Error:", e); }
+            }
+        });
+    }
+    } catch (e) { console.error('BMI Chart:', e); }
+
+    // ---- 6-MONTH TREND LINE CHART ----
+    try {
+        var trendCanvas = document.getElementById('trendLineChart');
+        if (trendCanvas && typeof Chart !== 'undefined') {
+            var monthLabels = {{ months_labels|safe }};
+            var patientSeries = {{ monthly_patients|safe }};
+            var visitSeries = {{ monthly_visits|safe }};
+
+    new Chart(trendCanvas, {
+        type: 'line',
+        data: {
+            labels: monthLabels,
+            datasets: [
+                {
+                    label: 'Patients',
+                    data: patientSeries,
+                    borderColor: '#0891b2',
+                    backgroundColor: 'rgba(8,145,178,0.12)',
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#0891b2',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Checkups',
+                    data: visitSeries,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16,185,129,0.08)',
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#10b981',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 1200 },
+            interaction: { mode: 'index', intersect: false },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1, font: { size: 10 } },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                x: {
+                    ticks: { font: { size: 10 } },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { bodyFont: { size: 11 } }
+            }
+        }
     });
+        }
+    } catch (e) { console.error('Trend Chart:', e); }
+
+    // ---- DIET PLAN-TYPE HORIZONTAL BAR CHART ----
+    try {
+        var planCanvas = document.getElementById('planBarChart');
+        if (planCanvas && typeof Chart !== 'undefined') {
+            var planLabels = {{ plan_labels|safe }};
+            var planValues = {{ plan_values|safe }};
+    var barColors = ['#0891b2', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4'];
+
+    new Chart(planCanvas, {
+        type: 'bar',
+        data: {
+            labels: planLabels,
+            datasets: [{
+                label: 'Checkups',
+                data: planValues,
+                backgroundColor: planLabels.map(function (_, i) {
+                    return barColors[i % barColors.length] + 'bb';
+                }),
+                borderColor: planLabels.map(function (_, i) {
+                    return barColors[i % barColors.length];
+                }),
+                borderWidth: 2,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 1000 },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1, font: { size: 10 } },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                y: {
+                    ticks: { font: { size: 10 } },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function (c) { return ' ' + c.parsed.x + ' checkup(s)'; }
+                    }
+                }
+            }
+        }
+    });
+        }
+    } catch (e) { console.error('Plan Chart:', e); }
+
+    // ---- STAT COUNTER ANIMATION ----
+    try {
+        document.querySelectorAll('.stat-info h4').forEach(function (stat) {
+            var raw = stat.textContent.trim();
+            var target = parseFloat(raw) || 0;
+            if (target > 0 && raw.indexOf('%') === -1 && raw.indexOf('.') === -1) {
+                var current = 0;
+                var step = Math.ceil(target / 25);
+                var timer = setInterval(function () {
+                    current += step;
+                    if (current >= target) { stat.textContent = raw; clearInterval(timer); }
+                    else { stat.textContent = current; }
+                }, 40);
+            }
+        });
+    } catch (e) { console.error('Counter:', e); }
+
+}); // end window.load
 </script>
 {% endblock %}

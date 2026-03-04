@@ -27,6 +27,7 @@ class Checkup(models.Model):
     bmr = models.FloatField()
     tdee = models.FloatField()
     category = models.CharField(max_length=20) # Underweight, Normal, Overweight, Obese
+    blood_pressure = models.CharField(max_length=20, default="120/80")
     
     # Target Macros (Computed)
     protein_target = models.FloatField(default=0)

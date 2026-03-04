@@ -1,4 +1,531 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    {% endblock %}
+<style>
+    :root {
+        --p: #0891b2;
+        --p2: #06b6d4;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+    }
+
+    .pt-page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-bottom: 60px;
+        animation: ptFade .5s ease-out both;
+    }
+
+    @keyframes ptFade {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    /* HERO */
+    .pt-hero {
+        background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 60%, #22d3ee 100%);
+        border-radius: 22px;
+        padding: 44px 48px 36px;
+        color: #fff;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(8, 145, 178, 0.22);
+    }
+
+    .pt-hero::before {
+        content: '\f0c0';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        right: 48px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 120px;
+        opacity: .05;
+    }
+
+    .pt-hero h2 {
+        font-size: 28px;
+        font-weight: 800;
+        margin: 0 0 6px;
+        letter-spacing: -.5px;
+    }
+
+    .pt-hero p {
+        font-size: 15px;
+        opacity: .85;
+        font-weight: 300;
+        margin: 0;
+    }
+
+    .pt-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, .18);
+        border-radius: 30px;
+        padding: 6px 16px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-top: 16px;
+        backdrop-filter: blur(4px);
+    }
+
+    /* STATS ROW */
+    .pt-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .pt-stat-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 20px 24px;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: all .2s;
+    }
+
+    .pt-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    }
+
+    .pt-stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .pt-stat-lbl {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: #94a3b8;
+    }
+
+    .pt-stat-val {
+        font-size: 22px;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1.1;
+    }
+
+    /* SEARCH BAR */
+    .pt-search-bar {
+        background: #fff;
+        border-radius: 18px;
+        padding: 18px 22px;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+        margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .pt-search-icon {
+        color: #94a3b8;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .pt-search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        font-size: 15px;
+        font-family: inherit;
+        font-weight: 500;
+        color: var(--dark);
+        background: transparent;
+    }
+
+    .pt-search-input::placeholder {
+        color: #cbd5e1;
+    }
+
+    /* GRID */
+    .pt-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 18px;
+    }
+
+    .pt-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 22px 24px;
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+        transition: all .25s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pt-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--p);
+    }
+
+    .pt-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(8, 145, 178, .12);
+        border-color: #bae6fd;
+    }
+
+    .pt-card-top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+
+    .pt-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #0891b2, #34d399);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .pt-name {
+        font-size: 17px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .pt-id {
+        font-size: 12px;
+        color: #94a3b8;
+        font-weight: 600;
+        margin-top: 2px;
+    }
+
+    .pt-info-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 6px;
+        font-weight: 500;
+    }
+
+    .pt-info-row i {
+        width: 16px;
+        color: var(--p);
+    }
+
+    .pt-divider {
+        height: 1px;
+        background: #f1f5f9;
+        margin: 14px 0;
+    }
+
+    .pt-bmi-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .pt-bmi-val {
+        font-size: 20px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .pt-category-badge {
+        font-size: 11px;
+        font-weight: 800;
+        padding: 4px 12px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .badge-underweight {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .badge-normal {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .badge-overweight {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .badge-obese {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .pt-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .pt-btn {
+        flex: 1;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: all .2s;
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+    }
+
+    .pt-btn-primary {
+        background: var(--p);
+        color: #fff;
+    }
+
+    .pt-btn-primary:hover {
+        background: #0e7490;
+    }
+
+    .pt-btn-outline {
+        background: #f8fafc;
+        color: #475569;
+        border: 1.5px solid #e2e8f0;
+    }
+
+    .pt-btn-outline:hover {
+        background: #f1f5f9;
+    }
+
+    /* EMPTY STATE */
+    .pt-empty {
+        text-align: center;
+        padding: 80px 40px;
+        color: #94a3b8;
+    }
+
+    .pt-empty i {
+        font-size: 56px;
+        margin-bottom: 16px;
+        opacity: .4;
+    }
+
+    .pt-empty h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #64748b;
+        margin-bottom: 8px;
+    }
+</style>
+
+<div class="pt-page">
+    <!-- HERO -->
+    <div class="pt-hero">
+        <h2><i class="fas fa-users" style="margin-right:10px;"></i>All Patients</h2>
+        <p>Complete registry of every patient in the LifeCare system</p>
+        <div class="pt-hero-badge">
+            <i class="fas fa-user-circle"></i>
+            {{ patients|length }} Patient{{ patients|length|pluralize }} Registered
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="pt-stats">
+        <div class="pt-stat-card">
+            <div class="pt-stat-icon" style="background:#e0f2fe; color:#0891b2;">
+                <i class="fas fa-users"></i>
+            </div>
+            <div>
+                <div class="pt-stat-lbl">Total Patients</div>
+                <div class="pt-stat-val">{{ patients|length }}</div>
+            </div>
+        </div>
+        <div class="pt-stat-card">
+            <div class="pt-stat-icon" style="background:#dcfce7; color:#16a34a;">
+                <i class="fas fa-mars"></i>
+            </div>
+            <div>
+                <div class="pt-stat-lbl">Male</div>
+                <div class="pt-stat-val">{{ male_count }}</div>
+            </div>
+        </div>
+        <div class="pt-stat-card">
+            <div class="pt-stat-icon" style="background:#fce7f3; color:#db2777;">
+                <i class="fas fa-venus"></i>
+            </div>
+            <div>
+                <div class="pt-stat-lbl">Female</div>
+                <div class="pt-stat-val">{{ female_count }}</div>
+            </div>
+        </div>
+        <div class="pt-stat-card">
+            <div class="pt-stat-icon" style="background:#fef3c7; color:#d97706;">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div>
+                <div class="pt-stat-lbl">Total Visits</div>
+                <div class="pt-stat-val">{{ total_visits }}</div>
+            </div>
+        </div>
+        <div class="pt-stat-card">
+            <div class="pt-stat-icon" style="background:#ede9fe; color:#7c3aed;">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div>
+                <div class="pt-stat-lbl">Quick Add</div>
+                <div class="pt-stat-val">
+                    <a href="{% url 'new_patient' %}"
+                        style="color:#0891b2; font-size:13px; text-decoration:none; font-weight:700;">+ New</a>
+                </div>
+            </div>
+        </div>
+        <div class="pt-stat-card">
+            <div class="pt-stat-icon" style="background:#fae8ff; color:#9333ea;">
+                <i class="fas fa-search"></i>
+            </div>
+            <div>
+                <div class="pt-stat-lbl">Advanced Search</div>
+                <div class="pt-stat-val">
+                    <a href="{% url 'search_patient' %}"
+                        style="color:#0891b2; font-size:13px; text-decoration:none; font-weight:700;">Search</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="pt-search-bar">
+        <i class="fas fa-search pt-search-icon"></i>
+        <input type="text" id="ptSearch" class="pt-search-input" placeholder="Filter by name or phone..."
+            oninput="filterPatients(this.value)">
+    </div>
+
+    <!-- GRID -->
+    <div class="pt-grid" id="patientGrid">
+        {% for p in patients %}
+        {% with latest=p.checkup_set.last %}
+        <div class="pt-card" data-name="{{ p.name|lower }}" data-phone="{{ p.phone }}">
+            <div class="pt-card-top">
+                <div class="pt-avatar">{{ p.name|slice:":1"|upper }}</div>
+                <div>
+                    <div class="pt-name">{{ p.name }}</div>
+                    <div class="pt-id">ID #{{ p.id }} &bull; {{ p.gender }}</div>
+                </div>
+            </div>
+
+            <div class="pt-info-row">
+                <i class="fas fa-phone-alt"></i> {{ p.phone }}
+            </div>
+            <div class="pt-info-row">
+                <i class="fas fa-map-marker-alt"></i> {{ p.address|default:"—" }}
+            </div>
+            <div class="pt-info-row">
+                <i class="fas fa-clipboard-list"></i>
+                {{ p.checkup_set.count }} Visit{{ p.checkup_set.count|pluralize }}
+            </div>
+
+            {% if latest %}
+            <div class="pt-divider"></div>
+            <div class="pt-bmi-row">
+                <div>
+                    <div
+                        style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:#94a3b8; margin-bottom:2px;">
+                        Latest BMI</div>
+                    <div class="pt-bmi-val">{{ latest.bmi }}</div>
+                </div>
+                <div>
+                    {% if latest.category == 'Underweight' %}
+                    <span class="pt-category-badge badge-underweight">{{ latest.category }}</span>
+                    {% elif latest.category == 'Normal' %}
+                    <span class="pt-category-badge badge-normal">{{ latest.category }}</span>
+                    {% elif latest.category == 'Overweight' %}
+                    <span class="pt-category-badge badge-overweight">{{ latest.category }}</span>
+                    {% else %}
+                    <span class="pt-category-badge badge-obese">{{ latest.category }}</span>
+                    {% endif %}
+                    <div style="font-size:11px; color:#94a3b8; text-align:right; margin-top:4px;">{{ latest.date|date:"Md, Y" }}</div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="pt-actions">
+                {% if latest %}
+                <a href="{% url 'generate_dynamic_diet_plan' p.id latest.id %}" class="pt-btn pt-btn-primary">
+                    <i class="fas fa-file-medical"></i> View Report
+                </a>
+                {% endif %}
+                <a href="{% url 'search_patient' %}?view_id={{ p.id }}" class="pt-btn pt-btn-outline">
+                    <i class="fas fa-history"></i> History
+                </a>
+            </div>
+        </div>
+        {% endwith %}
+        {% empty %}
+        <div class="pt-empty" style="grid-column: 1 / -1;">
+            <i class="fas fa-user-slash"></i>
+            <h3>No patients registered yet</h3>
+            <p>Start by adding your first patient to the system.</p>
+            <a href="{% url 'new_patient' %}" class="pt-btn pt-btn-primary"
+                style="display:inline-flex; margin-top:16px; max-width:200px;">
+                <i class="fas fa-user-plus"></i> Add First Patient
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function filterPatients(q) {
+        const cards = document.querySelectorAll('#patientGrid .pt-card');
+        const term = q.toLowerCase().trim();
+        cards.forEach(card => {
+            const name = card.dataset.name || '';
+            const phone = card.dataset.phone || '';
+            card.style.display = (!term || name.includes(term) || phone.includes(term)) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}
