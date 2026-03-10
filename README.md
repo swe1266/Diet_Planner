@@ -21,10 +21,11 @@ Built with a focus on **Visual Excellence** and **Clinical Precision**, LifeCare
 - **Metabolic Engine:** Instant calculation of **BMI**, **BMR** (Mifflin-St Jeor), and **TDEE**.
 - **Clinical Update (AJAX):** Seamless modal-based updates for existing patients. Search by phone number and update vitals without page reloads.
 
-### � 3. Intelligent Diet Generation
+### 🍽️ 3. Intelligent Diet Generation
 - **Macro-Targeting:** Automatic calorie splits: **50% Carbohydrates, 20% Protein, and 30% Fats**.
 - **Meal-Flow Optimization:** Generates specific caloric targets for Breakfast, Lunch, Snacks, and Dinner.
 - **Dietary Personalization:** Supports Veg, Non-Veg, Vegan, and Eggetarian preferences across various meal frequencies (3-Meal or 5-Meal plans).
+- **Disease-Aware Filtering:** Dynamically adjusts nutrient allowances (Sodium, Sugar, Fats, etc.) based on a patient's medical history, guaranteeing safe meal planning prioritizing severe diseases.
 
 ### 🖥️ 4. Premium UX/UI Design
 - **Glassmorphic Ecosystem:** A sophisticated dark-navy interface with blur effects and sleek transitions.
@@ -62,6 +63,11 @@ Adjusted based on physical activity multipliers:
 - **Moderately Active:** `BMR × 1.55`
 - **Very Active:** `BMR × 1.725`
 
+### 3. Clinical Disease Restriction Engine
+Automatically filters the food database by analyzing a patient's conditions.
+- Uses clinical thresholds to calculate the max per-serving limit for restricted macronutrients or micronutrients (e.g., Sodium max 375mg/serving for a 1500mg daily limit). 
+- Resolves medical conflicts automatically using a **Priority Engine** (e.g., Kidney Failure rules overwrite Constipation rules).
+
 ---
 
 ## ⚙️ Installation & Setup
@@ -92,7 +98,14 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 5. Launch the Server
+### 5. Seed the Disease Database
+Import the initial clinical constraints and diseases via our master CSV file:
+```bash
+python manage.py seed_diseases
+```
+*(Use `--backfill` if you are updating an existing database with previous patient records).*
+
+### 6. Launch the Server
 ```bash
 python manage.py runserver
 ```
