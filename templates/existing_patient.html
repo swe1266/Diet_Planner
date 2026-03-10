@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
@@ -934,8 +934,9 @@
         {% for row in patients_data %}
         {% with p=row.patient l=row.latest v=row.total_visits %}
         <div class="ep-patient-card cat-{% if l %}{{ l.category }}{% else %}unknown{% endif %}" onclick="loadPatient({{ p.id }}, '{{ p.name|escapejs }}', '{{ p.gender|escapejs }}', '{{ p.phone|escapejs }}', '{{ p.address|escapejs }}',
-                                  {% if l %}'{{ l.dietary|escapejs }}', {{ l.age }}, {{ l.height }}, {{ l.weight }}, '{{ l.plan_type|escapejs }}', '{{ l.blood_pressure|escapejs }}'
-                                  {% else %}'', 0, 0, 0, '3-Meal', '120/80'{% endif %})">
+                                  {% if l %}'{{ l.dietary|escapejs }}', {{ l.age }}, {{ l.height }}, {{ l.weight }}, '{{ l.plan_type|escapejs }}', '{{ l.blood_pressure|escapejs }}', '{{ l.diseases|escapejs }}'
+                                  {% else %}'', 0, 0, 0, '3-Meal', '120/80', ''{% endif %})">
+
 
             <!-- Avatar -->
             <div class="ep-pat-avatar av-{% if l %}{{ l.category }}{% else %}unknown{% endif %}">
@@ -1092,6 +1093,32 @@
                     </div>
                 </div>
 
+                <!-- ===== DISEASE MULTI-SELECTOR ===== -->
+                <div style="margin-bottom:24px;">
+                    <label
+                        style="display:block; font-size:13px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;">
+                        <i class="fas fa-stethoscope" style="color:#0891b2; margin-right:6px;"></i>
+                        Medical Conditions
+                        <span
+                            style="font-weight:400; color:#94a3b8; text-transform:none; font-size:12px; letter-spacing:0;">—
+                            type to search &amp; add multiple</span>
+                    </label>
+
+                    <input type="hidden" name="diseases" id="epDiseasesHidden" value="">
+
+                    <div id="epDiseaseTagBox" onclick="document.getElementById('epDiseaseSearch').focus()">
+                        <input id="epDiseaseSearch" type="text" placeholder="e.g. Diabetes, Arthritis, Hypertension…"
+                            autocomplete="off">
+                    </div>
+
+                    <div id="epDiseaseCount"
+                        style="display:none; margin-top:6px; font-size:12px; color:#0891b2; font-weight:600;">
+                        <i class="fas fa-check-circle"></i> <span id="epDiseaseCountNum">0</span> condition(s) selected
+                    </div>
+
+                    <div id="epDiseaseDrop"></div>
+                </div>
+
                 <button type="submit" class="update-btn">
                     <i class="fas fa-sync-alt"></i> Recalculate &amp; Sync Records
                 </button>
@@ -1100,15 +1127,265 @@
     </div>
 </div>
 
+<style>
+    /* ---- EP Disease Tag Box ---- */
+    #epDiseaseTagBox {
+        min-height: 52px;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 9px 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        cursor: text;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    #epDiseaseTagBox:focus-within {
+        border-color: #0891b2;
+        box-shadow: 0 0 0 3px rgba(8, 145, 178, .15);
+    }
+
+    #epDiseaseSearch {
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        font-family: inherit;
+        min-width: 200px;
+        flex: 1;
+        color: #0f172a;
+    }
+
+    #epDiseaseSearch::placeholder {
+        color: #94a3b8;
+    }
+
+    .ep-dtag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: linear-gradient(135deg, #0891b2 0%, #0c4a6e 100%);
+        color: #fff;
+        border-radius: 999px;
+        padding: 5px 12px 5px 11px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        animation: epTagPop .18s cubic-bezier(.175, .885, .32, 1.275) both;
+    }
+
+    @keyframes epTagPop {
+        from {
+            transform: scale(.7);
+            opacity: 0
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1
+        }
+    }
+
+    .ep-dtag-rm {
+        background: rgba(255, 255, 255, .25);
+        border: none;
+        color: #fff;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: background .15s;
+        padding: 0;
+        font-family: inherit;
+    }
+
+    .ep-dtag-rm:hover {
+        background: rgba(255, 255, 255, .45);
+    }
+
+    #epDiseaseDrop {
+        position: fixed;
+        z-index: 99999;
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
+        max-height: 220px;
+        overflow-y: auto;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, .14);
+        display: none;
+        font-size: 14px;
+        scrollbar-width: thin;
+    }
+
+    .ep-dsug {
+        padding: 10px 16px;
+        cursor: pointer;
+        transition: background .12s;
+        border-bottom: 1px solid #f1f5f9;
+        color: #1e293b;
+    }
+
+    .ep-dsug:last-child {
+        border-bottom: none;
+    }
+
+    .ep-dsug:hover,
+    .ep-dsug.active {
+        background: #f0f9ff;
+        color: #0c4a6e;
+        font-weight: 600;
+    }
+
+    .ep-dsug mark {
+        background: #bae6fd;
+        color: #0c4a6e;
+        border-radius: 3px;
+        padding: 0 2px;
+        font-weight: 700;
+    }
+
+    .ep-dsug-empty {
+        padding: 12px 16px;
+        color: #94a3b8;
+        font-style: italic;
+        text-align: center;
+    }
+</style>
+
 <script>
-    // BMI chip toggle
+    var EP_ALL_DISEASES = {{ all_diseases_json| safe }};
+
+    // ===== DISEASE PICKER =====
+    (function () {
+        var selected = [];
+        var inp = document.getElementById('epDiseaseSearch');
+        var drop = document.getElementById('epDiseaseDrop');
+        var tagBox = document.getElementById('epDiseaseTagBox');
+        var hidden = document.getElementById('epDiseasesHidden');
+        var cntWrap = document.getElementById('epDiseaseCount');
+        var cntNum = document.getElementById('epDiseaseCountNum');
+        var activeIdx = -1;
+
+        function syncHidden() {
+            hidden.value = selected.join(',');
+            cntWrap.style.display = selected.length ? 'block' : 'none';
+            if (cntNum) cntNum.textContent = selected.length;
+        }
+
+        function clearTags() {
+            tagBox.querySelectorAll('.ep-dtag').forEach(function (t) { t.remove(); });
+            selected = [];
+            syncHidden();
+        }
+
+        function addTag(name) {
+            if (!name || selected.indexOf(name) !== -1) return;
+            selected.push(name);
+            var tag = document.createElement('span');
+            tag.className = 'ep-dtag';
+            var txt = document.createElement('span'); txt.textContent = name;
+            var btn = document.createElement('button');
+            btn.className = 'ep-dtag-rm'; btn.type = 'button'; btn.title = 'Remove';
+            btn.innerHTML = '&times;';
+            btn.onclick = function () {
+                tag.remove();
+                selected = selected.filter(function (s) { return s !== name; });
+                syncHidden();
+            };
+            tag.appendChild(txt); tag.appendChild(btn);
+            tagBox.insertBefore(tag, inp);
+            syncHidden();
+        }
+
+        function highlight(text, q) {
+            var idx = text.toLowerCase().indexOf(q.toLowerCase());
+            if (idx < 0) return document.createTextNode(text);
+            var frag = document.createDocumentFragment();
+            frag.appendChild(document.createTextNode(text.slice(0, idx)));
+            var m = document.createElement('mark'); m.textContent = text.slice(idx, idx + q.length);
+            frag.appendChild(m);
+            frag.appendChild(document.createTextNode(text.slice(idx + q.length)));
+            return frag;
+        }
+
+        function posDrop() {
+            var r = tagBox.getBoundingClientRect();
+            drop.style.top = (r.bottom + 4) + 'px';
+            drop.style.left = r.left + 'px';
+            drop.style.width = r.width + 'px';
+        }
+
+        function showDrop(q) {
+            drop.innerHTML = ''; activeIdx = -1;
+            if (!q.trim()) { drop.style.display = 'none'; return; }
+            var matches = EP_ALL_DISEASES.filter(function (d) {
+                return d.toLowerCase().indexOf(q.toLowerCase()) !== -1 && selected.indexOf(d) === -1;
+            }).slice(0, 35);
+            if (!matches.length) {
+                var empty = document.createElement('div');
+                empty.className = 'ep-dsug-empty'; empty.textContent = 'No matching disease found.';
+                drop.appendChild(empty);
+            } else {
+                matches.forEach(function (d) {
+                    var item = document.createElement('div'); item.className = 'ep-dsug';
+                    item.appendChild(highlight(d, q));
+                    item.onmousedown = function (e) {
+                        e.preventDefault(); addTag(d); inp.value = '';
+                        drop.style.display = 'none'; inp.focus();
+                    };
+                    drop.appendChild(item);
+                });
+            }
+            posDrop(); drop.style.display = 'block';
+        }
+
+        function setActive(idx) {
+            var items = drop.querySelectorAll('.ep-dsug');
+            items.forEach(function (el, i) { el.classList.toggle('active', i === idx); });
+            if (items[idx]) items[idx].scrollIntoView({ block: 'nearest' });
+        }
+
+        inp.addEventListener('input', function () { showDrop(this.value); });
+        inp.addEventListener('focus', function () { if (this.value) showDrop(this.value); });
+        inp.addEventListener('keydown', function (e) {
+            var items = drop.querySelectorAll('.ep-dsug');
+            if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx + 1, items.length - 1); setActive(activeIdx); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx - 1, 0); setActive(activeIdx); }
+            else if (e.key === 'Enter') { e.preventDefault(); if (activeIdx >= 0 && items[activeIdx]) { addTag(items[activeIdx].textContent); inp.value = ''; drop.style.display = 'none'; } }
+            else if (e.key === 'Escape') { drop.style.display = 'none'; }
+            else if (e.key === 'Backspace' && !inp.value && selected.length) {
+                var last = tagBox.querySelector('.ep-dtag:last-of-type');
+                if (last) { last.remove(); selected = selected.slice(0, -1); syncHidden(); }
+            }
+        });
+        document.addEventListener('click', function (e) { if (!tagBox.contains(e.target) && !drop.contains(e.target)) drop.style.display = 'none'; });
+        window.addEventListener('scroll', function () { if (drop.style.display === 'block') posDrop(); }, true);
+        window.addEventListener('resize', function () { if (drop.style.display === 'block') posDrop(); });
+
+        // Expose helper to populate from outside (called by loadPatient)
+        window.epDiseaseSetSelected = function (diseasesStr) {
+            clearTags();
+            if (!diseasesStr) return;
+            diseasesStr.split(',').forEach(function (d) {
+                var name = d.trim();
+                if (name) addTag(name);
+            });
+        };
+    })();
+
+    // ===== BMI chip toggle =====
     function setEpBmi(val) {
         document.getElementById('epBmiInput').value = val;
         document.querySelectorAll('.ep-chip').forEach(function (c) { c.classList.remove('active-chip'); });
-        var map = {
-            '': 'chip-all', 'Underweight': 'chip-under', 'Normal': 'chip-normal',
-            'Overweight': 'chip-over', 'Obese': 'chip-obese'
-        };
+        var map = { '': 'chip-all', 'Underweight': 'chip-under', 'Normal': 'chip-normal', 'Overweight': 'chip-over', 'Obese': 'chip-obese' };
         document.querySelectorAll('.' + (map[val] || 'chip-all')).forEach(function (c) { c.classList.add('active-chip'); });
     }
 
@@ -1120,15 +1397,13 @@
             clearTimeout(epTimer);
             var v = this.value.trim();
             if (v.length === 0 || v.length >= 2) {
-                epTimer = setTimeout(function () {
-                    document.getElementById('epSearchForm').submit();
-                }, 600);
+                epTimer = setTimeout(function () { document.getElementById('epSearchForm').submit(); }, 600);
             }
         });
     }
 
-    // Load patient data into modal and open it
-    function loadPatient(id, name, gender, phone, address, diet, age, height, weight, plan, bp) {
+    // Load patient into modal (diseases param is a comma-separated string)
+    function loadPatient(id, name, gender, phone, address, diet, age, height, weight, plan, bp, diseases) {
         document.getElementById('epHiddenId').value = id;
         document.getElementById('epName').innerText = name;
         document.getElementById('epGender').innerText = gender;
@@ -1141,7 +1416,10 @@
         document.getElementById('epDietSel').value = diet || 'Non-Veg';
         document.getElementById('epPlanSel').value = plan || '3-Meal';
         document.getElementById('epBp').value = bp || '120/80';
+        // Pre-populate diseases
+        if (window.epDiseaseSetSelected) epDiseaseSetSelected(diseases || '');
         document.getElementById('epModal').style.display = 'block';
+        setTimeout(function () { document.getElementById('epModal').scrollTop = 0; }, 50);
     }
 
     function closeEpModal() {

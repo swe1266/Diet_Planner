@@ -1,0 +1,740 @@
+Diseases,Nutrients
+Aneurysm,"Sodium,Saturated fat"
+Acanthosis nigricans,Sugar
+Acne,"Sugar,Carbs"
+Acromegaly,"Sugar,Sodium,Saturated fat"
+Acute cholecystitis,Fat
+Acute kidney injury,"Sodium,potassium,phosphorous,fliuds"
+Acute pancreatitis,Fat
+Adenomyosis,"Saturated Fat,sugar(moderate)"
+ADHD (attention deficit hyperactivity disorder),Sugar
+Alcohol-related liver disease (ARLD),Sodium
+Allergic rhinitis,Fat
+Allergy,"Sodium,Poteins,Fat"
+Alzheimer's disease,"Saturated Fat,sugar,Sodium"
+Amyloidosis,Sodium
+Anaemia,Calcium
+Anal cancer,"Saturated fat,Sugar, Sodium"
+Angina,"Fat,Sodium,Sugar(medium), carbs"
+oedema,Sodium
+Ankylosing spondylitis,"Sugar,Sodium,Fat"
+Antiphospholipid syndrome,Vitamin K
+Appendicitis,"Fat,Fiber,Sugar"
+Arrhythmia,"Sodium,Fat,Sugar,Vitamin k"
+Arthritis,"Sodium,Fat,Carbs,Sugar"
+Asbestosis,"Sodium,Fat,Sugar"
+Aspergillosis,Sugar
+Atherosclerosis,"Sodium,Fat"
+Atrial fibrillation,"Sodium,Sugar,Fat"
+Baker's cyst,"Sodium,Saturated fat,Carbs"
+Balanitis,Sugar
+Bengin Brain tumour,"Sugar,Saturated fat"
+Bengin Prostatic Hyperplasia,"Sodium,Calcium,Fat,Carbs,Sugar"
+Bile duct cancer (cholangiocarcinoma),"Fat,Fiber,Sugar,Nirate"
+Bladder cancer,Saturated fat
+Bladder Pain Syndrome (BPS),"Acidic foods, Caffeine, Alcohol, Spicy foods, Artificial sweeteners"
+Bladder Stones,"Oxalates, Sodium, Excessive animal protein"
+Blepharitis,"Refined sugars, Saturated fats"
+Blisters,N/A (Focus on hydration)
+Sepsis,N/A (Requires immediate hospital intervention/IV fluids)
+High Blood Pressure,"Sodium, Saturated fats, Alcohol"
+Low Blood Pressure,Excessive alcohol (Moderate sodium is often encouraged)
+Body Dysmorphic Disorder (BDD),N/A
+Boils,"Refined sugars, High-glycemic carbs"
+Bone Cancer,Raw/undercooked foods (if neutropenic/immunocompromised)
+Bone Cyst,Sodium (to maintain bone density)
+Borderline Personality Disorder,"Alcohol, Excessive Caffeine"
+Botulism,N/A (Emergency medical treatment/Antitoxins required)
+Bowel Cancer,"Processed meats, Red meats, Alcohol, Refined sugars"
+Bowel Incontinence,"Caffeine, Alcohol, Dairy (if lactose intolerant), Spices"
+Bowel Polyps,"Red meat, Processed meat, Saturated fats"
+Bowen's Disease,N/A (Primarily skin-related; focus on general antioxidants)
+Flat Head Syndrome,N/A
+Brain Abscess,N/A (Requires immediate antibiotics/surgery)
+Brain Aneurysm,"Sodium, Caffeine, Saturated fats"
+Brain Death,N/A (Medical state where nutritional restriction is no longer applicable)
+Brain Haemorrhage,"Sodium, Caffeine, Alcohol, Saturated fats"
+Brain Tumours (Cancerous),"Refined sugars, Processed meats, Alcohol"
+Brain Tumours (Benign),"Sodium, Saturated fats (to manage intracranial pressure)"
+Breast Abscess,"Refined sugars, Saturated fats"
+Breast Cancer (Men & Women),"Alcohol, Processed meats, Saturated fats, Red meat"
+Breath-holding (Children),Caffeine (Stimulants)
+Broken Ankle,"Sodium, Alcohol, Excessive Caffeine"
+Broken Arm or Wrist,"Sodium, Alcohol, Excessive Caffeine"
+Broken Collarbone,N/A
+Cancer (General),"Sugar, Saturated fat, Alcohol "
+Carbon monoxide poisoning,N/A
+Cardiomyopathy,"Sodium, Fluids, Saturated fat, Alcohol"
+Cardiovascular disease,"Sodium, Saturated fat, Sugar"
+Carpal tunnel syndrome,"Sodium, Sugar"
+Cat bites / Animal bites,N/A
+Childhood cataracts,N/A
+Cataracts in adults,Sugar
+Catarrh (Excess mucus),"calcium, Sugar"
+Cavernoma,"Sodium, Alcohol"
+Cellulitis,Sugar
+Cerebral palsy,N/A
+Cervical cancer,"Sugar, Saturated fat"
+Cervical spondylosis,"Sugar, Saturated fat"
+Charcot-Marie-Tooth disease,N/A
+Charles Bonnet syndrome,N/A
+Chest infection,"Sugar, calcium"
+Chiari malformation,N/A
+Chickenpox,N/A
+Chilblains,N/A
+Childhood cataracts,"Sugar, Galactose"
+"Chipped, broken or cracked tooth","Sugar, Carbohydrates"
+Chlamydia,N/A
+Acute cholecystitis,Fat
+Cholera,"Sugar, Fat, Fiber"
+Cholesteatoma,N/A
+High cholesterol,"Saturated fat, Trans fat, Sugar"
+Myalgic encephalomyelitis or chronic fatigue syndrome (ME/CFS),"Sugar, Caffeine"
+Chronic kidney disease,"Sodium, Potassium, Phosphorus, Protein"
+Chronic lymphocytic leukaemia,"Sugar, Saturated fat"
+Chronic myeloid leukaemia,"Sugar, Saturated fat"
+Chronic obstructive pulmonary disease (COPD),"Carbohydrates, Sodium"
+Chronic pancreatitis,"Fat, Sugar"
+Chronic traumatic encephalopathy (CTE),N/A
+Cirrhosis,Sodium
+Creutzfeldt-Jakob disease (CJD),N/A
+Claustrophobia,N/A
+Cleft lip and palate,N/A
+Clostridioides difficile (C. diff) infection,"Fat, Sugar, Fiber"
+Clubfoot,N/A
+Cluster headaches,"Alcohol, Sodium"
+Tailbone (coccyx) pain,N/A
+Coeliac disease,Gluten
+Cold sores,"Arginine (Protein), Sugar"
+Colic,Proteins (specifically from cow's milk)
+Bowel cancer (Colon cancer),"Saturated fat, Sugar, Alcohol"
+Colour vision deficiency,N/A
+Common cold,"Sugar, Alcohol"
+Compartment syndrome,N/A
+Complex regional pain syndrome,"Sugar, Saturated fat, Sodium, Alcohol"
+Head injury and concussion,"Sugar, Saturated fat, Alcohol"
+Congenital heart disease,"Sodium, Saturated fat, Trans fat"
+Developmental dysplasia of the hip,N/A
+Conjunctivitis,N/A
+Constipation,"Saturated fat, Carbohydrates (refined), Sugar"
+Contact dermatitis,N/A
+Corns and calluses,N/A
+Coronary heart disease,"Sodium, Saturated fat, Trans fat, Sugar"
+Corticobasal degeneration,"Sugar, Saturated fat, Sodium"
+Costochondritis,"Sugar, Saturated fat, Sodium"
+COVID-19,"Sugar, Saturated fat, Sodium, Alcohol"
+Cradle cap,N/A
+Craniosynostosis,N/A
+Creutzfeldt-Jakob disease,N/A
+Crohn's disease,"Fiber (insoluble), Sugar, Saturated fat, Lactose"
+Croup,N/A
+Cushing's syndrome,"Sodium, Sugar, Saturated fat"
+Cuts and grazes,N/A
+Cyclical vomiting syndrome,"Caffeine, Saturated fat, Sugar"
+Cyclospora,"Fat, Sugar, Fiber, Lactose"
+Cyclothymia,"Sugar, Caffeine, Alcohol"
+Cystic fibrosis,"N/A (Focus is on high-calorie, high-fat, and high-sodium intake)"
+Cystitis,"Caffeine, Alcohol, Sugar"
+Cytomegalovirus (CMV),N/A
+Dandruff,N/A
+Deafblindness,N/A
+Deafness (Hearing loss),N/A
+Dehydration,N/A 
+Dementia,N/A
+Dementia (Frontotemporal dementia),N/A
+Dementia (Vascular dementia),"Sodium, Saturated fat,Sugar"
+Dementia with Lewy bodies,"Saturated fat ,Cholesterol,Suagr,Sodium,Calcium"
+Dengue,N/A 
+Dental abscess,N/A
+Depression,N/A
+Detached retina (retinal detachment),N/A
+Developmental co-ordination disorder (dyspraxia) in children,N/A
+Developmental dysplasia of the hip,N/A
+Diabetes,"Sugar, Carbohydrates, Sodium"
+Diabetes insipidus,"Sodium,Protein,Fluid"
+Diabetic ketoacidosis,"Sugar, Carbohydrates"
+Diabetic retinopathy,"Sugar,Saturated fat"
+DiGeorge syndrome (22q11 deletion),N/A
+Diphtheria,N/A
+Discoid eczema,N/A
+Dislocated kneecap and shoulder,"Sugar,Saturated fat,Sodium"
+Dissociative disorders,N/A
+Diverticular disease and diverticulitis,Fiber
+Down's syndrome,N/A
+Dupuytren's contracture,N/A
+DVT (deep vein thrombosis),"Vitamin k,Saturated fat,Sugar"
+Dwarfism (Restricted growth),N/A
+Dysarthria (difficulty speaking),N/A
+Dysentery,"Calcium,Fiber"
+Dyslexia,Sugar
+Dystonia,"Caffeine,Sugar"
+Ear infections,N/A
+Eardrum (burst) – Perforated eardrum,"Calicum,Sodium,Carbs"
+Early or delayed puberty,N/A
+Early or premature menopause," Sugar,carbs,Saturated fat,Sodium"
+Earwax build-up,N/A
+Eating disorders,N/A 
+Ebola virus disease,N/A
+Ectopic pregnancy,N/A
+Ectropion,"Sodium,Carbs,Saturated fat"
+Edwards’ syndrome,N/A
+Ehlers-Danlos syndromes (EDS),"Carbs,Glutten,Sugar,Histamin"
+Ejaculation problems,Sugar
+Encephalitis,"Sodium,sugar,Saturated fat"
+Endocarditis,"Fuild,Sodium"
+Endometrial cancer (Womb/uterus cancer),"Saturated fat, Sugar, Dairy"
+Endometriosis,"Saturated fat, Sugar, Glutten"
+Enlarged prostate,N/A
+Epidermolysis bullosa,N/A
+Epididymitis,N/A
+Epiglottitis,N/A
+Epilepsy,"Sugar,Carbs"
+Erectile dysfunction (impotence),N/A
+Erythema multiforme,N/A
+Erythema nodosum,"Sugar,Saturated fat,"
+Erythrocytosis,"Iron,Vitamin C"
+Erythromelalgia,N/A
+Excessive daytime sleepiness (hypersomnia),N/A
+Excessive sweating (hyperhidrosis),N/A
+Eye cancer,Saturated fat
+Eye infection (Herpes simplex eye infections),N/A
+Eye injuries,N/A
+Fabricated or induced illness,N/A
+Face blindness (Prosopagnosia),N/A
+Falls,N/A
+Febrile seizures,Sugar
+Female genital mutilation (FGM),N/A
+Fetal alcohol spectrum disorder,Alcohol
+Fibroids,"Processed meat, Dairy,Caffeine"
+Fibromyalgia,"Sugar,Carbs,Processed food"
+Fits (children with fever – Febrile seizures),N/A
+Flat feet,"Sugar,Carbs,Processed meet,Sodium"
+Flat head syndrome (plagiocephaly and brachycephaly),N/A
+Flu,N/A
+Food allergy,N/A
+Food intolerance,N/A
+Food poisoning,Fat
+Foot drop,Sugar
+Foreskin problems (Phimosis),"Sugar,Processed meet"
+Frontotemporal dementia,"Sugar,Carbs, Fat"
+Frostbite,"Alcohol,Caffeine"
+Frozen shoulder,"Sugar,Saturated Fat,Sodium"
+Functional neurological disorder,"Sugar,Saturated fat, Alcohol"
+Fungal nail infection,N/A
+Gallbladder cancer,"Saturated fat, Sugar, Alcohol"
+Acute cholecystitis (Gallbladder pain),Fat (specifically Saturated fat)
+Gallstones,"Saturated fat, Sugar, Carbohydrates"
+Ganglion cyst,N/A
+Gangrene,"Sugar, Saturated fat, Sodium"
+Gastritis,"Saturated fat, Caffeine, Alcohol, Sugar"
+Heartburn and acid reflux (GORD),"Saturated fat, Caffeine, Alcohol, Sodium, Sugar"
+Gastroparesis,"Fiber, Fat"
+Gender dysphoria,N/A
+Generalised anxiety disorder (GAD),"Caffeine, Sugar, Alcohol"
+Genital herpes,"Arginine (Protein amino acid), Sugar"
+Genital warts,N/A
+Rubella (German measles),N/A
+Gestational diabetes,"Sugar, Carbohydrates"
+Temporal arteritis (Giant cell arteritis),"Sodium, Sugar, Saturated fat"
+Giardiasis,"Lactose, Fat, Sugar"
+Gilbert's syndrome,Alcohol
+Glandular fever,"Alcohol, Sugar"
+Glaucoma,"Caffeine, Sodium"
+Glomerulonephritis,"Sodium, Potassium, Phosphorus, Protein"
+Glue ear,N/A
+Goitre,"N/A (Focus is on adding Iodine, not restricting standard nutrients)"
+Gonorrhoea,N/A
+Gout,"Purines (Specific proteins), Alcohol, Sugar"
+Granuloma annulare,N/A
+Granulomatosis with polyangiitis (GPA),"Sodium, Sugar"
+Group B strep,N/A
+Growing pains,N/A
+Guillain-Barré syndrome,N/A
+Gum disease,"Sugar, Carbohydrates"
+Gynaecomastia,"Alcohol, Sugar"
+Haemochromatosis,"Iron, Vitamin C, Alcohol"
+Haemophilia,N/A
+Haemophilus influenzae type b (Hib),N/A
+Piles (haemorrhoids),"Saturated fat, Carbohydrates (refined), Alcohol"
+Hamstring injury,"Alcohol, Sugar"
+"Hand, foot and mouth disease","N/A (Focus is on soft, non-acidic textures)"
+Hay fever,"Sugar, Saturated fat, Alcohol"
+Head injury and concussion,"Sugar, Saturated fat, Alcohol"
+Head lice and nits,N/A
+Headaches,"Caffeine, Alcohol, Sodium, Sugar"
+Tension headaches,"Caffeine, Alcohol, Sugar"
+Health anxiety,"Caffeine, Alcohol, Sugar"
+Hearing loss,N/A
+Heart attack,"Sodium, Saturated fat, Trans fat, Sugar"
+Heart block,"Sodium, Saturated fat, Caffeine"
+Coronary heart disease,"Sodium, Saturated fat, Trans fat, Sugar"
+Heart failure,"Sodium, Fluids, Saturated fat"
+Heart rhythm problems (arrhythmia),"Caffeine, Sodium, Alcohol, Saturated fat"
+Heart valve disease,"Sodium, Saturated fat"
+Heartburn and acid reflux,"Saturated fat, Caffeine, Alcohol, Sodium, Sugar"
+Heat exhaustion and heatstroke,"Caffeine, Alcohol"
+Heat rash (prickly heat),N/A
+Heavy periods,"Caffeine, Alcohol"
+Henoch-Schönlein purpura (HSP),"Sodium, Protein (only if kidney involvement occurs)"
+"Hepatitis (General, A, B, and C)","Alcohol, Saturated fat, Sodium, Sugar"
+Hereditary haemorrhagic telangiectasia (HHT),Alcohol
+Hereditary spastic paraplegia,N/A
+Hernia (General),N/A
+"Hernia (hiatus), see Hiatus hernia","Saturated fat, Caffeine, Alcohol, Sodium, Sugar"
+"Hernia (umbilical), see Umbilical hernia",N/A
+"Herpes (genital), see Genital herpes","Arginine, Sugar"
+"Herpes in babies, see Neonatal herpes",N/A
+Herpes simplex eye infections,Arginine
+Herpetic whitlow (whitlow finger),N/A
+Hiatus hernia,"Saturated fat, Caffeine, Alcohol, Sodium, Sugar"
+"Hib, see Haemophilus influenzae type b (Hib)",N/A
+Hidradenitis suppurativa (HS),"Sugar, Dairy (Lactose/Saturated fat), Brewer's yeast"
+High blood pressure,"Sodium, Saturated fat, Alcohol, Caffeine"
+High blood sugar (hyperglycaemia),"Sugar, Carbohydrates"
+High cholesterol,"Saturated fat, Trans fat, Sugar"
+"Hip dysplasia, see Developmental dysplasia of the hip",N/A
+Hirschsprung's disease,"Fiber (must be managed closely based on symptoms), Sugar, Lactose"
+HIV and AIDS,"Sugar, Saturated fat, Trans fat"
+Hives,"Alcohol, Sugar"
+Hoarding disorder,N/A
+Hodgkin lymphoma,"Sugar, Saturated fat, Alcohol"
+"Hookworm, see Worms in humans","Sugar, Carbohydrates"
+"Hughes syndrome, see Antiphospholipid syndrome (APS)",Vitamin K
+"Human bites, see Animal and human bites",N/A
+Human papillomavirus (HPV),N/A
+Huntington's disease,N/A (Focus is on high-calorie diets and altered textures due to swallowing difficulties)
+Hydrocephalus,N/A
+Hydronephrosis,"Sodium, Potassium, Phosphorus"
+"Hyperacusis, see Noise sensitivity (hyperacusis)",N/A
+"Hyperhidrosis, see Excessive sweating (hyperhidrosis)","Caffeine, Alcohol, Sodium"
+Hyperparathyroidism,"Calcium, Vitamin D, Sodium"
+"Hypersomnia, see Excessive daytime sleepiness (hypersomnia)","Alcohol, Sugar, Caffeine"
+"Hypertension, see High blood pressure","Sodium, Saturated fat, Caffeine, Alcohol"
+"Hyperthyroidism, see Overactive thyroid (hyperthyroidism)","Iodine, Caffeine, Sugar"
+"Hypoglycaemia, see Low blood sugar (hypoglycaemia)","Sugar (refined), Alcohol, Caffeine"
+Hypoparathyroidism,"Phosphorus, Sodium"
+"Hypotension, see Low blood pressure (hypotension)","Alcohol, Carbohydrates (large portions)"
+Hypothermia,Alcohol
+"Hypothyroidism, see Underactive thyroid (hypothyroidism)","Sugar, Saturated fat, Soy (highly concentrated proteins)"
+"IBD, see Inflammatory bowel disease","Fiber (insoluble during flares), Sugar, Saturated fat, Lactose"
+Ichthyosis,N/A
+Idiopathic pulmonary fibrosis,"Sodium, Carbohydrates, Saturated fat"
+Impetigo,N/A
+"Impotence, see Erectile dysfunction (impotence)","Sodium, Saturated fat, Trans fat, Sugar, Alcohol"
+"Incontinence (bowel), see Bowel incontinence","Caffeine, Alcohol, Sugar (including artificial sweeteners), Fructose"
+"Incontinence (urinary), see Urinary incontinence","Caffeine, Alcohol, Sugar"
+Indigestion,"Saturated fat, Caffeine, Alcohol, Sodium, Sugar"
+Infected piercings,N/A
+Infertility,"Sugar, Saturated fat, Trans fat, Alcohol"
+Inflammatory bowel disease,"Fiber (insoluble during flares), Sugar, Saturated fat, Lactose"
+"Influenza, see Flu","Sugar, Alcohol"
+Ingrown hairs,N/A
+Ingrown toenail,N/A
+Insect bites and stings,N/A
+Insomnia,"Caffeine, Alcohol, Sugar"
+"Intersex, see Differences in sex development",N/A
+"Interstitial cystitis, see Bladder pain syndrome (BPS)","Caffeine, Alcohol, Sugar"
+Intracranial hypertension,"Sodium, Vitamin A, Saturated fat"
+Iron deficiency anaemia,"Calcium, Caffeine"
+Irritable bowel syndrome (IBS),"Sugar (Fructose), Lactose, Carbohydrates (fermentable), Caffeine, Alcohol"
+Japanese encephalitis,N/A
+Jaundice,"Alcohol, Saturated fat, Sodium, Sugar"
+"Jaundice in newborns, see Newborn jaundice",N/A
+"Jaw pain, see Temporomandibular disorder (TMD)","Caffeine, Sugar (Focus is primarily on soft textures)"
+Jellyfish and other sea creature stings,N/A
+Jet lag,"Caffeine, Alcohol, Sugar"
+Joint hypermobility syndrome,N/A
+Kawasaki disease,"Sodium, Saturated fat, Sugar"
+Keloid scars,N/A
+Keratosis pilaris,N/A
+Kidney cancer,"Sodium, Potassium, Phosphorus"
+"Kidney failure, see Chronic kidney disease","Sodium, Potassium, Phosphorus, Protein"
+Kidney infection,"Caffeine, Alcohol, Sugar"
+Kidney stones,"Sodium, Proteins, Sugar"
+Klinefelter syndrome,N/A
+"Knee cartilage damage, see Meniscus tear (knee cartilage damage)",N/A
+Knock knees,N/A
+Knocked-out tooth,N/A
+Kyphosis,N/A
+Labial fusion,N/A
+Labyrinthitis and vestibular neuritis,"Sodium, Caffeine, Alcohol"
+Lactose intolerance,Lactose
+Lambert-Eaton myasthenic syndrome,N/A
+Laryngeal cancer,"Alcohol, Sugar, Saturated fat"
+Laryngitis,"Caffeine, Alcohol, Saturated fat, Sugar"
+Lazy eye,N/A
+Learning disabilities,N/A
+Leg cramps,"Caffeine, Alcohol"
+"Leg ulcer, see Venous leg ulcer","Sodium, Sugar, Saturated fat"
+Legionnaires' disease,N/A
+Leptospirosis (Weil's disease),N/A
+"Leukaemia (acute lymphoblastic), see Acute lymphoblastic leukaemia","Sugar, Saturated fat"
+"Leukaemia (acute myeloid), see Acute myeloid leukaemia","Sugar, Saturated fat"
+"Leukaemia (chronic lymphocytic), see Chronic lymphocytic leukaemia","Sugar, Saturated fat"
+Leukoplakia,"Alcohol, Sugar"
+Lichen planus,"Sugar, Caffeine, Alcohol"
+Lichen sclerosus,N/A
+Lipoedema,"Sodium, Sugar, Saturated fat"
+Lipoma,N/A
+Listeriosis,"N/A (Focus is on avoiding unpasteurized foods to prevent infection, no specific nutrient restriction during active infection)"
+Liver cancer,"Alcohol, Sodium, Saturated fat, Sugar"
+Liver disease,"Alcohol, Sodium, Saturated fat, Sugar"
+"Liver disease (alcohol-related), see Alcohol-related liver disease","Alcohol, Sodium, Saturated fat, Sugar"
+Long COVID,"Sugar, Saturated fat, Alcohol"
+Long QT syndrome,"Caffeine, Alcohol"
+Long-sightedness,N/A
+Low blood pressure (hypotension),"Alcohol, Carbohydrates (refined/large portions)"
+Low blood sugar (hypoglycaemia),"Sugar (refined), Alcohol, Caffeine"
+Low sperm count,"Saturated fat, Trans fat, Sugar, Alcohol"
+Low white blood cell count,"N/A (Focus is on food safety and pasteurization, not nutrient restriction)"
+"Low-grade brain tumours, see Non-cancerous (benign) brain tumours",N/A
+Lung cancer,"Carbohydrates, Sodium, Saturated fat, Sugar"
+Lupus,"Sodium, Saturated fat, Trans fat, Sugar"
+Lyme disease,"Sugar, Saturated fat, Alcohol"
+Lymphoedema,"Sodium, Saturated fat, Sugar"
+"Lymphoma (Hodgkin), see Hodgkin lymphoma","Sugar, Saturated fat, Alcohol"
+Age-related macular degeneration (AMD),"Sugar, Saturated fat"
+Macular hole,N/A
+Malaria,N/A
+The 'male menopause',"Sugar, Saturated fat, Alcohol"
+Malignant brain tumour (brain cancer),"Sugar, Saturated fat"
+Mallet finger,N/A
+Malnutrition,N/A (Focus is entirely on safe caloric and nutrient reintroduction)
+Marfan syndrome,N/A
+Mastitis,N/A
+Mastocytosis,"Alcohol, Caffeine"
+Mastoiditis,N/A
+Measles,N/A
+Medically unexplained symptoms,N/A
+Melanoma skin cancer,"Sugar, Saturated fat, Alcohol"
+Meningitis,N/A
+Meniscus tear (knee cartilage damage),N/A
+Menopause,"Caffeine, Alcohol, Sodium, Sugar, Saturated fat"
+Early or premature menopause,"Caffeine, Alcohol, Sodium, Sugar, Saturated fat"
+Mesothelioma,"Sodium, Sugar, Saturated fat"
+Metabolic syndrome,"Sugar, Carbohydrates (refined), Saturated fat, Trans fat, Sodium"
+Middle East respiratory syndrome (MERS),N/A
+Migraine,"Caffeine, Alcohol, Tyramine, Sodium"
+Miscarriage,N/A
+Molar pregnancy,N/A
+Moles,N/A
+Molluscum contagiosum,N/A
+Morton's neuroma,N/A
+Motion sickness,"Alcohol, Caffeine, Saturated fat"
+Motor neurone disease (MND),N/A (Focus is on texture modification for swallowing difficulties)
+Mouth cancer,"Alcohol, Sugar"
+"Mouth thrush, see Oral thrush (mouth thrush)","Sugar, Carbohydrates (refined)"
+Mouth ulcers,"Sodium, Caffeine, Alcohol"
+Mpox,N/A
+MRSA,N/A
+Mucositis,"Sodium, Alcohol, Caffeine, Sugar"
+Multiple sclerosis,"Saturated fat, Sodium, Sugar"
+Multiple system atrophy (MSA),N/A (Focus is on altered textures for swallowing and often adding sodium for low blood pressure)
+Mumps,N/A
+Munchausen syndrome,N/A
+Muscular dystrophy,N/A (Focus is on texture modification for swallowing difficulties)
+Myalgic encephalomyelitis or chronic fatigue syndrome (ME/CFS),"Sugar, Caffeine, Alcohol"
+Myasthenia gravis,N/A (Focus is on meal timing and texture to combat chewing/swallowing fatigue)
+Myelodysplastic syndrome (MDS),N/A (Focus is on food safety/pasteurization to prevent infection)
+Myeloma,"Calcium, Phosphorus, Sodium"
+"Myopia, see Short-sightedness (myopia)",N/A
+Myositis,"Sodium, Sugar, Saturated fat"
+Ménière's disease,"Sodium, Caffeine, Alcohol"
+"Nail fungal infection, see Fungal nail infection",N/A
+Nappy rash,N/A
+Narcolepsy,"Carbohydrates (heavy/refined), Sugar, Alcohol"
+Nasal and sinus cancer,"Alcohol, Sugar, Saturated fat"
+Nasal polyps,"Alcohol, Sugar, Salicylates (often found in certain fruits/spices, if sensitive)"
+Nasopharyngeal cancer,"Alcohol, Sugar, Saturated fat"
+Necrotising fasciitis,N/A (Acute surgical/IV antibiotic emergency)
+Neonatal herpes (herpes in a baby),N/A
+Nephrotic syndrome in children,"Sodium, Fluids, Saturated fat"
+Neurofibromatosis type 1 (NF1),N/A
+Neurofibromatosis type 2 (NF2),N/A
+Neuromyelitis optica (NMO),"Sugar, Saturated fat, Sodium"
+Newborn jaundice,N/A
+Newborn respiratory distress syndrome,N/A
+Night terrors and nightmares,"Caffeine, Alcohol, Sugar"
+Noise sensitivity (hyperacusis),N/A
+Non-alcoholic fatty liver disease (NAFLD),"Sugar (especially Fructose), Saturated fat, Carbohydrates (refined), Trans fat"
+Non-allergic rhinitis,"Alcohol, Caffeine"
+Non-cancerous (benign) brain tumours,N/A
+Non-Hodgkin lymphoma,"Sugar, Saturated fat, Alcohol"
+Non-melanoma skin cancer,"Sugar, Saturated fat"
+Noonan syndrome,N/A
+Norovirus (vomiting bug),"Fat, Sugar, Fiber, Lactose"
+Nosebleed,N/A
+Obesity,"Sugar, Saturated fat, Trans fat, Carbohydrates (refined)"
+Obsessive compulsive disorder (OCD),"Caffeine, Alcohol, Sugar"
+Oesophageal atresia and tracheo-oesophageal fistula,N/A (Congenital structural defect requiring surgery)
+Oesophageal cancer,"Alcohol, Saturated fat, Sugar, Caffeine"
+Oral thrush (mouth thrush),"Sugar, Carbohydrates (refined)"
+Orf,N/A (Acute viral skin infection from sheep/goats)
+Osteoarthritis,"Sugar, Saturated fat, Sodium"
+Rickets and osteomalacia,"Sodium, Caffeine, Alcohol"
+Osteomyelitis,"Sugar, Sodium, Saturated fat"
+Osteophyte (bone spur),N/A
+Osteoporosis,"Sodium, Caffeine, Alcohol"
+Otosclerosis,N/A
+Ovarian cancer,"Saturated fat, Sugar, Alcohol"
+Ovarian cyst,"Sugar, Carbohydrates (refined), Saturated fat"
+Overactive thyroid (hyperthyroidism),"Iodine, Caffeine, Sugar"
+Paget's disease of bone,"Sodium, Caffeine, Alcohol"
+Paget's disease of the nipple,"Alcohol, Saturated fat, Sugar"
+Pancreatic cancer,"Saturated fat, Sugar, Alcohol"
+"Pancreatitis (acute), see Acute pancreatitis","Fat, Alcohol"
+"Pancreatitis (chronic), see Chronic pancreatitis","Fat, Sugar, Alcohol"
+Panic disorder,"Caffeine, Alcohol, Sugar"
+Parkinson's disease,"Protein (timing with medication), Saturated fat, Sugar"
+Patau's syndrome,N/A
+Pelvic inflammatory disease,"Sugar, Saturated fat, Alcohol"
+Pelvic organ prolapse,"Saturated fat, Carbohydrates (refined)"
+Pemphigus vulgaris,"Sodium, Sugar, Saturated fat"
+Penile cancer,"Alcohol, Saturated fat, Sugar"
+"Peptic ulcer, see Stomach ulcer","Caffeine, Alcohol, Saturated fat, Sodium"
+Perforated eardrum,N/A
+Pericarditis,"Sodium, Saturated fat, Trans fat, Sugar"
+"Perimenopause, see Menopause","Caffeine, Alcohol, Sodium, Sugar, Saturated fat"
+Periods,"Sodium, Caffeine, Alcohol, Sugar"
+"Periods (heavy), see Heavy periods","Caffeine, Alcohol"
+Peripheral arterial disease (PAD),"Sodium, Saturated fat, Trans fat, Sugar"
+Peripheral neuropathy,"Sugar, Saturated fat, Alcohol"
+Peritonitis,"N/A (Acute surgical/IV emergency, no standard dietary intake)"
+Personality disorders,"Caffeine, Alcohol"
+Peyronie's disease,N/A
+Phaeochromocytoma,"Sodium, Caffeine, Tyramine"
+"Phimosis, see Tight foreskin (phimosis)",N/A
+Phlebitis (superficial thrombophlebitis),"Sodium, Saturated fat, Sugar"
+Phobias,"Caffeine, Alcohol"
+Piles (haemorrhoids),"Saturated fat, Carbohydrates (refined), Alcohol"
+Pilonidal sinus,N/A
+PIP breast implants,N/A
+Pityriasis rosea,N/A
+Pityriasis versicolor,N/A
+Plantar fasciitis,N/A (Focus is on biomechanics and overall weight management)
+Pleurisy,N/A
+PMS (premenstrual syndrome),"Caffeine, Alcohol, Sodium, Sugar"
+Pneumonia,N/A
+Poisoning,N/A (Acute medical emergency)
+Polio,N/A
+"Polycystic kidney disease (autosomal dominant), see Autosomal dominant polycystic kidney disease","Sodium, Protein, Caffeine, Phosphorus, Potassium"
+"Polycystic kidney disease (autosomal recessive), see Autosomal recessive polycystic kidney disease","Sodium, Protein, Caffeine, Phosphorus, Potassium"
+Polycystic ovary syndrome,"Sugar, Carbohydrates (refined), Saturated fat"
+Polyhydramnios (too much amniotic fluid),Sugar
+Polymorphic light eruption,N/A
+Polymyalgia rheumatica,"Sodium, Sugar, Saturated fat"
+Pompholyx (dyshidrotic eczema),"Nickel (trace mineral), Cobalt"
+Post-herpetic neuralgia,N/A
+Post-traumatic stress disorder (PTSD),"Caffeine, Alcohol"
+Postnatal depression,"Caffeine, Alcohol"
+Postpartum psychosis,"Caffeine, Alcohol"
+Postural tachycardia syndrome (PoTS),"Carbohydrates (heavy/refined), Alcohol, Caffeine"
+Prader-Willi syndrome,"Calories (Strictly monitored), Sugar, Carbohydrates"
+Pre-eclampsia,"Sodium, Sugar, Saturated fat"
+Pregnancy,"Alcohol, Caffeine, Vitamin A (preformed)"
+"Premature ejaculation, see Ejaculation problems",N/A
+Pressure ulcers (pressure sores),N/A (Focus is entirely on adding massive amounts of protein and calories for wound healing)
+"Prickly heat, see Heat rash (prickly heat)",N/A
+Primary biliary cholangitis (primary biliary cirrhosis),"Saturated fat, Alcohol, Sodium"
+Problems swallowing pills,N/A
+Progressive supranuclear palsy,N/A (Focus is on texture modification for swallowing difficulties)
+Prosopagnosia (face blindness),N/A
+Prostate cancer,"Saturated fat, Calcium, Sugar"
+"Prostate enlargement, see Enlarged prostate","Caffeine, Alcohol, Sodium"
+Prostatitis,"Caffeine, Alcohol"
+Psoriasis,"Alcohol, Sugar, Saturated fat"
+Psoriatic arthritis,"Alcohol, Sugar, Saturated fat"
+Psychosis,"Caffeine, Alcohol, Sugar"
+Psychotic depression,"Caffeine, Alcohol, Sugar"
+"Puberty (early or delayed), see Early or delayed puberty",N/A
+Pubic lice,N/A
+Pudendal neuralgia,N/A
+Pulmonary embolism,Vitamin K (if prescribed specific anticoagulants)
+"Pulmonary fibrosis, see Idiopathic pulmonary fibrosis","Sodium, Carbohydrates, Saturated fat"
+Pulmonary hypertension,"Sodium, Fluids"
+Pyoderma gangrenosum,"Sugar, Saturated fat"
+Q fever,N/A
+Quinsy,N/A
+Rabies,N/A (Acute neurological emergency)
+Raynaud's,"Caffeine, Alcohol"
+Reactive arthritis,"Sugar, Saturated fat, Alcohol"
+Bowel cancer (Rectal cancer),"Saturated fat, Sugar, Alcohol, Red meat (processed)"
+Reflux in babies,N/A (Focus is on feed thickening and positioning)
+Kidney cancer (Renal cancer),"Sodium, Potassium, Phosphorus"
+Repetitive strain injury (RSI),N/A
+Respiratory syncytial virus (RSV),N/A
+Respiratory tract infections (RTIs),"Sugar, Alcohol"
+Restless legs syndrome,"Caffeine, Alcohol"
+Restricted growth (dwarfism),N/A
+Detached retina,N/A
+Retinal migraine,"Caffeine, Alcohol, Sodium, Tyramine"
+Retinoblastoma,"Sugar, Saturated fat"
+Rett syndrome,N/A (Focus is on caloric density and swallowing safety)
+Reye's syndrome,N/A (Acute emergency; requires strict avoidance of Aspirin)
+Rhesus disease,N/A
+Rheumatic fever,"Sodium, Sugar, Saturated fat"
+Rheumatoid arthritis,"Sugar, Saturated fat, Sodium, Alcohol"
+Allergic rhinitis,"Sugar, Saturated fat, Alcohol"
+Rickets and osteomalacia,"Sodium, Caffeine, Alcohol"
+Ringworm,N/A
+Rosacea,"Alcohol, Caffeine, Sugar, Capsaicin (spicy compounds)"
+Roseola,N/A
+Worms in humans (Roundworm),"Sugar, Carbohydrates"
+Rubella (german measles),N/A
+Salivary gland stones,"Sodium, Sugar, Caffeine"
+Sarcoidosis,"Calcium, Vitamin D, Sodium"
+Scabies,N/A
+Scarlet fever,N/A
+Scars,N/A
+Schistosomiasis (bilharzia),"Alcohol, Saturated fat"
+Schizophrenia,"Sugar, Caffeine, Alcohol"
+Sciatica,"Sugar, Saturated fat, Sodium"
+Scleroderma,"Sodium, Saturated fat, Caffeine, Sugar"
+Scoliosis,N/A
+Scurvy,N/A (Requires massive Vitamin C increase; no standard restrictions)
+Seasonal affective disorder (SAD),"Sugar, Alcohol, Caffeine"
+Febrile seizures,N/A
+Selective mutism,N/A
+Self-harm,N/A
+Sepsis,N/A (Acute critical care emergency)
+Septic arthritis,"Sugar, Saturated fat"
+STIs (General),N/A
+Shin splints,N/A
+Shingles,"Sugar, Arginine"
+Short-sightedness (myopia),N/A
+Shoulder impingement,N/A
+Sick building syndrome,N/A
+Sickle cell disease,"Sodium, Alcohol, Saturated fat"
+Silicosis,"Sodium, Carbohydrates (refined)"
+Sinusitis (sinus infection),"Sugar, Alcohol, Dairy (Saturated fat/Lactose)"
+Sjögren's syndrome,"Sugar, Caffeine, Alcohol, Sodium"
+Skin abscess,"Sugar, Saturated fat"
+Melanoma skin cancer,"Sugar, Saturated fat, Alcohol"
+Non-melanoma skin cancer,"Sugar, Saturated fat"
+Skin cyst,N/A
+Skin picking disorder,"Caffeine, Sugar"
+Skin tags,"Sugar, Carbohydrates (refined)"
+Slapped cheek syndrome,N/A
+Sleep apnoea,"Alcohol, Saturated fat, Sugar, Sodium"
+Sleep paralysis,"Caffeine, Alcohol"
+Sleepwalking,"Caffeine, Alcohol"
+Slipped disc,N/A (Focus is on weight management and physiotherapy)
+Snake bites,N/A (Acute medical emergency; Antivenom required)
+Social anxiety (social phobia),"Caffeine, Alcohol, Sugar"
+Soft tissue sarcoma,"Sugar, Saturated fat, Alcohol"
+Actinic keratoses (solar keratoses),"Sugar, Saturated fat"
+Spina bifida,N/A (Congenital structural defect)
+Spinal muscular atrophy (SMA),N/A (Focus is on texture modification for swallowing safety)
+Spondylolisthesis,N/A
+Sprains and strains,"Alcohol, Sugar"
+Squint,N/A
+Stammering,N/A
+Staph infection,"Sugar, Saturated fat"
+Stevens-Johnson syndrome,"Sodium, Sugar (Focus on high-protein, high-calorie liquid nutrition)"
+Stillbirth,N/A
+Insect bites and stings,N/A
+Stomach cancer,"Sodium, Alcohol, Saturated fat, Sugar"
+Stomach ulcer,"Caffeine, Alcohol, Saturated fat, Sodium"
+Strep A,N/A
+Stretch marks,N/A
+Stroke,"Sodium, Saturated fat, Trans fat, Sugar, Alcohol"
+"Stuttering, see Stammering",N/A
+Stye,N/A
+Subarachnoid haemorrhage,"Sodium, Caffeine, Alcohol"
+Subdural haematoma,Alcohol
+Sunburn,"Alcohol, Caffeine"
+Phlebitis (superficial thrombophlebitis),"Sodium, Saturated fat, Sugar"
+Supraventricular tachycardia (SVT),"Caffeine, Alcohol, Sodium"
+Problems swallowing pills,N/A
+Heat rash (prickly heat),N/A
+Excessive sweating (hyperhidrosis),"Caffeine, Alcohol, Sodium"
+"Oedema (Swollen ankles, feet, legs, arms, hands)","Sodium, Fluids, Saturated fat"
+Syphilis,N/A
+Tailbone (coccyx) pain,N/A
+Worms in humans (Tapeworm),"Sugar, Carbohydrates"
+Tuberculosis (TB),"Alcohol, Sugar, Saturated fat"
+Temporal arteritis,"Sodium, Sugar, Saturated fat"
+Temporomandibular disorder (TMD),"Caffeine, Sugar"
+Tendonitis,"Sugar, Saturated fat, Sodium"
+Tennis elbow,"Sugar, Saturated fat"
+Tension headaches,"Caffeine, Alcohol, Sugar"
+Testicular cancer,"Saturated fat, Sugar, Alcohol"
+Tetanus,N/A (Acute neurological emergency)
+Thalassaemia,"Iron (if not iron-deficient), Vitamin C (with iron-rich meals)"
+The 'male menopause',"Sugar, Saturated fat, Alcohol"
+Thoracic outlet syndrome,N/A
+Threadworms,"Sugar, Carbohydrates"
+Thrombophilia,"Vitamin K (if on specific anticoagulants), Saturated fat"
+Thrush in men and women,"Sugar, Carbohydrates (refined)"
+Overactive thyroid (hyperthyroidism),"Iodine, Caffeine, Sugar"
+Underactive thyroid (hypothyroidism),"Sugar, Saturated fat, Soy"
+Thyroid cancer,"Iodine (during specific treatments), Sugar, Saturated fat"
+Transient ischaemic attack (TIA),"Sodium, Saturated fat, Trans fat, Sugar, Alcohol"
+Tick-borne encephalitis (TBE),N/A
+Tics,"Caffeine, Sugar"
+Tight foreskin (phimosis),N/A
+Tinnitus,"Sodium, Caffeine, Alcohol"
+Toe pain,"N/A (Unless caused by Gout, see Gout)"
+Tongue-tie,N/A
+Tonsillitis,"N/A (Focus is on soft, cool textures to soothe the throat)"
+"Chipped, broken or cracked tooth",N/A
+Tooth decay,"Sugar, Carbohydrates (refined)"
+Knocked-out tooth,N/A
+Tourette syndrome,"Caffeine, Sugar"
+Toxic shock syndrome,N/A (Acute multi-organ emergency)
+Toxocariasis,N/A
+Toxoplasmosis,N/A
+Transient ischaemic attack (TIA),"Sodium, Saturated fat, Trans fat, Sugar, Alcohol"
+Trichomoniasis,N/A
+Trichotillomania (hair pulling disorder),"Caffeine, Sugar"
+Trigeminal neuralgia,"Caffeine, Sugar"
+Trigger finger,N/A
+Tuberculosis (TB),"Alcohol, Sugar, Saturated fat"
+Turner syndrome,"Sodium, Sugar, Saturated fat"
+Type 1 diabetes,"Sugar, Carbohydrates (specifically glycemic load), Saturated fat"
+Type 2 diabetes,"Sugar, Carbohydrates (refined), Saturated fat, Trans fat"
+Typhoid fever,"Fiber (during acute phase), Fat, Sugar"
+Typhus,N/A
+Ulcerative colitis,"Fiber,Dairy,Sugar,Processed meet"
+Umbilical hernia,N/A
+Underactive thyroid (hypothyroidism),"Glutten,Sugar,Alcohol,Caffeine"
+Undescended testicles,N/A
+Urethritis,"Caffeine,Sugar,Sodium"
+Urinary incontinence,"Caffeine, Alcohol,Carbs"
+Urinary tract infections (UTIs),"Caffeine,Sugar,Sodium,Carbs"
+Uterine (womb) cancer,"Processed meet,Sugar,Staurated fat,Alcohol,Carbs"
+Uveitis,"Sugar,Dairy,Alcohol,carbs,Sodium,Processed meet"
+Vaginal cancer,"Alcohol,Processed meet ,Sugar,Carbs"
+Vaginal pain (Vulvodynia),"Sugar,Saturated fat, Dairy"
+Vaginismus,N/A
+Vaginitis,"Sugar,Carbs,Saturated fat,Alcohol,Caffeine"
+Varicose eczema,"Sodium,Carbs,Sugar,Saturated fat,Alcohol,Caffeine"
+Varicose veins,"Sodium, Saturated fat, Sugar"
+Vascular dementia,"Sodium, Saturated fat, Trans fat, Sugar, Alcohol"
+Vasculitis,"Sodium, Sugar, Saturated fat"
+Venous leg ulcer,"Sodium, Sugar, Saturated fat"
+Verrucas (Warts and verrucas),N/A
+Vertigo,"Sodium, Caffeine, Alcohol"
+Vestibular neuritis,"Sodium, Caffeine, Alcohol"
+Vision loss,"Sugar, Saturated fat (Focus on vascular eye health)"
+Vitamin B12 or folate deficiency anaemia,Alcohol
+Vitiligo,N/A
+Vomiting bug (Norovirus),"Fat, Sugar, Fiber, Lactose"
+Von Willebrand disease,N/A (Genetic bleeding disorder; focus is on avoiding Aspirin/NSAIDs)
+Vulval cancer,"Alcohol, Sugar, Saturated fat"
+Vulvodynia (vulval pain),"Oxalates (highly specific for some patients), Caffeine, Alcohol"
+Warts and verrucas,N/A
+Leptospirosis (Weil's disease),N/A
+Whiplash,N/A (Focus is on physical therapy/anti-inflammatories)
+Low white blood cell count,N/A (Focus is on food safety/pasteurization)
+Herpetic whitlow (whitlow finger),N/A
+Whooping cough,"N/A (Focus is on hydration and small, frequent meals)"
+Wolff-Parkinson-White syndrome,"Caffeine, Alcohol, Sodium"
+Womb (uterus) cancer,"Sugar, Saturated fat, Alcohol"
+Women's health,"Caffeine, Alcohol, Sodium, Sugar, Saturated fat"
+Worms in humans,"Sugar, Carbohydrates"
+Yellow fever,"Alcohol, Saturated fat, Sodium"
+Yaws,N/A
+Yeast infection (Candidiasis),"Sugar, Carbohydrates (refined)"
+Zika virus,N/A
+Zollinger-Ellison syndrome,"Fat, Caffeine, Alcohol, Sodium" 

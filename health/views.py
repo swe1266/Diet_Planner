@@ -6,7 +6,7 @@ from django.template.loader import get_template
 from django.db.models import Q
 from django.contrib import messages
 from xhtml2pdf import pisa
-from .models import Patient, Checkup, FoodItem, AssignedMeal
+from .models import Patient, Checkup, FoodItem, AssignedMeal, Disease, NutrientLimit
 import json
 import random
 import math
@@ -309,6 +309,9 @@ def new_patient(request):
         weight = float(request.POST['weight'])
         activity = float(request.POST['activity'])
         
+        # Get diseases: hidden input sends a single comma-separated string
+        diseases_str = request.POST.get('diseases', '').strip()
+        
         blood_pressure = request.POST.get('bp', '120/80')
         
         bmi, bmr, tdee, category, target_calories = calculate_metrics(
@@ -337,13 +340,22 @@ def new_patient(request):
             tdee=tdee,
             category=category,
             blood_pressure=blood_pressure,
+            diseases=diseases_str,
             protein_target=protein_target,
             carbs_target=carbs_target,
             fat_target=fat_target
         )
         
+        # ── Link diseases (M2M) and sync legacy text field ─────────────────
+        _link_diseases_to_checkup(checkup, diseases_str)
+
         return redirect('generate_dynamic_diet_plan', patient_id=patient.id, checkup_id=checkup.id)
-    return render(request, 'new_patient.html')
+
+    # Build sorted unique disease name list from DB for the searchable dropdown
+    all_diseases = list(Disease.objects.values_list('name', flat=True).order_by('name'))
+    return render(request, 'new_patient.html', {
+        'all_diseases_json': json.dumps(all_diseases)
+    })
 
 @login_required
 def existing_patient(request):
@@ -357,6 +369,10 @@ def existing_patient(request):
         activity = float(request.POST['activity'])
         dietary = request.POST['dietary']
         plan_type = request.POST['plan_type']
+        
+        # Get diseases: hidden input sends a single comma-separated string
+        diseases_str = request.POST.get('diseases', '').strip()
+        
         bp = request.POST.get('bp', '120/80')
         
         bmi, bmr, tdee, category, target_calories = calculate_metrics(
@@ -380,10 +396,14 @@ def existing_patient(request):
             tdee=tdee,
             category=category,
             blood_pressure=bp,
+            diseases=diseases_str,
             protein_target=protein_target,
             carbs_target=carbs_target,
             fat_target=fat_target
         )
+        # ── Link diseases (M2M) and sync legacy text field ─────────────────
+        _link_diseases_to_checkup(checkup, diseases_str)
+
         return redirect('generate_dynamic_diet_plan', patient_id=patient.id, checkup_id=checkup.id)
 
     # ---- GET: advanced search for existing patient ----
@@ -432,15 +452,39 @@ def existing_patient(request):
         if not patients_data:
             error_message = "No patients match your search criteria."
 
+    all_diseases = list(Disease.objects.values_list('name', flat=True).order_by('name'))
     context = {
-        'patients_data': patients_data,
-        'query':         query,
-        'bmi_filter':    bmi_filter,
-        'date_range':    date_range,
-        'any_filter':    any_filter,
-        'error_message': error_message,
+        'patients_data':     patients_data,
+        'query':             query,
+        'bmi_filter':        bmi_filter,
+        'date_range':        date_range,
+        'any_filter':        any_filter,
+        'error_message':     error_message,
+        'all_diseases_json': json.dumps(all_diseases),
     }
     return render(request, 'existing_patient.html', context)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# INTERNAL HELPER — link disease names to a Checkup
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _link_diseases_to_checkup(checkup, diseases_str):
+    """
+    Given a comma-separated disease string from the form, resolve each name
+    against the Disease table (exact then partial match), set the M2M, and
+    sync the legacy diseases TextField.
+    """
+    checkup.disease_links.clear()
+    names = [d.strip() for d in diseases_str.split(',') if d.strip()]
+    for name in names:
+        disease = (
+            Disease.objects.filter(name__iexact=name).first()
+            or Disease.objects.filter(name__icontains=name).first()
+        )
+        if disease:
+            checkup.disease_links.add(disease)
+    checkup.sync_diseases_text()
 
 
 # ==========================================
@@ -468,19 +512,19 @@ def calculate_metrics(weight, height, age, gender, activity):
     # 3. TDEE
     tdee = round(bmr * activity, 2)
     
-    # 4. Category & Target
+    # 4. Category & Target (Based on Body Type Logic step 3)
     if bmi < 18.5:
         category = "Underweight"
-        target = tdee + 300  # Surplus
+        target = 2350 # average of 2200-2500
     elif bmi < 25:
         category = "Normal"
-        target = tdee  # Maintenance
+        target = 2000
     elif bmi < 30:
         category = "Overweight"
-        target = tdee - 500  # Deficit
+        target = 1800
     else:
         category = "Obese"
-        target = tdee - 500  # Deficit
+        target = 1500
         
     # Safety Constraint
     if target < 1200:
@@ -488,49 +532,128 @@ def calculate_metrics(weight, height, age, gender, activity):
     
     return bmi, bmr, tdee, category, int(target)
 
-def smart_filter(category, meal_type, diet_pref, bmi_category):
+def get_restricted_nutrients(diseases_str):
     """
-    ENGINE B: SMART FILTER
-    Filters foods based on Body Type Logic.
+    ENGINE A2: DISEASE RESTRICTIONS  (DB-backed, priority-aware)
+    Queries NutrientLimit from the Disease model for each disease.
+    Higher-priority disease wins on conflicts (e.g. Renal Failure > Constipation).
+    Returns a dict: { nutrient: {'max': max_daily_g, 'banned': is_banned} }
     """
+    if not diseases_str:
+        return {}
+
+    names = [d.strip() for d in diseases_str.split(',') if d.strip()]
+    if not names:
+        return {}
+
+    # Resolve disease names → Disease objects (ordered by priority desc so
+    # highest-priority disease is processed last and overwrites lower ones)
+    diseases = (
+        Disease.objects
+        .filter(name__in=names)
+        .prefetch_related('nutrient_limits')
+        .order_by('priority')          # low priority first → high priority last (overwrites)
+    )
+
+    restrictions = {}
+    for disease in diseases:
+        for limit in disease.nutrient_limits.all():
+            restrictions[limit.nutrient] = {
+                'max': limit.max_daily_g,
+                'banned': limit.is_banned
+            }
+
+    return restrictions
+
+
+def _get_nutrient_list(diseases_str):
+    """Returns a flat list of restricted nutrient names (for display in the UI)."""
+    return sorted(get_restricted_nutrients(diseases_str).keys())
+
+def smart_filter(category, meal_type, diet_pref, bmi_category, restrictions=None):
+    """
+    ENGINE B: SMART FILTER  (ORM-level, threshold-aware)
+    restrictions = dict returned by get_restricted_nutrients():
+        { 'sodium': {'max': 1500.0, 'banned': False}, ... }
+    Smart defaults are applied when a restriction has no explicit threshold.
+    """
+    SMART_DEFAULTS = {
+        'sodium':    400,    # mg  per 100 g serving
+        'sugar':      8,     # g   per 100 g serving
+        'fat':       30,     # g   per 100 g
+        'carbs':     50,     # g   per 100 g
+        'protein':   None,   # protein restriction — only filter very high-protein foods for renal
+        'fiber':     None,   # high fiber is usually good; only restrict in IBD
+        'potassium': None,
+        'calcium':   None,
+        'phosphorus':None,
+    }
+
     items = FoodItem.objects.filter(category=meal_type)
-    
+
+    # ── Dietary preference filter ────────────────────────────────────────────
     if diet_pref == 'Veg':
         items = items.filter(diet_type__in=['Veg', 'Vegan'])
     elif diet_pref == 'Vegan':
         items = items.filter(diet_type='Vegan')
-    
+
+    # ── BMI-based base filters ──────────────────────────────────────────────
     if bmi_category in ['Obese', 'Overweight']:
-        # GOAL: Satiety & Insulin Control
         items = items.exclude(sugar__gt=8)
         items = items.filter(Q(fiber__gte=3) | Q(protein__gte=5))
-        
     elif bmi_category == 'Underweight':
-        # GOAL: Calorie Density
         items = items.filter(calories__gte=100)
-    
+
+    # ── Disease restriction filters (ORM-level, threshold-aware) ───────────
+    if restrictions:
+        for nutrient, rule in restrictions.items():
+            if rule.get('banned'):
+                # Completely exclude any food containing this nutrient (value > 0 is excluded)
+                kwargs = {f"{nutrient}__gt": 0}
+                items = items.exclude(**kwargs)
+                continue
+
+            max_daily = rule.get('max')
+            # Fallback to Smart Defaults if no specific DB limit is found
+            per_100g_limit = None
+            if max_daily is not None:
+                # Divide daily limit by ~4 to get a rough per-100g serving threshold
+                # e.g., 1500mg daily Sodium -> 375mg per 100g max limit
+                per_100g_limit = max_daily / 4.0
+            else:
+                per_100g_limit = SMART_DEFAULTS.get(nutrient)
+                
+            if per_100g_limit is None:
+                continue   # no threshold to apply — skip
+
+            # Explicitly apply > limit exclusion using ORM kwargs
+            kwargs = {f"{nutrient}__gt": per_100g_limit}
+            items = items.exclude(**kwargs)
+
     return list(items)
 
 def dynamic_portion_solver(food, meal_target_cal):
     """
-    ENGINE C: DYNAMIC PORTION MATH
-    Adjusts portion to meet the meal target.
+    ENGINE C: DYNAMIC PORTION MATH (Step 7)
+    Adjusts portion to meet the meal target in Grams.
     """
-    base_cal = food.calories
-    if base_cal <= 0:
-        return "1 Serving", 0
+    base_cal_per_100g = food.calories
+    if base_cal_per_100g <= 0:
+        return "100 g", 0
     
-    count = meal_target_cal / base_cal
+    # Required grams = (target calories / calories per 100g) * 100
+    required_grams = (meal_target_cal / base_cal_per_100g) * 100
     
-    if count > 3.0:
-        count = 3.0
-    if count < 0.5:
-        count = 0.5
+    # Sanity checks so we don't prescribe absurd amounts
+    if required_grams > 500:
+        required_grams = 500
+    if required_grams < 20:
+        required_grams = 20
+        
+    final_grams = round(required_grams / 10) * 10 # round to nearest 10g for cleaner UI
     
-    final_count = round(count * 2) / 2
-    
-    qty_text = f"{final_count} {food.unit_name}"
-    total_cal = int(final_count * base_cal)
+    qty_text = f"{final_grams} g"
+    total_cal = int((final_grams / 100.0) * base_cal_per_100g)
     
     return qty_text, total_cal
 
@@ -584,9 +707,12 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     if not AssignedMeal.objects.filter(checkup=checkup).exists():
         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         
+        # Determine disease restrictions from DB (returns dict {nutrient: threshold})
+        restricted = get_restricted_nutrients(checkup.diseases)
+        
         pools = {}
         for meal in splits.keys():
-            pools[meal] = smart_filter(meal, meal, checkup.dietary, category)
+            pools[meal] = smart_filter(meal, meal, checkup.dietary, category, restricted)
             random.Random(f"{patient.id}_{meal}").shuffle(pools[meal])
             
         for day in days:
@@ -683,6 +809,9 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     import urllib.parse
     whatsapp_link = f"https://wa.me/{patient.phone.replace(' ', '').replace('-', '')}?text={urllib.parse.quote(whatsapp_text)}"
 
+    # Restricted nutrients for display (list of names)
+    restricted_nutrients = _get_nutrient_list(checkup.diseases)
+    
     context = {
         'patient': patient, 'checkup': checkup, 'history': history,
         'diet_goal': diet_goal, 'target_calories': int(target_calories),
@@ -690,6 +819,7 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
         'daily_avg': daily_avg,
         'shopping_list': shopping_list,
         'projected_change': projected_weight_change,
+        'restricted_nutrients': restricted_nutrients,
         # Analytics Data
         'a_dates': json.dumps(a_dates),
         'a_weights': json.dumps(a_weights),

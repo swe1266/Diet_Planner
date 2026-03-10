@@ -577,7 +577,8 @@
                     <div>
                         <div
                             style="font-size: 11px; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
-                            <i class="fas fa-user" style="margin-right: 5px;"></i> Patient Name</div>
+                            <i class="fas fa-user" style="margin-right: 5px;"></i> Patient Name
+                        </div>
                         <div style="font-size: 16px; font-weight: 700; color: #0f172a;">{{ patient.name }}</div>
                         <div style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ checkup.age }} Yrs &middot; {{
                             patient.gender }}</div>
@@ -585,7 +586,8 @@
                     <div>
                         <div
                             style="font-size: 11px; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
-                            <i class="fas fa-phone-alt" style="margin-right: 5px;"></i> Contact Info</div>
+                            <i class="fas fa-phone-alt" style="margin-right: 5px;"></i> Contact Info
+                        </div>
                         <div style="font-size: 15px; font-weight: 700; color: #0f172a;">{{ patient.phone }}</div>
                         <div style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ checkup.dietary }} Preference
                         </div>
@@ -593,16 +595,19 @@
                     <div>
                         <div
                             style="font-size: 11px; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
-                            <i class="fas fa-heartbeat" style="margin-right: 5px;"></i> Vitals</div>
+                            <i class="fas fa-heartbeat" style="margin-right: 5px;"></i> Vitals
+                        </div>
                         <div style="font-size: 15px; font-weight: 700; color: #ef4444;">{{ checkup.blood_pressure }}
-                            <small style="font-size: 10px; color: #64748b;">BP</small></div>
+                            <small style="font-size: 10px; color: #64748b;">BP</small>
+                        </div>
                         <div style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ checkup.plan_type }} Schedule
                         </div>
                     </div>
                     <div style="grid-column: span 2;">
                         <div
                             style="font-size: 11px; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
-                            <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> Clinical Address</div>
+                            <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> Clinical Address
+                        </div>
                         <div style="font-size: 14px; color: #475569; line-height: 1.4;">{{ patient.address }}</div>
                     </div>
                 </div>
@@ -1347,11 +1352,29 @@
                     <div class="ppv-status-icon" style="background:#dcfce7; color:#16a34a;">
                         <i class="fas fa-bullseye"></i>
                     </div>
-                    <div>
-                        <div class="ppv-status-lbl">Diet Goal</div>
-                        <div class="ppv-status-val">{{ diet_goal }}</div>
+                    <div class="pr-patient-item">
+                        <span class="pr-label">Diet Goal</span>
+                        <span class="pr-val">{{ diet_goal }}</span>
                     </div>
                 </div>
+
+                {% if checkup.diseases %}
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.2);">
+                    <span class="pr-label" style="display: block; margin-bottom: 5px;"><i
+                            class="fas fa-stethoscope"></i> Medical Conditions</span>
+                    <span class="pr-val" style="display: block; white-space: normal;">{{ checkup.diseases }}</span>
+                    {% if restricted_nutrients %}
+                    <div
+                        style="margin-top: 10px; font-size: 13px; font-weight: 500; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 12px; border-radius: 8px; color: #fff;">
+                        <i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i>
+                        <strong>Restricted:</strong>
+                        {% for n in restricted_nutrients %}
+                        <span style="text-transform: capitalize;">{{ n }}</span>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
                 <div class="ppv-status-card">
                     <div class="ppv-status-icon" style="background:#dbeafe; color:#1d4ed8;">
                         <i class="fas fa-leaf"></i>

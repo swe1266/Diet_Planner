@@ -404,6 +404,346 @@
                     </div>
                 </div>
 
+                <!-- ============================================================
+                     DISEASE MULTI-SELECTOR — Fixed & Polished
+                     ============================================================ -->
+                <div class="form-group full-width" style="margin-top: 20px; position: relative;">
+
+                    <div class="label-container" style="margin-bottom: 10px;">
+                        <i class="fas fa-stethoscope"></i>
+                        <label>
+                            Medical Conditions
+                            <span style="font-weight:400; color:#64748b; font-size:13px;">
+                                — type to search &amp; add (supports multiple)
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Hidden field submitted to backend -->
+                    <input type="hidden" name="diseases" id="diseasesHidden" value="">
+
+                    <!-- Tag input box -->
+                    <div id="diseaseTagBox" onclick="document.getElementById('diseaseSearch').focus()">
+                        <!-- Tags injected here by JS -->
+                        <input id="diseaseSearch" type="text" placeholder="e.g. Diabetes, Hypertension, Arthritis…"
+                            autocomplete="off">
+                    </div>
+
+                    <!-- Count badge -->
+                    <div id="diseaseCount"
+                        style="display:none; margin-top:6px; font-size:12px; color:#0891b2; font-weight:600;">
+                        <i class="fas fa-check-circle"></i> <span id="diseaseCountNum">0</span> condition(s) selected
+                    </div>
+
+                    <!-- Autocomplete dropdown — fixed position via JS -->
+                    <div id="diseaseDrop"></div>
+
+                </div><!-- end disease group -->
+
+                <style>
+                    /* ---- Tag Input Box ---- */
+                    #diseaseTagBox {
+                        min-height: 56px;
+                        background: #f8fafc;
+                        border: 2px solid #e2e8f0;
+                        border-radius: 14px;
+                        padding: 10px 14px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                        align-items: center;
+                        cursor: text;
+                        transition: border-color .2s, box-shadow .2s;
+                    }
+
+                    #diseaseTagBox:focus-within {
+                        border-color: #0891b2;
+                        box-shadow: 0 0 0 3px rgba(8, 145, 178, .15);
+                    }
+
+                    #diseaseSearch {
+                        border: none;
+                        outline: none;
+                        background: transparent;
+                        font-size: 14px;
+                        font-family: inherit;
+                        min-width: 220px;
+                        flex: 1;
+                        color: #0f172a;
+                    }
+
+                    #diseaseSearch::placeholder {
+                        color: #94a3b8;
+                    }
+
+                    /* ---- Tags ---- */
+                    .dtag {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 5px;
+                        background: linear-gradient(135deg, #0891b2 0%, #0c4a6e 100%);
+                        color: #fff;
+                        border-radius: 999px;
+                        padding: 5px 14px 5px 12px;
+                        font-size: 13px;
+                        font-weight: 600;
+                        white-space: nowrap;
+                        animation: tagPop .18s cubic-bezier(.175, .885, .32, 1.275) both;
+                    }
+
+                    @keyframes tagPop {
+                        from {
+                            transform: scale(0.7);
+                            opacity: 0;
+                        }
+
+                        to {
+                            transform: scale(1);
+                            opacity: 1;
+                        }
+                    }
+
+                    .dtag-remove {
+                        background: rgba(255, 255, 255, .25);
+                        border: none;
+                        color: #fff;
+                        width: 18px;
+                        height: 18px;
+                        border-radius: 50%;
+                        font-size: 13px;
+                        line-height: 1;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        transition: background .15s;
+                        padding: 0;
+                        font-family: inherit;
+                    }
+
+                    .dtag-remove:hover {
+                        background: rgba(255, 255, 255, .45);
+                    }
+
+                    /* ---- Dropdown ---- */
+                    #diseaseDrop {
+                        position: fixed;
+                        z-index: 99999;
+                        background: #fff;
+                        border: 1.5px solid #e2e8f0;
+                        border-radius: 14px;
+                        max-height: 240px;
+                        overflow-y: auto;
+                        box-shadow: 0 12px 36px rgba(0, 0, 0, .14);
+                        display: none;
+                        font-size: 14px;
+                        scrollbar-width: thin;
+                    }
+
+                    .dsug-item {
+                        padding: 11px 18px;
+                        cursor: pointer;
+                        transition: background .12s;
+                        border-bottom: 1px solid #f1f5f9;
+                        color: #1e293b;
+                    }
+
+                    .dsug-item:last-child {
+                        border-bottom: none;
+                    }
+
+                    .dsug-item:hover,
+                    .dsug-item.active {
+                        background: #f0f9ff;
+                        color: #0c4a6e;
+                        font-weight: 600;
+                    }
+
+                    .dsug-item mark {
+                        background: #bae6fd;
+                        color: #0c4a6e;
+                        border-radius: 3px;
+                        padding: 0 2px;
+                        font-weight: 700;
+                    }
+
+                    .dsug-empty {
+                        padding: 14px 18px;
+                        color: #94a3b8;
+                        font-style: italic;
+                        text-align: center;
+                    }
+                </style>
+
+                <script>
+                    (function () {
+                        var ALL_DISEASES = {{ all_diseases_json|safe }};
+                    var selected = [];
+
+                    var inp = document.getElementById('diseaseSearch');
+                    var drop = document.getElementById('diseaseDrop');
+                    var tagBox = document.getElementById('diseaseTagBox');
+                    var hidden = document.getElementById('diseasesHidden');
+                    var cntWrap = document.getElementById('diseaseCount');
+                    var cntNum = document.getElementById('diseaseCountNum');
+                    var activeIdx = -1;
+
+                    /* ---- Sync hidden field ---- */
+                    function syncHidden() {
+                        hidden.value = selected.join(',');
+                        if (selected.length > 0) {
+                            cntWrap.style.display = 'block';
+                            cntNum.textContent = selected.length;
+                        } else {
+                            cntWrap.style.display = 'none';
+                        }
+                    }
+
+                    /* ---- Add a tag ---- */
+                    function addTag(name) {
+                        if (!name || selected.indexOf(name) !== -1) return;
+                        selected.push(name);
+
+                        var tag = document.createElement('span');
+                        tag.className = 'dtag';
+
+                        var txt = document.createElement('span');
+                        txt.textContent = name;
+
+                        var btn = document.createElement('button');
+                        btn.className = 'dtag-remove';
+                        btn.type = 'button';
+                        btn.title = 'Remove';
+                        btn.innerHTML = '&times;';
+                        btn.onclick = function () {
+                            tag.remove();
+                            selected = selected.filter(function (s) { return s !== name; });
+                            syncHidden();
+                        };
+
+                        tag.appendChild(txt);
+                        tag.appendChild(btn);
+                        tagBox.insertBefore(tag, inp);
+                        syncHidden();
+                    }
+
+                    /* ---- Highlight matching part ---- */
+                    function highlight(text, q) {
+                        var idx = text.toLowerCase().indexOf(q.toLowerCase());
+                        if (idx < 0) return document.createTextNode(text);
+                        var frag = document.createDocumentFragment();
+                        frag.appendChild(document.createTextNode(text.slice(0, idx)));
+                        var mark = document.createElement('mark');
+                        mark.textContent = text.slice(idx, idx + q.length);
+                        frag.appendChild(mark);
+                        frag.appendChild(document.createTextNode(text.slice(idx + q.length)));
+                        return frag;
+                    }
+
+                    /* ---- Position dropdown under input box ---- */
+                    function positionDrop() {
+                        var rect = tagBox.getBoundingClientRect();
+                        drop.style.top = (rect.bottom + 4) + 'px';
+                        drop.style.left = rect.left + 'px';
+                        drop.style.width = rect.width + 'px';
+                    }
+
+                    /* ---- Show suggestions ---- */
+                    function showDrop(q) {
+                        drop.innerHTML = '';
+                        activeIdx = -1;
+
+                        var matches = ALL_DISEASES.filter(function (d) {
+                            return d.toLowerCase().indexOf(q.toLowerCase()) !== -1
+                                && selected.indexOf(d) === -1;   // hide already-selected
+                        }).slice(0, 35);
+
+                        if (!q.trim()) { drop.style.display = 'none'; return; }
+
+                        if (matches.length === 0) {
+                            var empty = document.createElement('div');
+                            empty.className = 'dsug-empty';
+                            empty.textContent = 'No matching disease found.';
+                            drop.appendChild(empty);
+                        } else {
+                            matches.forEach(function (d) {
+                                var item = document.createElement('div');
+                                item.className = 'dsug-item';
+                                item.appendChild(highlight(d, q));
+                                item.onmousedown = function (e) {
+                                    e.preventDefault();
+                                    addTag(d);
+                                    inp.value = '';
+                                    drop.style.display = 'none';
+                                    inp.focus();
+                                };
+                                drop.appendChild(item);
+                            });
+                        }
+
+                        positionDrop();
+                        drop.style.display = 'block';
+                    }
+
+                    /* ---- Set active item in drop ---- */
+                    function setActive(idx) {
+                        var items = drop.querySelectorAll('.dsug-item');
+                        items.forEach(function (el, i) { el.classList.toggle('active', i === idx); });
+                        if (items[idx]) items[idx].scrollIntoView({ block: 'nearest' });
+                    }
+
+                    /* ---- Events ---- */
+                    inp.addEventListener('input', function () { showDrop(this.value); });
+                    inp.addEventListener('focus', function () { if (this.value) showDrop(this.value); });
+
+                    inp.addEventListener('keydown', function (e) {
+                        var items = drop.querySelectorAll('.dsug-item');
+                        if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            activeIdx = Math.min(activeIdx + 1, items.length - 1);
+                            setActive(activeIdx);
+                        } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            activeIdx = Math.max(activeIdx - 1, 0);
+                            setActive(activeIdx);
+                        } else if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if (activeIdx >= 0 && items[activeIdx]) {
+                                addTag(items[activeIdx].textContent);
+                                inp.value = '';
+                                drop.style.display = 'none';
+                            }
+                        } else if (e.key === 'Escape') {
+                            drop.style.display = 'none';
+                        } else if (e.key === 'Backspace' && !inp.value && selected.length) {
+                            // Remove last tag on backspace
+                            var lastTag = tagBox.querySelector('.dtag:last-of-type');
+                            if (lastTag) {
+                                var lastName = selected[selected.length - 1];
+                                lastTag.remove();
+                                selected = selected.slice(0, -1);
+                                syncHidden();
+                            }
+                        }
+                    });
+
+                    document.addEventListener('click', function (e) {
+                        if (!tagBox.contains(e.target) && !drop.contains(e.target)) {
+                            drop.style.display = 'none';
+                        }
+                    });
+
+                    window.addEventListener('scroll', function () {
+                        if (drop.style.display === 'block') positionDrop();
+                    }, true);
+
+                    window.addEventListener('resize', function () {
+                        if (drop.style.display === 'block') positionDrop();
+                    });
+                }) ();
+                </script>
+
             </div>
 
             <!-- Submit Action -->
