@@ -87,7 +87,14 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Setup Environment Variables
+Copy the `.env.example` file and configure your database settings securely:
+```bash
+cp .env.example .env
+```
+*(Update `.env` with your precise database credentials before proceeding).*
+
+### 4. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
