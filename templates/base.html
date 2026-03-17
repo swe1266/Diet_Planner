@@ -635,7 +635,7 @@
                 <a href="{% url 'existing_patient' %}"
                    class="nav-link {% if request.resolver_match.url_name == 'existing_patient' %}active{% endif %}">
                     <i class="fas fa-notes-medical"></i>
-                    <span>Follow-up Checkup</span>
+                    <span>Patient Checkup</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -669,7 +669,7 @@
                     {% if request.resolver_match.url_name == 'home' %}Dashboard
                     {% elif request.resolver_match.url_name == 'new_patient' %}New Patient
                     {% elif request.resolver_match.url_name == 'patients' %}All Patients
-                    {% elif request.resolver_match.url_name == 'existing_patient' %}Follow-up Checkup
+                    {% elif request.resolver_match.url_name == 'existing_patient' %}Patient Checkup
                     {% elif request.resolver_match.url_name == 'search_patient' %}Clinical Archives
                     {% elif request.resolver_match.url_name == 'generate_dynamic_diet_plan' %}Diet Plan Report
                     {% elif request.resolver_match.url_name == 'profile' %}My Profile
@@ -683,7 +683,7 @@
                         {% if request.resolver_match.url_name == 'home' %}Dashboard
                         {% elif request.resolver_match.url_name == 'new_patient' %}New Patient
                         {% elif request.resolver_match.url_name == 'patients' %}All Patients
-                        {% elif request.resolver_match.url_name == 'existing_patient' %}Follow-up
+                        {% elif request.resolver_match.url_name == 'existing_patient' %}Patient Checkup
                         {% elif request.resolver_match.url_name == 'search_patient' %}Archives
                         {% elif request.resolver_match.url_name == 'generate_dynamic_diet_plan' %}Diet Report
                         {% elif request.resolver_match.url_name == 'profile' %}Profile

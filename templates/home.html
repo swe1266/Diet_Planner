@@ -491,7 +491,7 @@
             <div class="action-badge">
                 <i class="fas fa-user-plus"></i>
             </div>
-            <h3>Onboard Patient</h3>
+            <h3>New Patient</h3>
             <p>Register a new patient, record vital metrics, and automatically generate a personalized rules-based nutrition plan.</p>
         </div>
         <div class="action-cta">
@@ -504,7 +504,7 @@
             <div class="action-badge" style="color: #05CD99; background: #E6FDF4;">
                 <i class="fas fa-notes-medical"></i>
             </div>
-            <h3>Follow-up Checkup</h3>
+            <h3>Patient Checkup</h3>
             <p>Log a new visit for an existing patient. Update weight, BMI metrics, and regenerate dynamic meal prescriptions.</p>
         </div>
         <div class="action-cta" style="color: #05CD99;">
@@ -517,7 +517,7 @@
             <div class="action-badge" style="color: #FFB547; background: #FFF7EB;">
                 <i class="fas fa-folder-open"></i>
             </div>
-            <h3>Clinical Archives</h3>
+            <h3>Search Patient</h3>
             <p>Search the enterprise database. Review patient histories, historical weight loss trajectories, and past diet plans.</p>
         </div>
         <div class="action-cta" style="color: #FFB547;">
@@ -544,7 +544,7 @@
     <!-- Chart 2: 6 Month Trend -->
     <div class="chart-panel">
         <div class="chart-panel-header">
-            <h3>Engagement Trends</h3>
+            <h3>Daily Patient Visits</h3>
             <i class="fas fa-chart-area" style="color: var(--color-text-muted);"></i>
         </div>
         <div class="chart-container">
@@ -701,32 +701,18 @@
             }
         } catch (e) { console.error('BMI Chart:', e); }
 
-        // ---- 6-MONTH TREND LINE CHART ----
+        // ---- 30-DAY DAILY VISIT CHART ----
         try {
             var trendCanvas = document.getElementById('trendLineChart');
             if (trendCanvas) {
-                var monthLabels = {{ months_labels|safe }};
-                var patientSeries = {{ monthly_patients|safe }};
-                var visitSeries = {{ monthly_visits|safe }};
+                var daysLabels = {{ days_labels|safe }};
+                var visitSeries = {{ daily_visits|safe }};
 
                 new Chart(trendCanvas, {
                     type: 'line',
                     data: {
-                        labels: monthLabels,
+                        labels: daysLabels,
                         datasets: [
-                            {
-                                label: 'Patients',
-                                data: patientSeries,
-                                borderColor: '#4318FF',
-                                backgroundColor: 'rgba(67, 24, 255, 0.1)',
-                                borderWidth: 3,
-                                pointBackgroundColor: '#ffffff',
-                                pointBorderColor: '#4318FF',
-                                pointBorderWidth: 2,
-                                pointRadius: 4,
-                                fill: true,
-                                tension: 0.4
-                            },
                             {
                                 label: 'Visits',
                                 data: visitSeries,
@@ -756,7 +742,7 @@
                     }
                 });
             }
-        } catch (e) { console.error('Trend Chart:', e); }
+        } catch (e) { console.error('Daily Visit Chart:', e); }
 
         // ---- DIET PLAN BAR CHART ----
         try {

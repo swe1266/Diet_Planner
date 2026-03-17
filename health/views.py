@@ -44,25 +44,13 @@ def home(request):
     avg_bmi = round(bmi_sum / bmi_count, 1) if bmi_count else 0
     high_risk_pct = round((obese / total_patients) * 100) if total_patients else 0
 
-    # ------- 6-month monthly trends -------
-    months_labels = []
-    monthly_patients = []
-    monthly_visits   = []
-    for i in range(5, -1, -1):
-        m = today.month - i
-        y = today.year
-        while m <= 0:
-            m += 12
-            y -= 1
-        months_labels.append(calendar.month_abbr[m])
-        monthly_patients.append(
-            Patient.objects.filter(id__in=Checkup.objects.filter(
-                date__year=y, date__month=m
-            ).values_list('patient_id', flat=True).distinct()).count()
-        )
-        monthly_visits.append(
-            Checkup.objects.filter(date__year=y, date__month=m).count()
-        )
+    # ------- 30-day daily trends -------
+    days_labels = []
+    daily_visits = []
+    for i in range(29, -1, -1):
+        d = today - timedelta(days=i)
+        days_labels.append(d.strftime('%b %d'))
+        daily_visits.append(Checkup.objects.filter(date=d).count())
 
     # ------- Plan-type distribution -------
     plan_counts = {}
@@ -98,9 +86,8 @@ def home(request):
         'high_risk_pct':   high_risk_pct,
         'underweight': underweight, 'normal': normal,
         'overweight':  overweight,  'obese':  obese,
-        'months_labels':    json.dumps(months_labels),
-        'monthly_patients': json.dumps(monthly_patients),
-        'monthly_visits':   json.dumps(monthly_visits),
+        'days_labels':  json.dumps(days_labels),
+        'daily_visits': json.dumps(daily_visits),
         'plan_labels':  json.dumps(list(plan_counts.keys())),
         'plan_values':  json.dumps(list(plan_counts.values())),
         'recent_activity': recent_activity,
