@@ -798,7 +798,10 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
 
     # Restricted nutrients for display (list of names)
     restricted_nutrients = _get_nutrient_list(checkup.diseases)
-    
+
+    # Pre-split diseases list so template doesn't need to call .split()
+    diseases_list = [d.strip() for d in checkup.diseases.split(',') if d.strip()] if checkup.diseases else []
+
     context = {
         'patient': patient, 'checkup': checkup, 'history': history,
         'diet_goal': diet_goal, 'target_calories': int(target_calories),
@@ -807,6 +810,7 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
         'shopping_list': shopping_list,
         'projected_change': projected_weight_change,
         'restricted_nutrients': restricted_nutrients,
+        'diseases_list': diseases_list,
         # Analytics Data
         'a_dates': json.dumps(a_dates),
         'a_weights': json.dumps(a_weights),

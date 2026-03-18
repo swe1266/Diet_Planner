@@ -7,40 +7,26 @@
 
 <style>
     :root {
-        --primary: #0891b2;
-        /* Cyan 600 */
-        --primary-dark: #0e7490;
-        /* Cyan 700 */
-        --primary-light: #ecfeff;
-        /* Cyan 50 */
-        --secondary: #64748b;
-        /* Slate 500 */
-        --text-main: #0f172a;
-        /* Slate 900 */
-        --text-muted: #64748b;
-        /* Slate 500 */
-        --success: #10b981;
-        --warning: #f59e0b;
-        --danger: #ef4444;
-        --surface: #ffffff;
-        --bg-body: #f1f5f9;
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        --radius-lg: 16px;
-        --radius-xl: 24px;
-
-        /* Compatibility for inline styles */
+        --primary:       #4318FF;
+        --primary-dark:  #3311CC;
+        --primary-light: #EEF0FF;
+        --secondary:     #64748b;
+        --text-main:     #2b3674;
+        --text-muted:    #a3aed1;
+        --success:       #05CD99;
+        --warning:       #FFB547;
+        --danger:        #EE5D50;
+        --surface:       #ffffff;
+        --bg-body:       #f4f7fe;
+        --shadow-sm:     0 1px 3px rgba(0,0,0,0.05);
+        --shadow-md:     0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        --shadow-lg:     0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        --radius-lg:     16px;
+        --radius-xl:     24px;
+        --grad-primary:  linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
         --clinical-primary: var(--primary);
-        --clinical-secondary: #06b6d4;
-        --clinical-accent: #22d3ee;
-        --clinical-success: var(--success);
-        --clinical-warning: var(--warning);
-        --clinical-danger: var(--danger);
-        --clinical-dark: var(--text-main);
-        --clinical-light: var(--bg-body);
-        --clinical-glass: rgba(255, 255, 255, 0.7);
-        --clinical-border: rgba(255, 255, 255, 0.3);
+        --clinical-dark:    var(--text-main);
+        --clinical-light:   var(--bg-body);
     }
 
     .report-page-container {
@@ -393,43 +379,80 @@
         margin-bottom: 2rem;
     }
 
-    .hydro-card {
-        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    /* Disease & Nutrition Alert Panel */
+    .disease-alert-panel {
+        background: var(--surface);
         border-radius: var(--radius-lg);
-        padding: 2rem;
-        text-align: center;
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-    }
-
-    .water-tracker {
+        padding: 24px 26px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
         display: flex;
-        gap: 0.75rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 1.5rem;
+        flex-direction: column;
+        gap: 18px;
+        height: 100%;
+        box-sizing: border-box;
     }
 
-    .water-drop {
-        font-size: 1.5rem;
-        color: rgba(255, 255, 255, 0.6);
-        cursor: pointer;
-        transition: all 0.2s;
-        filter: drop-shadow(0 2px 2px rgba(3, 105, 161, 0.1));
+    .dap-title {
+        font-size: 14px; font-weight: 800; color: var(--text-main);
+        display: flex; align-items: center; gap: 9px;
+        padding-bottom: 14px; border-bottom: 1.5px solid var(--bg-body);
     }
 
-    .water-drop.filled {
-        color: #0284c7;
-        transform: scale(1.15);
-        filter: drop-shadow(0 4px 6px rgba(3, 105, 161, 0.2));
+    .dap-title-icon {
+        width: 34px; height: 34px; border-radius: 9px;
+        background: linear-gradient(135deg, #FEE2E2, #FECACA);
+        color: #DC2626; display: flex; align-items: center;
+        justify-content: center; font-size: 15px; flex-shrink: 0;
     }
 
-    .grocery-list {
-        background: white;
-        border-radius: var(--radius-lg);
-        padding: 2rem;
-        border: 1px solid #e2e8f0;
-        text-align: center;
+    .dap-section-lbl {
+        font-size: 10px; font-weight: 800; text-transform: uppercase;
+        letter-spacing: .6px; color: var(--text-muted); margin-bottom: 10px;
     }
+
+    /* Condition badges */
+    .dap-conditions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .dap-cond-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 6px 14px; border-radius: 999px;
+        font-size: 12px; font-weight: 700;
+        animation: badgePop .3s ease-out both;
+    }
+
+    @keyframes badgePop { from{transform:scale(.7);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+    .dap-cond-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .cond-red    { background: #FEE2E2; color: #991B1B; }
+    .cond-orange { background: #FEF3C7; color: #92400E; }
+    .cond-purple { background: #EDE9FE; color: #5B21B6; }
+    .cond-blue   { background: #DBEAFE; color: #1E40AF; }
+    .cond-green  { background: #D1FAE5; color: #065F46; }
+    .cond-gray   { background: #F1F5F9; color: #475569; }
+
+    /* Restriction rows */
+    .dap-restriction {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; background: var(--bg-body);
+        border-radius: 10px; border-left: 3px solid transparent;
+    }
+
+    .dap-restriction.r-danger  { border-left-color: #EE5D50; background: #FFF5F5; }
+    .dap-restriction.r-warning { border-left-color: #FFB547; background: #FFFBEB; }
+    .dap-restriction.r-info    { border-left-color: #4318FF; background: #F0EEFF; }
+
+    .dap-rest-icon { font-size: 14px; flex-shrink: 0; }
+    .dap-rest-name { font-size: 13px; font-weight: 800; color: var(--text-main); }
+    .dap-rest-desc { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+    .dap-no-conditions {
+        text-align: center; padding: 20px;
+        color: var(--text-muted); font-size: 13px;
+    }
+
+    .dap-no-conditions i { font-size: 28px; opacity: .3; display: block; margin-bottom: 8px; }
 
     /* DIET TABLE */
     .diet-table-container {
@@ -523,11 +546,217 @@
     }
 </style>
 
+<style>
+    /* ============================================
+       FEATURE #2 — PATIENT HERO BANNER
+    ============================================ */
+    .patient-hero-banner {
+        background: var(--grad-primary);
+        border-radius: var(--radius-xl);
+        padding: 36px 40px;
+        color: #fff;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(67,24,255,0.28);
+        animation: heroIn .6s cubic-bezier(.23,1,.32,1) both;
+    }
+
+    @keyframes heroIn {
+        from { opacity:0; transform:translateY(-20px); }
+        to   { opacity:1; transform:none; }
+    }
+
+    .patient-hero-banner::before {
+        content:'';
+        position:absolute; top:-60%; left:-10%;
+        width:500px; height:500px;
+        background: radial-gradient(circle, rgba(255,255,255,.1) 0%, transparent 60%);
+        border-radius:50%;
+        animation: pulseGlowHero 6s ease-in-out infinite alternate;
+    }
+
+    .patient-hero-banner::after {
+        content: '\f0f1';
+        font-family: 'Font Awesome 6 Free'; font-weight:900;
+        position:absolute; right: 48px; top:50%;
+        transform:translateY(-50%); font-size:160px; opacity:.05;
+    }
+
+    @keyframes pulseGlowHero { from{transform:scale(1);} to{transform:scale(1.08);} }
+
+    .hero-inner { display:flex; align-items:center; gap:32px; position:relative; z-index:2; }
+
+    /* Avatar ring with SVG health score arc */
+    .hero-avatar-wrap { position:relative; flex-shrink:0; }
+
+    .hero-avatar-svg { width:100px; height:100px; }
+
+    .hero-avatar-initials {
+        position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+        font-size:32px; font-weight:900; color:#fff;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+
+    .hero-info { flex:1; min-width:0; }
+    .hero-name { font-size:28px; font-weight:900; letter-spacing:-.5px; margin:0 0 6px; }
+    .hero-sub  { font-size:14px; opacity:.85; display:flex; flex-wrap:wrap; gap:16px; }
+    .hero-sub span { display:flex; align-items:center; gap:6px; }
+
+    /* Category badge */
+    .hero-badge {
+        display:inline-flex; align-items:center; gap:8px;
+        background: rgba(255,255,255,.2); backdrop-filter: blur(8px);
+        border:1px solid rgba(255,255,255,.3);
+        border-radius:100px; padding:5px 16px; font-size:13px;
+        font-weight:800; margin-top:14px; letter-spacing:.2px;
+    }
+
+    /* Quick stats bar */
+    .hero-stats-bar {
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap:1px;
+        background: rgba(255,255,255,.15);
+        border-radius:16px; overflow:hidden;
+        margin-top:24px; position:relative; z-index:2;
+    }
+
+    .hero-stat {
+        background: rgba(255,255,255,.08);
+        padding:14px 20px; text-align:center;
+        transition: background .2s;
+    }
+
+    .hero-stat:hover { background: rgba(255,255,255,.15); }
+
+    .hero-stat-val { font-size:22px; font-weight:900; line-height:1; }
+    .hero-stat-lbl { font-size:10px; font-weight:700; opacity:.7; text-transform:uppercase; letter-spacing:.6px; margin-top:4px; }
+
+    /* ============================================
+       FEATURE #4 — DOUGHNUT CHART STYLES
+    ============================================ */
+    .donut-panel {
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        padding: 28px 20px;
+    }
+
+    .donut-wrap { position:relative; width:200px; height:200px; }
+
+    .donut-center {
+        position:absolute; inset:0;
+        display:flex; flex-direction:column;
+        align-items:center; justify-content:center;
+        pointer-events:none;
+    }
+
+    .donut-center-val  { font-size:26px; font-weight:900; color:var(--text-main); line-height:1; }
+    .donut-center-lbl  { font-size:11px; font-weight:700; color:var(--text-muted); margin-top:3px; letter-spacing:.4px; }
+
+    .donut-legend { display:flex; gap:14px; margin-top:20px; flex-wrap:wrap; justify-content:center; }
+
+    .donut-leg-item {
+        display:flex; align-items:center; gap:7px;
+        font-size:13px; font-weight:700; color:var(--text-main);
+        padding:6px 14px; border-radius:10px; cursor:pointer;
+        background:var(--bg-body); border:2px solid transparent;
+        transition: all .2s;
+    }
+
+    .donut-leg-item:hover { border-color: currentColor; transform:translateY(-1px); }
+    .donut-leg-dot  { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+    .donut-leg-pct  { font-size:11px; opacity:.65; }
+
+    /* ============================================
+       FEATURE #8 — WHATSAPP PREVIEW PANEL
+    ============================================ */
+    .wa-panel {
+        background: var(--surface); border-radius: var(--radius-xl);
+        padding: 28px; border: 1px solid #e2e8f0;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .wa-panel-title {
+        font-size: 16px; font-weight: 800; color: var(--text-main);
+        display:flex; align-items:center; gap:10px; margin-bottom:20px;
+        padding-bottom:14px; border-bottom:1px solid #f1f5f9;
+    }
+
+    .wa-phone-frame {
+        background: #ECE5DD;
+        border-radius: 20px;
+        padding: 0;
+        overflow: hidden;
+        max-width: 320px;
+        margin: 0 auto;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        border: 8px solid #1c1c1c;
+    }
+
+    .wa-phone-bar {
+        background: #075E54;
+        color: #fff;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .wa-phone-avatar {
+        width:32px; height:32px; border-radius:50%;
+        background: #25D366;
+        display:flex; align-items:center; justify-content:center;
+        font-size:14px; font-weight:800; flex-shrink:0;
+    }
+
+    .wa-phone-body {
+        padding: 12px 10px;
+        max-height: 280px;
+        overflow-y: auto;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23ECE5DD' width='100' height='100'/%3E%3C/svg%3E");
+    }
+
+    .wa-bubble {
+        background: #fff;
+        border-radius: 12px 12px 12px 3px;
+        padding: 10px 14px;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #1c1c1c;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        max-width: 90%;
+        white-space: pre-line;
+    }
+
+    .wa-bubble-time {
+        text-align: right;
+        font-size: 10px;
+        color: #94a3b8;
+        margin-top: 4px;
+    }
+
+    .wa-send-btn {
+        width:100%; padding: 14px;
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        color:#fff; border:none; border-radius:14px;
+        font-size:15px; font-weight:800; font-family:inherit;
+        cursor:pointer; display:flex; align-items:center; justify-content:center;
+        gap:10px; margin-top:20px;
+        transition: all .3s;
+        box-shadow: 0 8px 20px rgba(37,211,102,.3);
+        text-decoration:none;
+    }
+
+    .wa-send-btn:hover { transform:translateY(-2px); box-shadow: 0 12px 28px rgba(37,211,102,.4); }
+</style>
+
 <div class="report-page-container">
     <div class="report-wrapper">
         <!-- SIDEBAR -->
         <aside class="history-sidebar">
-            <div class="history-header">
+            <div class="history-header" style="background: var(--grad-primary);">
                 <h3>Patient History</h3>
                 <p><i class="fas fa-user-circle"></i> {{ patient.name }}</p>
                 <div style="position: absolute; right: 20px; top: 20px; opacity: 0.2; font-size: 24px;">
@@ -550,26 +779,79 @@
 
         <!-- MAIN -->
         <main class="report-main" id="printableArea">
-            <section class="clinical-card">
-                <div class="report-header">
-                    <div class="report-title">
-                        <h1>Clinical Report</h1>
-                        <div class="patient-meta">
-                            <span>ID: <strong>#{{ checkup.id }}</strong></span>
-                            <span>Goal: <strong>{{ diet_goal }}</strong></span>
-                            <span>Date: <strong>{% now "M d, Y" %}</strong></span>
+
+            <!-- =============================================
+                 FEATURE #2: PATIENT HERO BANNER
+            ============================================= -->
+            <div class="patient-hero-banner">
+                <div class="hero-inner">
+                    <!-- Avatar with SVG health-score arc -->
+                    <div class="hero-avatar-wrap">
+                        <svg class="hero-avatar-svg" viewBox="0 0 100 100">
+                            <!-- Background circle -->
+                            <circle cx="50" cy="50" r="44" fill="rgba(255,255,255,.12)" />
+                            <!-- Arc track -->
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="6" stroke-dasharray="251.2" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 50 50)" />
+                            <!-- Health score arc (animated via JS) -->
+                            <circle id="heroArc" cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="6" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" transform="rotate(-90 50 50)" style="transition: stroke-dashoffset 1.4s cubic-bezier(.23,1,.32,1);" />
+                        </svg>
+                        <div class="hero-avatar-initials">{{ patient.name|slice:":1"|upper }}</div>
+                    </div>
+
+                    <!-- Patient info -->
+                    <div class="hero-info">
+                        <div class="hero-name">{{ patient.name }}</div>
+                        <div class="hero-sub">
+                            <span><i class="fas fa-id-badge"></i> ID #{{ patient.id }}</span>
+                            <span><i class="fas fa-venus-mars"></i> {{ patient.gender }}</span>
+                            <span><i class="fas fa-phone"></i> {{ patient.phone }}</span>
+                            <span><i class="fas fa-calendar-check"></i> Visit #{{ checkup.id }} &bull; {{ checkup.date|date:"d M Y" }}</span>
+                        </div>
+                        <div class="hero-badge">
+                            <i class="fas fa-stethoscope"></i> {{ diet_goal }} &bull; {{ checkup.category }}
                         </div>
                     </div>
-                    <div class="action-buttons">
-                        <button onclick="openPdfPreview()" class="btn-clinical btn-pdf" id="pdfPreviewBtn">
-                            <i class="fas fa-eye"></i> Preview &amp; Print
+
+                    <!-- Action buttons -->
+                    <div style="display:flex; flex-direction:column; gap:10px; flex-shrink:0;">
+                        <button onclick="openPdfPreview()" class="btn-clinical btn-pdf"
+                            style="background:rgba(255,255,255,.2); color:#fff; border:1px solid rgba(255,255,255,.3); backdrop-filter:blur(6px);">
+                            <i class="fas fa-eye"></i> Preview
                         </button>
-                        <a href="{% url 'regenerate_plan' checkup.id %}" class="btn-clinical btn-sync"><i
-                                class="fas fa-sync"></i> Update</a>
+                        <a href="{% url 'regenerate_plan' checkup.id %}" class="btn-clinical btn-sync"
+                            style="background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.25); backdrop-filter:blur(6px);">
+                            <i class="fas fa-sync"></i> Update
+                        </a>
                         <a href="{% url 'delete_checkup' checkup.id %}" class="btn-clinical btn-del"
-                            onclick="return confirm('Delete this report?')"><i class="fas fa-trash"></i></a>
+                            style="background:rgba(238,93,80,.3); color:#fff; border:1px solid rgba(238,93,80,.4);"
+                            onclick="return confirm('Delete this report?')">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
                     </div>
                 </div>
+
+                <!-- Quick stats bar -->
+                <div class="hero-stats-bar">
+                    <div class="hero-stat">
+                        <div class="hero-stat-val">{{ target_calories }}</div>
+                        <div class="hero-stat-lbl">Target Cal</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-val">{{ checkup.bmi }}</div>
+                        <div class="hero-stat-lbl">BMI</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-val">{{ checkup.weight }}<span style="font-size:14px;">kg</span></div>
+                        <div class="hero-stat-lbl">Weight</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-val" style="color: {% if projected_change < 0 %}#a7f3d0{% else %}#fca5a5{% endif %};">{{ projected_change }}<span style="font-size:14px;">kg</span></div>
+                        <div class="hero-stat-lbl">8-Wk Trend</div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="clinical-card">
 
                 <!-- 0. CLINICAL PROFILE CARD -->
                 <div
@@ -657,67 +939,159 @@
                         </div>
                     </div>
 
-                    <!-- B. Macro Radar -->
-                    <div class="chart-panel">
-                        <div class="panel-title"><i class="fas fa-crosshairs"></i> Macro Balance Target</div>
-                        <div style="flex-grow:1; position:relative;">
-                            <canvas id="radarChart"></canvas>
+                    <!-- B. FEATURE #4: Animated Macro Doughnut Chart -->
+                    <div class="chart-panel donut-panel">
+                        <div class="panel-title" style="align-self:flex-start; width:100%;"><i class="fas fa-chart-pie" style="color:var(--primary);"></i> Macro Distribution</div>
+                        <div class="donut-wrap">
+                            <canvas id="macroDoughnut"></canvas>
+                            <div class="donut-center">
+                                <div class="donut-center-val" id="donutCenterVal">{{ target_calories }}</div>
+                                <div class="donut-center-lbl">kcal / day</div>
+                            </div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="donut-leg-item" id="legProtein" onclick="highlightSlice(0)" style="color:#4318FF;">
+                                <div class="donut-leg-dot" style="background:#4318FF;"></div>
+                                Protein
+                                <span class="donut-leg-pct">30%</span>
+                            </div>
+                            <div class="donut-leg-item" id="legCarbs" onclick="highlightSlice(1)" style="color:#FFB547;">
+                                <div class="donut-leg-dot" style="background:#FFB547;"></div>
+                                Carbs
+                                <span class="donut-leg-pct">40%</span>
+                            </div>
+                            <div class="donut-leg-item" id="legFats" onclick="highlightSlice(2)" style="color:#05CD99;">
+                                <div class="donut-leg-dot" style="background:#05CD99;"></div>
+                                Fats
+                                <span class="donut-leg-pct">30%</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- C. Category Gauge (Reused Simplification) -->
+                    <!-- C. BMI Category Panel -->
                     <div class="chart-panel" style="justify-content:center; align-items:center; text-align:center;">
-                        <div class="panel-title" style="align-self: flex-start;"><i class="fas fa-heartbeat"></i> Health
-                            Status</div>
-                        <div style="font-size: 42px; font-weight: 800; color: var(--clinical-dark);">{{ checkup.bmi }}
+                        <div class="panel-title" style="align-self: flex-start;"><i class="fas fa-heartbeat" style="color:var(--primary);"></i> Health Status</div>
+                        <div style="font-size: 48px; font-weight: 900; color: var(--text-main); letter-spacing:-2px;">{{ checkup.bmi }}</div>
+                        <div style="background: var(--grad-primary); color: white; padding: 5px 16px; border-radius: 20px; font-size: 13px; font-weight:800; margin-top: 8px; display:inline-block;">{{ checkup.category }}</div>
+                        <div style="width: 100%; height: 10px; background: linear-gradient(90deg,#3b82f6,#05CD99,#FFB547,#EE5D50); border-radius: 6px; margin-top: 28px; position: relative;">
+                            <div id="bmi-marker" style="width: 16px; height: 16px; background: var(--text-main); border: 3px solid #fff; border-radius: 50%; position: absolute; top: -3px; left: 50%; transform:translateX(-50%); transition: 1.2s cubic-bezier(.23,1,.32,1); box-shadow:0 2px 8px rgba(0,0,0,0.2);"></div>
                         </div>
-                        <div
-                            style="background: var(--clinical-primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin-top: 5px;">
-                            {{ checkup.category }}</div>
-                        <div
-                            style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-top: 20px; position: relative;">
-                            <div
-                                style="position: absolute; left: 0; width: 100%; top: -15px; display: flex; justify-content: space-between; font-size: 9px; color: #94a3b8;">
-                                <span>15</span><span>40</span>
-                            </div>
-                            <!-- Marker Logic in JS -->
-                            <div id="bmi-marker"
-                                style="width: 12px; height: 12px; background: #0f172a; border-radius: 50%; position: absolute; top: -2px; left: 50%; transition: 1s;">
-                            </div>
+                        <div style="display:flex; justify-content:space-between; font-size:9px; color:#94a3b8; font-weight:700; margin-top:5px;">
+                            <span>15</span><span>Underweight</span><span>Normal</span><span>Overweight</span><span>40</span>
                         </div>
-                        <p style="font-size: 11px; margin-top: 15px; color: #64748b;">
-                            Your BMI indicates you are in the <strong>{{ checkup.category }}</strong> range.
+                        <p style="font-size: 12px; margin-top: 18px; color: #64748b; line-height:1.5;">
+                            BMI of <strong>{{ checkup.bmi }}</strong> places this patient in the <strong>{{ checkup.category }}</strong> category.
                         </p>
                     </div>
                 </div>
 
                 <!-- 3. EXTRA TOOLS -->
                 <div class="extra-tools-grid">
-                    <!-- Hydration Card -->
-                    <div class="hydro-card">
-                        <h4 style="margin:0; color:#0369a1;"><i class="fas fa-tint"></i> Daily Hydration</h4>
-                        <div class="water-tracker" id="waterTracker">
-                            {% for i in "12345678" %}
-                            <i class="fas fa-tint water-drop" onclick="toggleWater(this)"></i>
-                            {% endfor %}
+                    <!-- Disease & Nutrition Alert Panel -->
+                    <div class="disease-alert-panel">
+                        <div class="dap-title">
+                            <div class="dap-title-icon"><i class="fas fa-notes-medical"></i></div>
+                            <div>
+                                <div style="font-size:15px;">Clinical Alerts</div>
+                                <div style="font-size:11px;font-weight:500;color:var(--text-muted);margin-top:1px;">Conditions & dietary restrictions</div>
+                            </div>
                         </div>
-                        <p style="font-size:12px; margin-top:10px; color:#0284c7;">Click drops to track intake</p>
+
+                        {% if diseases_list %}
+                        <div>
+                            <div class="dap-section-lbl"><i class="fas fa-stethoscope" style="margin-right:5px;"></i>Active Medical Conditions</div>
+                            <div class="dap-conditions" id="condBadgesContainer">
+                                {% for cond in diseases_list %}
+                                <span class="dap-cond-badge cond-gray" data-cond="{{ cond }}">
+                                    <span class="dap-cond-dot" style="background:currentColor;"></span>
+                                    {{ cond }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {% if restricted_nutrients %}
+                        <div>
+                            <div class="dap-section-lbl"><i class="fas fa-ban" style="margin-right:5px;"></i>Applied Dietary Restrictions</div>
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+                                {% for n in restricted_nutrients %}
+                                <div class="dap-restriction
+                                    {% if n == 'sugar' or n == 'sodium' %}r-danger
+                                    {% elif n == 'fat' or n == 'gluten' %}r-warning
+                                    {% else %}r-info{% endif %}">
+                                    <div class="dap-rest-icon">
+                                        {% if n == 'sugar' %}<i class="fas fa-candy-cane" style="color:#EE5D50;"></i>
+                                        {% elif n == 'sodium' %}<i class="fas fa-tint" style="color:#EE5D50;"></i>
+                                        {% elif n == 'fat' %}<i class="fas fa-drumstick-bite" style="color:#FFB547;"></i>
+                                        {% elif n == 'gluten' %}<i class="fas fa-wheat-awn" style="color:#FFB547;"></i>
+                                        {% else %}<i class="fas fa-minus-circle" style="color:#4318FF;"></i>{% endif %}
+                                    </div>
+                                    <div>
+                                        <div class="dap-rest-name">{{ n|title }} Restricted</div>
+                                        <div class="dap-rest-desc">
+                                            {% if n == 'sugar' %}Low glycaemic index foods prioritised
+                                            {% elif n == 'sodium' %}Sodium-low meals applied across plan
+                                            {% elif n == 'fat' %}Lean protein sources preferred
+                                            {% elif n == 'gluten' %}Gluten-free alternatives selected
+                                            {% else %}Restriction applied to meal selection{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="dap-no-conditions">
+                            <i class="fas fa-check-circle" style="color:var(--success);"></i>
+                            No specific dietary restrictions applied to this plan.
+                        </div>
+                        {% endif %}
+
+                        {% else %}
+                        <div class="dap-no-conditions">
+                            <i class="fas fa-user-check"></i>
+                            No medical conditions recorded for this patient.
+                            <div style="margin-top:8px;font-size:12px;">Standard diet plan applied.</div>
+                        </div>
+                        {% endif %}
                     </div>
 
-                    <!-- Share Plan -->
-                    <div class="grocery-list"
-                        style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                        <div
-                            style="background: #dcfce7; color: #16a34a; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 15px;">
-                            <i class="fab fa-whatsapp"></i>
+                    <!-- FEATURE #8: WhatsApp Preview Panel -->
+                    <div class="wa-panel">
+                        <div class="wa-panel-title">
+                            <div style="width:38px;height:38px;border-radius:10px;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:18px;color:#16a34a;flex-shrink:0;">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            Share Diet Plan via WhatsApp
                         </div>
-                        <h4 style="margin:0 0 10px 0; color:var(--clinical-dark); font-size: 16px;">Share Diet Plan</h4>
-                        <p style="font-size: 12px; color: #64748b; margin-bottom: 20px; line-height: 1.5;">
-                            Send the complete 7-day nutrition schedule directly to the patient's WhatsApp.
-                        </p>
-                        <a href="{{ whatsapp_link }}" target="_blank" class="btn-clinical"
-                            style="background: #25D366; color: white; width: 100%; justify-content: center;">
-                            <i class="fab fa-whatsapp"></i> Share on WhatsApp
+
+                        <!-- Phone frame preview -->
+                        <div class="wa-phone-frame">
+                            <div class="wa-phone-bar">
+                                <div class="wa-phone-avatar">{{ patient.name|slice:":1"|upper }}</div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:700;">{{ patient.name }}</div>
+                                    <div style="font-size:10px;opacity:.7;">{{ patient.phone }}</div>
+                                </div>
+                            </div>
+                            <div class="wa-phone-body">
+                                <div class="wa-bubble">Hello {{ patient.name }}, here is your personalised 7-day diet plan 🥗
+
+🎯 Goal: {{ diet_goal }}
+🔥 Daily Calories: {{ target_calories }} kcal
+💪 Protein: {{ checkup.protein_target|floatformat:0 }}g &bull; Carbs: {{ checkup.carbs_target|floatformat:0 }}g &bull; Fat: {{ checkup.fat_target|floatformat:0 }}g
+
+{% for day, meals in weekly_plan.items %}📅 {{ day }}
+{% for m in meals %}  • {{ m.meal }}: {{ m.food }} ({{ m.cal }} kcal)
+{% endfor %}{% endfor %}
+Stay healthy! 💚
+— NutriPlanner Clinic</div>
+                                <div class="wa-bubble-time">{% now "H:i" %} ✓✓</div>
+                            </div>
+                        </div>
+
+                        <a href="{{ whatsapp_link }}" target="_blank" class="wa-send-btn">
+                            <i class="fab fa-whatsapp" style="font-size:18px;"></i> Send to Patient's WhatsApp
                         </a>
                     </div>
                 </div>
@@ -1475,66 +1849,104 @@
         });
     }
 
-    // 2. MACRO RADAR CHART
+    // 2. FEATURE #4: MACRO DOUGHNUT CHART
     var pT = {{ checkup.protein_target|default:100 }};
     var cT = {{ checkup.carbs_target|default:100 }};
     var fT = {{ checkup.fat_target|default:100 }};
-    var pA = {{ daily_avg.p|default:0 }};
-    var cA = {{ daily_avg.c|default:0 }};
-    var fA = {{ daily_avg.f|default:0 }};
-    var rCvs = document.getElementById('radarChart');
-    if (rCvs) {
-        new Chart(rCvs, {
-            type: 'radar',
+    var macroColors = ['#4318FF', '#FFB547', '#05CD99'];
+    var macroHover  = ['#3311CC', '#E09A30', '#03A87B'];
+    var dCvs = document.getElementById('macroDoughnut');
+    var doughnutChart = null;
+    if (dCvs) {
+        doughnutChart = new Chart(dCvs, {
+            type: 'doughnut',
             data: {
                 labels: ['Protein', 'Carbs', 'Fats'],
-                datasets: [
-                    {
-                        label: 'Your Plan', data: [pA, cA, fA],
-                        borderColor: '#0891b2', backgroundColor: 'rgba(8,145,178,0.2)',
-                        pointBackgroundColor: '#0891b2'
-                    },
-                    {
-                        label: 'Target Goal', data: [pT, cT, fT],
-                        borderColor: '#94a3b8', borderDash: [5, 5], fill: false, pointRadius: 0
-                    }
-                ]
+                datasets: [{
+                    data: [Math.round(pT), Math.round(cT), Math.round(fT)],
+                    backgroundColor: macroColors,
+                    hoverBackgroundColor: macroHover,
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
             },
             options: {
-                responsive: true, maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        angleLines: { color: '#f1f5f9' },
-                        grid: { color: '#f1f5f9' },
-                        pointLabels: { font: { family: 'Outfit', size: 12, weight: '700' } }
+                responsive: true, maintainAspectRatio: true,
+                cutout: '72%',
+                animation: { animateRotate: true, duration: 1200, easing: 'easeOutQuart' },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                var lbl = ctx.label || '';
+                                var val = ctx.raw || 0;
+                                var pct = [30, 40, 30][ctx.dataIndex];
+                                return ' ' + lbl + ': ' + val + 'g (' + pct + '%)';
+                            }
+                        }
                     }
                 },
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { font: { family: 'Outfit', size: 10 } }
-                    }
+                onClick: function(evt, els) {
+                    if (els.length > 0) highlightSlice(els[0].index);
                 }
             }
         });
     }
 
-    // 3. BMI MARKER
+    // Legend interaction
+    var macroLabels = ['Protein ' + Math.round(pT) + 'g', 'Carbs ' + Math.round(cT) + 'g', 'Fats ' + Math.round(fT) + 'g'];
+    var macroFullDesc = ['Protein: ' + Math.round(pT) + 'g (30%)', 'Carbs: ' + Math.round(cT) + 'g (40%)', 'Fats: ' + Math.round(fT) + 'g (30%)'];
+    window.highlightSlice = function(idx) {
+        if (!doughnutChart) return;
+        var center = document.getElementById('donutCenterVal');
+        var vals = [Math.round(pT) + 'g', Math.round(cT) + 'g', Math.round(fT) + 'g'];
+        center.textContent = vals[idx];
+        center.nextElementSibling.textContent = ['Protein', 'Carbs', 'Fats'][idx];
+        // Explode slice
+        doughnutChart.data.datasets[0].offset = [0, 0, 0].map(function(_, i){ return i === idx ? 12 : 0; });
+        doughnutChart.update();
+        // Reset after 1.5s
+        setTimeout(function(){
+            center.textContent = {{ target_calories }};
+            center.nextElementSibling.textContent = 'kcal / day';
+            doughnutChart.data.datasets[0].offset = [0,0,0];
+            doughnutChart.update();
+        }, 1500);
+    };
+
+    // 3. BMI MARKER + HERO ARC
     var bv = {{ checkup.bmi|default:0 }};
     var mk = document.getElementById('bmi-marker');
-    if (mk) mk.style.left = Math.min(100, Math.max(0, ((bv - 15) / 25) * 100)) + '%';
-
-    // 4. WATER TRACKER
-    window.toggleWater = function (el) {
-        el.classList.toggle('filled');
-        localStorage.setItem('water_{{ checkup.id }}',
-            document.querySelectorAll('.water-drop.filled').length);
-    };
-    var sw = localStorage.getItem('water_{{ checkup.id }}');
-    if (sw) {
-        var dps = document.querySelectorAll('.water-drop');
-        for (var j = 0; j < +sw; j++) { if (dps[j]) dps[j].classList.add('filled'); }
+    if (mk) {
+        setTimeout(function() {
+            mk.style.left = Math.min(100, Math.max(0, ((bv - 15) / 25) * 100)) + '%';
+        }, 300);
     }
+    // Health score arc: map BMI to 0-100% health (lower is worse/higher both bad; optimal ~22)
+    var arc = document.getElementById('heroArc');
+    if (arc) {
+        var healthScore = Math.max(0, 100 - Math.abs(bv - 22) * 4); // 22 BMI = 100%
+        var circumference = 251.2;
+        setTimeout(function() {
+            arc.style.strokeDashoffset = circumference - (circumference * healthScore / 100);
+        }, 600);
+    }
+
+    // 4. DISEASE BADGE: color classification + stagger animation
+    var condBadges = document.querySelectorAll('.dap-cond-badge');
+    condBadges.forEach(function(badge, idx) {
+        var cond = (badge.getAttribute('data-cond') || '').toLowerCase();
+        var cls = 'cond-gray';
+        if (/diabet/.test(cond))                          cls = 'cond-orange';
+        else if (/hypert|pressure|hypertension/.test(cond)) cls = 'cond-red';
+        else if (/thyroid/.test(cond))                    cls = 'cond-purple';
+        else if (/cholesterol/.test(cond))                cls = 'cond-blue';
+        else if (/celiac|gluten/.test(cond))              cls = 'cond-green';
+        badge.classList.remove('cond-gray');
+        badge.classList.add(cls);
+        badge.style.animationDelay = (idx * 80) + 'ms';
+    });
 
     // 5. ANALYTICS CHARTS
     var aDates = {{ a_dates| safe }};
@@ -1548,8 +1960,9 @@
                 data: {
                     labels: aDates, datasets: [{
                         label: 'Weight History (kg)', data: aWeights,
-                        borderColor: '#0891b2', backgroundColor: 'rgba(8,145,178,0.1)',
-                        fill: true, tension: 0.4, pointRadius: 6, pointHoverRadius: 8
+                        borderColor: '#4318FF', backgroundColor: 'rgba(67,24,255,0.08)',
+                        fill: true, tension: 0.4, pointRadius: 6, pointHoverRadius: 8,
+                        pointBackgroundColor: '#4318FF'
                     }]
                 },
                 options: {
@@ -1567,7 +1980,7 @@
                     labels: aDates, datasets: [{
                         label: 'BMI', data: aBmis,
                         backgroundColor: aBmis.map(function (b) {
-                            return b >= 30 ? '#ef4444' : b >= 25 ? '#f59e0b' : b < 18.5 ? '#3b82f6' : '#10b981';
+                            return b >= 30 ? '#EE5D50' : b >= 25 ? '#FFB547' : b < 18.5 ? '#4318FF' : '#05CD99';
                         }),
                         borderRadius: 6
                     }]
@@ -1585,6 +1998,10 @@
     var ov = document.getElementById('pdfPreviewModal');
     if (ov) ov.addEventListener('click', function (e) { if (e.target === ov) closePdfPreview(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePdfPreview(); });
+
+    // Weight chart + other chars: update primary color
+    var wCvs2 = document.getElementById('weightChart');
+    if (wCvs2 && wCvs2._chart) { /* already rendered */ }
 
 }); // DOMContentLoaded
 
