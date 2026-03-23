@@ -1,0 +1,454 @@
+name,category,diet_type,calories,protein,carbs,fat,sugar,unit_name,serving_desc,fiber,sodium,calcium,phosphorus,potassium
+Steamed Idli,Breakfast,Veg,60,2,12,0.4,0.2,piece,1 idli,1,120,10,40,35
+Plain Dosa,Breakfast,Veg,120,3,22,3,0.5,piece,1 dosa,1,200,20,70,80
+Ragi Dosa,Breakfast,Veg,110,3.5,20,2,0.4,piece,1 dosa,2,180,80,90,120
+Oats Dosa,Breakfast,Veg,115,4,18,2.5,0.5,piece,1 dosa,2.5,190,40,80,110
+Mixed Veg Dosa,Breakfast,Veg,140,4,22,3,1,piece,1 dosa,3,210,50,100,150
+Plain Idiyappam,Breakfast,Veg,100,2,22,0.5,0.3,plate,3 pieces,1,100,15,40,30
+Ragi Idiyappam,Breakfast,Veg,105,3,21,0.6,0.4,plate,3 pieces,2,110,70,60,90
+Veg Idiyappam,Breakfast,Veg,130,4,23,2,1,plate,3 pieces,3,180,40,80,140
+Steamed Puttu,Breakfast,Veg,180,4,36,3,2,piece,1 cylinder,4,150,40,110,150
+Ragi Puttu,Breakfast,Veg,170,5,34,2,2,piece,1 cylinder,5,150,120,120,200
+Veg Upma,Breakfast,Veg,220,6,32,8,2,bowl,1 bowl,3,320,50,130,170
+Oats Upma,Breakfast,Veg,200,7,28,6,2,bowl,1 bowl,4,300,60,120,180
+Rava Upma,Breakfast,Veg,230,6,35,8,2,bowl,1 bowl,2,340,40,110,160
+Veg Pongal,Breakfast,Veg,250,8,38,9,2,bowl,1 bowl,4,360,50,150,200
+Millet Pongal,Breakfast,Veg,240,8,36,8,2,bowl,1 bowl,5,330,60,160,220
+Moong Dal Khichdi,Lunch,Veg,210,9,32,6,1,bowl,1 bowl,4,300,60,170,250
+Veg Khichdi,Lunch,Veg,220,7,35,6,2,bowl,1 bowl,4,310,70,180,260
+Ragi Mudde,Lunch,Veg,190,6,40,1,1,ball,1 mudde,4,100,150,180,300
+Kambu Koozh,Lunch,Veg,180,5,34,2,2,bowl,1 bowl,4,140,120,160,250
+Samai Rice,Lunch,Veg,200,5,40,2,1,cup,1 cup cooked,4,10,20,120,150
+Varagu Rice,Lunch,Veg,210,6,39,2,1,cup,1 cup cooked,4,15,25,130,170
+Thinai Rice,Lunch,Veg,220,6,41,2,1,cup,1 cup cooked,5,20,30,140,180
+Red Rice,Lunch,Veg,215,5,44,1,1,cup,1 cup cooked,3,5,20,150,170
+Brown Rice,Lunch,Veg,216,5,45,1.8,1,cup,1 cup cooked,3.5,10,20,150,170
+Handpounded Rice,Lunch,Veg,210,5,43,1.5,1,cup,1 cup cooked,3,8,18,140,160
+Plain Rice,lunch,Veg,205,4.2,45,0.4,0,cup,1 cup cooked,0.6,2,16,68,55
+Lemon Rice,lunch,Veg,250,5,42,7,2,bowl,1 bowl,2,420,25,90,120
+Tamarind Rice,lunch,Veg,260,5,44,7,3,bowl,1 bowl,3,450,30,100,130
+Low Fat Curd Rice,lunch,Veg,220,6,35,5,3,bowl,1 bowl,1,280,120,110,150
+Mixed Veg Rice,lunch,Veg,240,6,40,6,3,bowl,1 bowl,3,320,60,120,210
+Light Coconut Rice,lunch,Veg,255,5,41,8,2,bowl,1 bowl,2,300,40,95,160
+Toor Dal Sambar,lunch,Veg,120,6,15,4,3,bowl,1 bowl,4,350,70,110,240
+Rasam,snack,Veg,40,1,6,1,2,cup,1 cup,1,300,30,60,120
+Mixed Veg Soup,snack,Veg,60,2,10,1,3,cup,1 cup,2,250,40,80,200
+Tomato Rasam,snack,Veg,45,1,7,1,3,cup,1 cup,1,280,35,70,150
+Spinach Soup,snack,Veg,50,3,8,1,2,cup,1 cup,2,200,90,90,300
+Pumpkin Soup,snack,Veg,55,2,11,1,4,cup,1 cup,2,210,40,70,220
+Carrot Soup,snack,Veg,50,1,10,1,4,cup,1 cup,2,200,35,60,200
+Beetroot Soup,snack,Veg,60,2,12,1,5,cup,1 cup,2,210,30,70,250
+Mixed Veg Stew,dinner,Veg,140,4,18,5,3,bowl,1 bowl,3,300,70,120,260
+Avial,lunch,Veg,160,4,16,8,3,bowl,1 bowl,4,280,80,130,300
+Moong Dal Kootu,lunch,Veg,150,8,18,4,2,bowl,1 bowl,4,320,90,160,350
+Poricha Kuzhambu,lunch,Veg,170,6,20,7,3,bowl,1 bowl,3,340,70,140,280
+Buttermilk Kuzhambu,lunch,Veg,140,5,14,6,3,bowl,1 bowl,2,300,110,120,200
+Veg Kurma,dinner,Veg,180,5,16,10,4,bowl,1 bowl,3,350,80,140,260
+Cabbage Poriyal,lunch,Veg,90,3,10,4,3,bowl,1 bowl,3,200,60,70,180
+Beans Poriyal,lunch,Veg,95,3,12,4,3,bowl,1 bowl,4,210,55,80,190
+Carrot Poriyal,lunch,Veg,100,2,14,4,4,bowl,1 bowl,3,220,50,70,200
+Cabbage Thoran,lunch,Veg,105,3,12,5,3,bowl,1 bowl,3,230,60,80,210
+Beetroot Poriyal,lunch,Veg,110,3,16,4,5,bowl,1 bowl,3,220,45,80,260
+Spinach Poriyal,lunch,Veg,95,3,11,4,2,bowl,1 bowl,3,210,120,85,300
+Snake Gourd Poriyal,lunch,Veg,85,2,10,3,2,bowl,1 bowl,2,200,60,70,180
+Bottle Gourd Poriyal,lunch,Veg,80,2,9,3,2,bowl,1 bowl,2,190,55,60,170
+Chayote Poriyal,lunch,Veg,85,2,10,3,2,bowl,1 bowl,2,200,50,65,180
+Drumstick Poriyal,lunch,Veg,110,4,13,4,3,bowl,1 bowl,4,210,90,100,280
+Pumpkin Poriyal,lunch,Veg,100,2,15,3,5,bowl,1 bowl,3,200,50,70,220
+Coconut Veg Thoran,lunch,Veg,120,3,12,6,3,bowl,1 bowl,3,230,70,90,210
+Keerai Masiyal,lunch,Veg,90,3,10,3,2,bowl,1 bowl,3,210,130,90,310
+Drumstick Leaves,lunch,Veg,95,4,11,3,2,bowl,1 bowl,4,200,160,100,320
+Spinach Masiyal,lunch,Veg,90,3,10,3,2,bowl,1 bowl,3,210,140,90,300
+Amaranth Leaves,lunch,Veg,95,4,11,3,2,bowl,1 bowl,3,200,150,95,320
+Green Gram Dal,lunch,Veg,180,12,28,2,2,bowl,1 bowl,6,15,80,200,350
+Chana Dal,lunch,Veg,200,11,30,3,2,bowl,1 bowl,7,20,70,210,360
+Moong Dal,lunch,Veg,190,12,28,2,2,bowl,1 bowl,6,15,80,200,340
+Toor Dal,lunch,Veg,195,11,29,3,2,bowl,1 bowl,6,18,75,210,330
+Urad Dal,lunch,Veg,210,13,28,4,2,bowl,1 bowl,7,20,90,220,350
+Masoor Dal,lunch,Veg,185,12,27,2,2,bowl,1 bowl,6,15,70,200,330
+Whole Green Gram,lunch,Veg,200,13,30,2,2,bowl,1 bowl,7,20,80,210,360
+Brown Chickpeas,lunch,Veg,220,12,34,4,3,bowl,1 bowl,8,25,90,230,380
+White Chickpeas,lunch,Veg,225,12,35,4,3,bowl,1 bowl,8,25,85,230,380
+Sprouted Moong,snack,Veg,110,9,18,1,3,bowl,1 bowl,4,15,60,150,250
+Sprouted Green Gram,snack,Veg,110,9,18,1,3,bowl,1 bowl,4,15,60,150,250
+Steamed Veg Cutlet,snack,Veg,150,4,22,5,3,piece,1 cutlet,3,260,50,80,180
+Baked Veg Patty,snack,Veg,160,5,24,5,3,piece,1 patty,3,270,55,90,200
+Boiled Sweet Potato,snack,Veg,120,2,28,0,6,piece,1 medium,4,70,40,60,300
+Boiled Yam,snack,Veg,130,2,30,0,4,piece,1 serving,4,60,35,70,320
+Steamed Plantain Stem,lunch,Veg,70,1,15,0,2,bowl,1 bowl,4,40,40,50,200
+Mixed Veg Sabzi,lunch,Veg,140,4,18,6,3,bowl,1 bowl,4,250,70,110,240
+Cauliflower Sabzi,lunch,Veg,120,4,15,5,3,bowl,1 bowl,3,230,60,100,220
+Capsicum Sabzi,lunch,Veg,110,3,14,5,3,bowl,1 bowl,3,220,50,90,210
+Okra Sabzi,lunch,Veg,130,3,18,5,4,bowl,1 bowl,4,240,80,110,260
+Brinjal Sabzi,lunch,Veg,120,3,16,5,3,bowl,1 bowl,3,230,60,100,240
+Ridge Gourd Sabzi,lunch,Veg,100,2,14,4,3,bowl,1 bowl,3,200,50,90,200
+Ash Gourd Sabzi,lunch,Veg,95,2,12,4,2,bowl,1 bowl,2,190,40,80,180
+Dal Tadka,lunch,Veg,210,10,26,8,2,bowl,1 bowl,5,320,90,210,320
+Plain Dal,lunch,Veg,180,10,25,4,2,bowl,1 bowl,5,280,80,200,310
+Veg Kofta Curry,dinner,Veg,260,7,20,16,4,bowl,1 bowl,4,360,90,150,250
+Paneer Matar,dinner,Veg,270,12,15,18,4,bowl,1 bowl,4,380,200,200,300
+Low Fat Paneer Curry,dinner,Veg,220,13,12,12,3,bowl,1 bowl,3,340,220,210,280
+Mushroom Curry,dinner,Veg,190,6,14,12,3,bowl,1 bowl,3,300,50,120,320
+Corn Sabzi,lunch,Veg,180,5,30,6,4,bowl,1 bowl,4,250,30,110,260
+Carrot Beans Thoran,lunch,Veg,110,3,14,5,3,bowl,1 bowl,3,220,60,90,210
+Raw Banana Poriyal,lunch,Veg,140,3,25,4,4,bowl,1 bowl,4,240,50,110,350
+Jackfruit Poriyal,lunch,Veg,160,3,28,5,5,bowl,1 bowl,4,260,40,90,300
+Veg Stew,dinner,Veg,170,4,18,8,3,bowl,1 bowl,3,280,70,120,240
+Veg Clear Soup,snack,Veg,45,2,7,1,2,cup,1 cup,1,210,35,70,150
+Millet Roti,dinner,Veg,150,4,28,2,1,piece,1 roti,4,120,40,110,180
+Ragi Roti,dinner,Veg,160,4,27,3,1,piece,1 roti,5,130,120,120,200
+Jowar Roti,dinner,Veg,155,4,30,2,1,piece,1 roti,4,120,35,100,190
+Bajra Roti,dinner,Veg,170,5,30,3,1,piece,1 roti,5,130,45,110,200
+Oats Roti,dinner,Veg,160,5,26,3,1,piece,1 roti,4,120,50,110,200
+Whole Wheat Chapati,dinner,Veg,150,4,28,2,1,piece,1 chapati,3,120,40,100,180
+Jowar Phulka,dinner,Veg,150,4,29,2,1,piece,1 phulka,4,110,35,95,170
+Veg Stuffed Paratha,breakfast,Veg,250,6,35,10,3,piece,1 paratha,4,320,60,140,250
+Plain Paratha,breakfast,Veg,260,5,36,11,2,piece,1 paratha,3,330,50,130,220
+Methi Paratha,breakfast,Veg,240,6,34,9,2,piece,1 paratha,4,310,80,140,260
+Spinach Paratha,breakfast,Veg,230,6,32,8,2,piece,1 paratha,4,300,90,140,280
+Mixed Veg Paratha,breakfast,Veg,250,6,36,9,3,piece,1 paratha,4,320,70,140,260
+Veg Poha,breakfast,Veg,200,4,35,5,3,bowl,1 bowl,3,260,20,90,180
+Aval Upma,breakfast,Veg,210,4,36,5,3,bowl,1 bowl,3,260,20,95,180
+Veg Avalakki,breakfast,Veg,215,5,36,5,3,bowl,1 bowl,3,260,25,95,180
+Broken Wheat Dalia,breakfast,Veg,190,6,34,3,2,bowl,1 bowl,5,150,40,120,210
+Broken Wheat Upma,breakfast,Veg,210,6,36,5,2,bowl,1 bowl,5,260,45,130,220
+Veg Dalia Khichdi,lunch,Veg,220,7,35,6,3,bowl,1 bowl,5,280,50,140,230
+Vermicelli Upma,breakfast,Veg,230,6,38,7,2,bowl,1 bowl,2,300,35,110,180
+Lemon Vermicelli,breakfast,Veg,240,6,40,7,3,bowl,1 bowl,2,320,40,110,190
+Wheat Semiya Kheer,snack,Veg,260,7,38,9,12,bowl,1 bowl,1,120,180,150,220
+Veg Wheat Pasta,lunch,Veg,280,9,45,8,5,bowl,1 bowl,4,340,60,160,260
+Wheat Noodles,lunch,Veg,290,8,48,9,4,bowl,1 bowl,3,360,50,150,240
+Veg Steamed Momos,snack,Veg,180,7,28,4,2,portion,6 momos,3,320,40,120,210
+Millet Idli,breakfast,Veg,150,5,30,1,1,plate,3 idli,3,200,40,100,160
+Millet Dosa,breakfast,Veg,180,5,30,4,1,piece,1 dosa,3,220,45,100,170
+Ragi Java,breakfast,Veg,160,4,32,1,2,glass,1 glass,3,120,140,120,220
+Ragi Malt,breakfast,Veg,170,5,34,1,4,glass,1 glass,3,130,150,130,230
+Oats Porridge,breakfast,Veg,190,7,30,4,5,bowl,1 bowl,4,160,120,140,250
+Wheat Porridge,breakfast,Veg,200,6,34,4,5,bowl,1 bowl,4,160,110,140,240
+Veg Semolina Porridge,breakfast,Veg,210,6,36,5,4,bowl,1 bowl,3,220,60,120,210
+Moong Dal Porridge,breakfast,Veg,180,9,25,3,2,bowl,1 bowl,4,200,70,150,260
+Broken Wheat Porridge,breakfast,Veg,190,6,33,3,3,bowl,1 bowl,5,150,45,130,220
+Quinoa Veg Pulao,lunch,Veg,240,9,38,6,3,bowl,1 bowl,5,260,70,180,320
+Barnyard Millet Pulao,lunch,Veg,230,7,36,6,3,bowl,1 bowl,4,250,60,160,280
+Little Millet Pulao,lunch,Veg,230,7,37,6,3,bowl,1 bowl,4,250,60,160,280
+Veg Biryani,lunch,Veg,300,8,45,10,4,bowl,1 bowl,4,420,70,180,280
+Jeera Rice,lunch,Veg,230,4,42,5,1,bowl,1 bowl,1,280,25,90,120
+Ghee Rice,lunch,Veg,260,4,44,8,1,bowl,1 bowl,1,300,30,100,140
+Veg Fried Rice,lunch,Veg,310,7,48,10,3,bowl,1 bowl,3,420,60,160,240
+Tomato Rice,lunch,Veg,240,5,42,6,3,bowl,1 bowl,2,320,30,100,150
+Capsicum Rice,lunch,Veg,235,5,41,6,3,bowl,1 bowl,2,320,35,100,160
+Mushroom Rice,lunch,Veg,240,6,40,6,2,bowl,1 bowl,3,320,35,110,200
+Corn Rice,lunch,Veg,245,6,42,6,4,bowl,1 bowl,3,320,35,110,220
+Veg Manchurian,snack,Veg,260,7,25,14,6,bowl,6 balls,3,520,60,120,250
+Veg Hakka Noodles,lunch,Veg,320,8,50,11,4,bowl,1 bowl,3,450,60,170,240
+Veg Chowmein,lunch,Veg,310,8,48,10,4,bowl,1 bowl,3,440,55,160,230
+Paneer Bhurji,dinner,Veg,270,14,8,20,4,bowl,1 bowl,2,380,250,220,250
+Low Fat Paneer,snack,Veg,150,12,4,8,2,portion,50 g,0,220,240,200,150
+Soya Chunks Sabzi,dinner,Veg,230,16,20,8,3,bowl,1 bowl,5,300,120,200,320
+Tofu Sabzi,dinner,Veg,200,14,12,10,2,bowl,1 bowl,3,260,200,190,260
+Sprouts Usili,lunch,Veg,180,10,20,6,3,bowl,1 bowl,5,220,90,160,300
+Chana Usili,lunch,Veg,200,11,22,7,3,bowl,1 bowl,6,230,100,170,320
+Moong Usili,lunch,Veg,190,11,20,6,3,bowl,1 bowl,6,220,95,160,310
+Oats Roti,dinner,Veg,160,5,26,3,1,piece,1 roti,4,120,50,110,200
+Whole Wheat Chapati,dinner,Veg,150,4,28,2,1,piece,1 chapati,3,120,40,100,180
+Jowar Phulka,dinner,Veg,150,4,29,2,1,piece,1 phulka,4,110,35,95,170
+Veg Stuffed Paratha,breakfast,Veg,250,6,35,10,3,piece,1 paratha,4,320,60,140,250
+Plain Paratha,breakfast,Veg,260,5,36,11,2,piece,1 paratha,3,330,50,130,220
+Methi Paratha,breakfast,Veg,240,6,34,9,2,piece,1 paratha,4,310,80,140,260
+Spinach Paratha,breakfast,Veg,230,6,32,8,2,piece,1 paratha,4,300,90,140,280
+Mixed Veg Paratha,breakfast,Veg,250,6,36,9,3,piece,1 paratha,4,320,70,140,260
+Veg Poha,breakfast,Veg,200,4,35,5,3,bowl,1 bowl,3,260,20,90,180
+Aval Upma,breakfast,Veg,210,4,36,5,3,bowl,1 bowl,3,260,20,95,180
+Veg Avalakki,breakfast,Veg,215,5,36,5,3,bowl,1 bowl,3,260,25,95,180
+Broken Wheat Dalia,breakfast,Veg,190,6,34,3,2,bowl,1 bowl,5,150,40,120,210
+Broken Wheat Upma,breakfast,Veg,210,6,36,5,2,bowl,1 bowl,5,260,45,130,220
+Veg Dalia Khichdi,lunch,Veg,220,7,35,6,3,bowl,1 bowl,5,280,50,140,230
+Vermicelli Upma,breakfast,Veg,230,6,38,7,2,bowl,1 bowl,2,300,35,110,180
+Lemon Vermicelli,breakfast,Veg,240,6,40,7,3,bowl,1 bowl,2,320,40,110,190
+Wheat Semiya Kheer,snack,Veg,260,7,38,9,12,bowl,1 bowl,1,120,180,150,220
+Veg Wheat Pasta,lunch,Veg,280,9,45,8,5,bowl,1 bowl,4,340,60,160,260
+Wheat Noodles,lunch,Veg,290,8,48,9,4,bowl,1 bowl,3,360,50,150,240
+Veg Steamed Momos,snack,Veg,180,7,28,4,2,portion,6 momos,3,320,40,120,210
+Millet Idli,breakfast,Veg,150,5,30,1,1,plate,3 idli,3,200,40,100,160
+Millet Dosa,breakfast,Veg,180,5,30,4,1,piece,1 dosa,3,220,45,100,170
+Ragi Java,breakfast,Veg,160,4,32,1,2,glass,1 glass,3,120,140,120,220
+Ragi Malt,breakfast,Veg,170,5,34,1,4,glass,1 glass,3,130,150,130,230
+Oats Porridge,breakfast,Veg,190,7,30,4,5,bowl,1 bowl,4,160,120,140,250
+Wheat Porridge,breakfast,Veg,200,6,34,4,5,bowl,1 bowl,4,160,110,140,240
+Veg Semolina Porridge,breakfast,Veg,210,6,36,5,4,bowl,1 bowl,3,220,60,120,210
+Moong Dal Porridge,breakfast,Veg,180,9,25,3,2,bowl,1 bowl,4,200,70,150,260
+Broken Wheat Porridge,breakfast,Veg,190,6,33,3,3,bowl,1 bowl,5,150,45,130,220
+Quinoa Veg Pulao,lunch,Veg,240,9,38,6,3,bowl,1 bowl,5,260,70,180,320
+Barnyard Millet Pulao,lunch,Veg,230,7,36,6,3,bowl,1 bowl,4,250,60,160,280
+Little Millet Pulao,lunch,Veg,230,7,37,6,3,bowl,1 bowl,4,250,60,160,280
+Veg Biryani,lunch,Veg,300,8,45,10,4,bowl,1 bowl,4,420,70,180,280
+Jeera Rice,lunch,Veg,230,4,42,5,1,bowl,1 bowl,1,280,25,90,120
+Ghee Rice,lunch,Veg,260,4,44,8,1,bowl,1 bowl,1,300,30,100,140
+Veg Fried Rice,lunch,Veg,310,7,48,10,3,bowl,1 bowl,3,420,60,160,240
+Tomato Rice,lunch,Veg,240,5,42,6,3,bowl,1 bowl,2,320,30,100,150
+Capsicum Rice,lunch,Veg,235,5,41,6,3,bowl,1 bowl,2,320,35,100,160
+Mushroom Rice,lunch,Veg,240,6,40,6,2,bowl,1 bowl,3,320,35,110,200
+Corn Rice,lunch,Veg,245,6,42,6,4,bowl,1 bowl,3,320,35,110,220
+Veg Manchurian,snack,Veg,260,7,25,14,6,bowl,6 balls,3,520,60,120,250
+Veg Hakka Noodles,lunch,Veg,320,8,50,11,4,bowl,1 bowl,3,450,60,170,240
+Veg Chowmein,lunch,Veg,310,8,48,10,4,bowl,1 bowl,3,440,55,160,230
+Paneer Bhurji,dinner,Veg,270,14,8,20,4,bowl,1 bowl,2,380,250,220,250
+Low Fat Paneer,snack,Veg,150,12,4,8,2,portion,50 g,0,220,240,200,150
+Soya Chunks Sabzi,dinner,Veg,230,16,20,8,3,bowl,1 bowl,5,300,120,200,320
+Tofu Sabzi,dinner,Veg,200,14,12,10,2,bowl,1 bowl,3,260,200,190,260
+Sprouts Usili,lunch,Veg,180,10,20,6,3,bowl,1 bowl,5,220,90,160,300
+Chana Usili,lunch,Veg,200,11,22,7,3,bowl,1 bowl,6,230,100,170,320
+Moong Usili,lunch,Veg,190,11,20,6,3,bowl,1 bowl,6,220,95,160,310
+Veg Kootu,lunch,Veg,160,6,18,6,3,bowl,1 bowl,4,260,80,140,260
+Veg Sambar,lunch,Veg,130,6,16,4,3,bowl,1 bowl,4,320,70,120,240
+Rasam Powder,snack,Veg,40,2,6,1,1,tsp,10 g,1,120,30,40,60
+Sambar Powder,snack,Veg,45,2,7,1,1,tsp,10 g,2,130,35,45,70
+Idli Podi,snack,Veg,90,4,10,4,1,tbsp,15 g,2,180,60,70,90
+Milagai Podi,snack,Veg,85,3,9,4,1,tbsp,15 g,2,170,55,65,85
+Paruppu Podi,snack,Veg,95,5,11,4,1,tbsp,15 g,2,180,70,80,100
+Moong Dal Powder,snack,Veg,90,6,12,3,1,tbsp,15 g,2,160,60,90,110
+Urad Dal Powder,snack,Veg,95,6,12,4,1,tbsp,15 g,2,170,80,100,120
+Chana Dal Powder,snack,Veg,100,6,13,4,1,tbsp,15 g,3,170,75,95,120
+Toor Dal Powder,snack,Veg,95,6,12,4,1,tbsp,15 g,2,170,70,90,110
+Mixed Dal Powder,snack,Veg,100,6,13,4,1,tbsp,15 g,3,180,75,100,130
+Veg Soup Powder,snack,Veg,40,2,7,1,2,tbsp,10 g,1,150,40,60,90
+Beetroot Cutlet,snack,Veg,170,4,24,6,4,piece,1 cutlet,3,260,60,90,200
+Carrot Halwa,snack,Veg,320,6,40,15,28,bowl,1 bowl,2,150,200,160,320
+Veg Cutlet,snack,Veg,180,5,25,7,4,piece,1 cutlet,3,270,60,90,210
+Soya Cutlet,snack,Veg,190,10,20,8,3,piece,1 cutlet,4,260,90,120,240
+Veg Tikki,snack,Veg,170,4,23,7,3,piece,1 tikki,3,260,50,80,200
+Moong Dal Vada,snack,Veg,200,8,22,9,2,piece,1 vada,3,300,70,120,210
+Medu Vada,snack,Veg,210,6,24,10,2,piece,1 vada,2,320,60,110,200
+Urad Dal Vada,snack,Veg,210,7,24,10,2,piece,1 vada,2,320,70,120,210
+Masala Vada,snack,Veg,220,8,26,10,2,piece,1 vada,4,330,70,120,220
+Dal Fry,lunch,Veg,220,10,26,8,2,bowl,1 bowl,5,340,90,210,320
+Dal Makhani,dinner,Veg,280,12,28,12,3,bowl,1 bowl,6,380,120,230,350
+Moong Dal Fry,lunch,Veg,210,11,25,8,2,bowl,1 bowl,5,320,90,200,320
+Toor Dal Fry,lunch,Veg,210,10,25,8,2,bowl,1 bowl,5,320,85,200,310
+Chana Dal Fry,lunch,Veg,220,11,28,8,2,bowl,1 bowl,6,330,90,210,320
+Green Gram Dal Fry,lunch,Veg,210,12,26,7,2,bowl,1 bowl,6,320,90,210,330
+Veg Kolhapuri,dinner,Veg,250,6,18,16,4,bowl,1 bowl,4,420,80,140,260
+Veg Jalfrezi,dinner,Veg,220,5,16,14,4,bowl,1 bowl,4,380,70,130,240
+Veg Do Pyaza,dinner,Veg,230,6,18,14,5,bowl,1 bowl,4,380,80,140,250
+Veg Malai Kofta,dinner,Veg,300,8,22,20,6,bowl,1 bowl,4,420,120,170,260
+Palak Paneer,dinner,Veg,260,14,12,18,3,bowl,1 bowl,3,380,260,200,300
+Methi Paneer,dinner,Veg,250,13,12,17,3,bowl,1 bowl,3,360,240,190,280
+Matar Paneer,dinner,Veg,270,13,18,17,4,bowl,1 bowl,4,370,220,190,300
+Paneer Butter Masala,dinner,Veg,320,12,14,24,5,bowl,1 bowl,3,420,240,210,300
+Veg Korma,dinner,Veg,260,6,20,16,5,bowl,1 bowl,4,380,90,150,260
+Aloo Gobi,lunch,Veg,210,5,28,8,4,bowl,1 bowl,5,320,70,130,420
+Aloo Methi,lunch,Veg,200,4,26,8,3,bowl,1 bowl,4,300,80,120,400
+Aloo Palak,lunch,Veg,210,5,26,9,3,bowl,1 bowl,4,320,120,140,420
+Mixed Veg Curry,dinner,Veg,220,6,20,12,4,bowl,1 bowl,4,340,80,140,260
+Kadai Veg,dinner,Veg,230,6,18,14,4,bowl,1 bowl,4,360,90,140,270
+Veg Handi,dinner,Veg,240,6,18,15,4,bowl,1 bowl,4,370,90,150,280
+Veg Pulao,lunch,Veg,260,6,42,8,3,bowl,1 bowl,3,340,60,150,250
+Khichdi,lunch,Veg,220,8,36,6,2,bowl,1 bowl,4,280,70,150,240
+Dal Rice,lunch,Veg,240,9,40,5,2,bowl,1 bowl,3,300,80,170,260
+Sambar Rice,lunch,Veg,250,8,42,6,3,bowl,1 bowl,4,340,90,170,260
+Curd Rice,lunch,Veg,230,7,36,6,4,bowl,1 bowl,2,300,150,160,220
+Buttermilk Rice,lunch,Veg,220,6,36,5,3,bowl,1 bowl,2,280,120,150,210
+Rasam Rice,lunch,Veg,200,5,38,3,2,bowl,1 bowl,2,260,60,120,180
+Lemon Rice,lunch,Veg,230,5,40,6,2,bowl,1 bowl,2,320,60,140,200
+Tamarind Rice,lunch,Veg,240,5,42,7,3,bowl,1 bowl,3,340,70,150,220
+Coconut Rice,lunch,Veg,260,4,38,10,3,bowl,1 bowl,3,300,80,140,210
+Tomato Rice,lunch,Veg,230,5,40,6,3,bowl,1 bowl,3,320,70,140,230
+Vegetable Fried Rice,lunch,Veg,280,6,44,9,3,bowl,1 bowl,3,380,60,150,260
+Paneer Fried Rice,lunch,Veg,320,12,42,12,3,bowl,1 bowl,3,420,220,190,260
+Mushroom Fried Rice,lunch,Veg,270,7,42,9,3,bowl,1 bowl,3,360,50,140,320
+Egg Fried Rice,lunch,Non-Veg,300,14,40,10,2,bowl,1 bowl,2,400,90,200,260
+Chicken Fried Rice,lunch,Non-Veg,330,18,42,12,2,bowl,1 bowl,2,420,80,210,300
+Veg Biryani,lunch,Veg,320,7,48,10,4,bowl,1 bowl,4,450,80,180,260
+Paneer Biryani,lunch,Veg,350,14,46,14,4,bowl,1 bowl,4,470,240,200,260
+Mushroom Biryani,lunch,Veg,330,8,48,11,4,bowl,1 bowl,4,450,60,180,320
+Egg Biryani,lunch,Non-Veg,360,16,46,14,3,bowl,1 bowl,3,480,100,210,260
+Chicken Biryani,lunch,Non-Veg,400,20,48,16,3,bowl,1 bowl,3,500,90,220,300
+Mutton Biryani,lunch,Non-Veg,420,22,46,18,3,bowl,1 bowl,3,520,80,230,320
+Vegetable Pulao,lunch,Veg,260,6,42,8,3,bowl,1 bowl,3,340,70,150,240
+Paneer Pulao,lunch,Veg,300,12,40,12,3,bowl,1 bowl,3,360,220,190,240
+Mushroom Pulao,lunch,Veg,270,7,42,9,3,bowl,1 bowl,3,340,60,150,300
+Egg Pulao,lunch,Non-Veg,300,14,40,10,2,bowl,1 bowl,2,380,90,190,240
+Chicken Pulao,lunch,Non-Veg,330,18,42,12,2,bowl,1 bowl,2,400,80,210,280
+Veg Manchurian,snack,Veg,220,6,24,12,4,bowl,1 bowl,3,480,60,120,240
+Gobi Manchurian,snack,Veg,230,6,26,12,4,bowl,1 bowl,3,500,70,120,260
+Paneer Manchurian,snack,Veg,260,12,18,18,3,bowl,1 bowl,2,520,220,200,240
+Mushroom Manchurian,snack,Veg,240,7,20,16,3,bowl,1 bowl,2,500,50,130,300
+Baby Corn Manchurian,snack,Veg,230,5,26,12,4,bowl,1 bowl,3,480,40,110,260
+Veg Noodles,dinner,Veg,260,6,42,8,4,plate,1 plate,3,420,50,130,240
+Egg Noodles,dinner,Non-Veg,290,12,40,10,3,plate,1 plate,3,450,80,160,260
+Chicken Noodles,dinner,Non-Veg,320,18,42,12,3,plate,1 plate,3,470,70,180,300
+Paneer Noodles,dinner,Veg,310,14,40,12,3,plate,1 plate,3,460,220,180,260
+Mushroom Noodles,dinner,Veg,280,8,42,9,3,plate,1 plate,3,430,50,140,320
+Veg Spring Roll,snack,Veg,180,4,20,9,2,piece,1 roll,2,320,40,90,200
+Paneer Spring Roll,snack,Veg,200,8,18,11,2,piece,1 roll,2,340,180,140,220
+Chicken Spring Roll,snack,Non-Veg,220,10,20,12,2,piece,1 roll,2,360,60,150,240
+Veg Momos,snack,Veg,200,6,30,5,2,plate,6 momos,3,350,60,130,240
+Chicken Momos,snack,Non-Veg,230,14,28,7,2,plate,6 momos,2,370,70,160,260
+Paneer Momos,snack,Veg,240,12,26,9,2,plate,6 momos,2,360,220,180,240
+Mushroom Momos,snack,Veg,220,8,28,6,2,plate,6 momos,3,340,50,140,300
+Veg Soup,snack,Veg,80,3,12,2,4,bowl,1 bowl,2,300,40,90,200
+Tomato Soup,snack,Veg,90,3,14,2,6,bowl,1 bowl,2,320,50,90,220
+Sweet Corn Soup,snack,Veg,120,4,20,3,6,bowl,1 bowl,2,340,40,110,260
+Mushroom Soup,snack,Veg,110,4,12,5,3,bowl,1 bowl,1,330,40,100,300
+Chicken Soup,snack,Non-Veg,130,12,8,5,1,bowl,1 bowl,1,360,40,140,260
+Clear Veg Soup,snack,Veg,70,3,10,2,3,bowl,1 bowl,2,280,40,80,200
+Clear Chicken Soup,snack,Non-Veg,100,10,6,4,1,bowl,1 bowl,1,300,40,120,240
+Spinach Soup,snack,Veg,90,4,10,3,2,bowl,1 bowl,3,300,120,110,280
+Carrot Soup,snack,Veg,95,3,16,2,6,bowl,1 bowl,3,300,70,100,260
+Beetroot Soup,snack,Veg,100,3,18,2,7,bowl,1 bowl,3,300,60,100,300
+Pumpkin Soup,snack,Veg,90,2,16,2,6,bowl,1 bowl,3,290,50,90,260
+Lentil Soup,snack,Veg,140,8,20,4,2,bowl,1 bowl,4,320,80,160,320
+Dal Soup,snack,Veg,150,9,22,4,2,bowl,1 bowl,4,330,90,170,340
+Wheat Roti,dinner,Veg,120,3,22,1,1,piece,1 roti,3,180,20,80,120
+Butter Roti,dinner,Veg,160,3,22,5,1,piece,1 roti,2,200,20,80,120
+Tandoori Roti,dinner,Veg,140,4,24,2,1,piece,1 roti,3,190,25,85,130
+Plain Paratha,breakfast,Veg,260,5,30,12,2,piece,1 paratha,3,320,40,120,200
+Aloo Paratha,breakfast,Veg,300,6,36,14,3,piece,1 paratha,4,340,50,130,300
+Gobi Paratha,breakfast,Veg,280,6,34,12,3,piece,1 paratha,4,330,60,120,280
+Paneer Paratha,breakfast,Veg,320,12,32,16,3,piece,1 paratha,3,350,220,180,240
+Methi Paratha,breakfast,Veg,260,6,32,10,2,piece,1 paratha,4,320,80,120,240
+Spinach Paratha,breakfast,Veg,250,6,30,10,2,piece,1 paratha,4,310,100,120,260
+Mixed Veg Paratha,breakfast,Veg,270,7,34,11,3,piece,1 paratha,4,330,90,130,260
+Paneer Bhurji,lunch,Veg,280,14,10,20,3,bowl,1 bowl,2,380,240,200,260
+Egg Bhurji,breakfast,Non-Veg,240,16,6,18,2,bowl,1 bowl,1,360,70,200,220
+Chicken Curry,lunch,Non-Veg,320,22,10,22,2,bowl,1 bowl,1,420,40,220,300
+Chicken Masala,dinner,Non-Veg,340,24,10,24,2,bowl,1 bowl,1,440,40,230,320
+Butter Chicken,dinner,Non-Veg,420,24,12,32,3,bowl,1 bowl,1,500,60,240,320
+Chicken Korma,dinner,Non-Veg,380,22,14,28,4,bowl,1 bowl,1,460,70,220,300
+Chicken Chettinad,dinner,Non-Veg,350,26,10,24,2,bowl,1 bowl,1,430,40,230,330
+Chicken Roast,dinner,Non-Veg,300,28,6,20,1,piece,150 g,0,380,30,210,320
+Grilled Chicken,dinner,Non-Veg,280,30,4,18,0,piece,150 g,0,360,30,200,320
+Chicken 65,snack,Non-Veg,360,24,12,26,2,plate,150 g,1,520,30,200,300
+Fish Curry,lunch,Non-Veg,280,22,8,18,1,bowl,1 bowl,0,400,40,220,420
+Fish Fry,snack,Non-Veg,320,26,6,22,0,piece,1 piece,0,420,30,200,420
+Grilled Fish,dinner,Non-Veg,260,28,4,16,0,piece,150 g,0,350,40,210,420
+Prawn Curry,lunch,Non-Veg,300,24,8,20,1,bowl,1 bowl,0,420,60,220,300
+Prawn Fry,snack,Non-Veg,340,26,6,24,1,plate,150 g,0,450,70,220,320
+Mutton Curry,lunch,Non-Veg,380,24,8,28,1,bowl,1 bowl,0,440,30,240,350
+Mutton Masala,dinner,Non-Veg,400,26,8,30,1,bowl,1 bowl,0,460,30,250,360
+Mutton Fry,snack,Non-Veg,420,28,6,32,1,plate,150 g,0,480,30,260,380
+Boiled Egg,breakfast,Non-Veg,70,6,1,5,0,piece,1 egg,0,60,25,90,60
+Omelette,breakfast,Non-Veg,150,10,2,12,1,piece,1 omelette,0,140,50,160,120
+Masala Omelette,breakfast,Non-Veg,180,12,4,14,2,piece,1 omelette,1,180,60,170,140
+Egg Curry,lunch,Non-Veg,220,12,8,16,2,bowl,1 bowl,1,320,70,180,160
+Egg Roast,dinner,Non-Veg,240,14,8,18,2,bowl,1 bowl,1,340,70,180,180
+Egg Bhurji Masala,breakfast,Non-Veg,260,16,6,20,2,bowl,1 bowl,1,360,80,190,200
+Banana,snack,Veg,100,1,27,0,14,piece,1 medium,3,1,5,20,420
+Apple,snack,Veg,95,0,25,0,19,piece,1 medium,4,2,10,20,200
+Orange,snack,Veg,85,2,21,0,17,piece,1 medium,4,1,50,30,240
+Papaya,snack,Veg,60,1,15,0,10,cup,1 cup,3,2,30,20,250
+Watermelon,snack,Veg,50,1,12,0,9,cup,1 cup,1,1,10,15,170
+Pineapple,snack,Veg,82,1,22,0,16,cup,1 cup,2,2,20,15,180
+Mango,snack,Veg,120,1,30,0,26,cup,1 cup,3,2,20,20,260
+Guava,snack,Veg,110,4,23,1,14,piece,1 medium,9,2,20,30,420
+Pomegranate,snack,Veg,105,2,26,1,21,cup,1 cup,4,3,30,35,410
+Fruit Salad,snack,Veg,150,2,35,1,28,bowl,1 b,,,,,
+Wheat Roti,dinner,Veg,120,3,22,1,1,piece,1 roti,3,180,20,80,120
+Butter Roti,dinner,Veg,160,3,22,5,1,piece,1 roti,2,200,20,80,120
+Tandoori Roti,dinner,Veg,140,4,24,2,1,piece,1 roti,3,190,25,85,130
+Plain Paratha,breakfast,Veg,260,5,30,12,2,piece,1 paratha,3,320,40,120,200
+Aloo Paratha,breakfast,Veg,300,6,36,14,3,piece,1 paratha,4,340,50,130,300
+Gobi Paratha,breakfast,Veg,280,6,34,12,3,piece,1 paratha,4,330,60,120,280
+Paneer Paratha,breakfast,Veg,320,12,32,16,3,piece,1 paratha,3,350,220,180,240
+Methi Paratha,breakfast,Veg,260,6,32,10,2,piece,1 paratha,4,320,80,120,240
+Spinach Paratha,breakfast,Veg,250,6,30,10,2,piece,1 paratha,4,310,100,120,260
+Mixed Veg Paratha,breakfast,Veg,270,7,34,11,3,piece,1 paratha,4,330,90,130,260
+Paneer Bhurji,lunch,Veg,280,14,10,20,3,bowl,1 bowl,2,380,240,200,260
+Egg Bhurji,breakfast,Non-Veg,240,16,6,18,2,bowl,1 bowl,1,360,70,200,220
+Chicken Curry,lunch,Non-Veg,320,22,10,22,2,bowl,1 bowl,1,420,40,220,300
+Chicken Masala,dinner,Non-Veg,340,24,10,24,2,bowl,1 bowl,1,440,40,230,320
+Butter Chicken,dinner,Non-Veg,420,24,12,32,3,bowl,1 bowl,1,500,60,240,320
+Chicken Korma,dinner,Non-Veg,380,22,14,28,4,bowl,1 bowl,1,460,70,220,300
+Chicken Chettinad,dinner,Non-Veg,350,26,10,24,2,bowl,1 bowl,1,430,40,230,330
+Chicken Roast,dinner,Non-Veg,300,28,6,20,1,piece,150 g,0,380,30,210,320
+Grilled Chicken,dinner,Non-Veg,280,30,4,18,0,piece,150 g,0,360,30,200,320
+Chicken 65,snack,Non-Veg,360,24,12,26,2,plate,150 g,1,520,30,200,300
+Fish Curry,lunch,Non-Veg,280,22,8,18,1,bowl,1 bowl,0,400,40,220,420
+Fish Fry,snack,Non-Veg,320,26,6,22,0,piece,1 piece,0,420,30,200,420
+Grilled Fish,dinner,Non-Veg,260,28,4,16,0,piece,150 g,0,350,40,210,420
+Prawn Curry,lunch,Non-Veg,300,24,8,20,1,bowl,1 bowl,0,420,60,220,300
+Prawn Fry,snack,Non-Veg,340,26,6,24,1,plate,150 g,0,450,70,220,320
+Mutton Curry,lunch,Non-Veg,380,24,8,28,1,bowl,1 bowl,0,440,30,240,350
+Mutton Masala,dinner,Non-Veg,400,26,8,30,1,bowl,1 bowl,0,460,30,250,360
+Mutton Fry,snack,Non-Veg,420,28,6,32,1,plate,150 g,0,480,30,260,380
+Boiled Egg,breakfast,Non-Veg,70,6,1,5,0,piece,1 egg,0,60,25,90,60
+Omelette,breakfast,Non-Veg,150,10,2,12,1,piece,1 omelette,0,140,50,160,120
+Masala Omelette,breakfast,Non-Veg,180,12,4,14,2,piece,1 omelette,1,180,60,170,140
+Egg Curry,lunch,Non-Veg,220,12,8,16,2,bowl,1 bowl,1,320,70,180,160
+Egg Roast,dinner,Non-Veg,240,14,8,18,2,bowl,1 bowl,1,340,70,180,180
+Egg Bhurji Masala,breakfast,Non-Veg,260,16,6,20,2,bowl,1 bowl,1,360,80,190,200
+Banana,snack,Veg,100,1,27,0,14,piece,1 medium,3,1,5,20,420
+Apple,snack,Veg,95,0,25,0,19,piece,1 medium,4,2,10,20,200
+Orange,snack,Veg,85,2,21,0,17,piece,1 medium,4,1,50,30,240
+Papaya,snack,Veg,60,1,15,0,10,cup,1 cup,3,2,30,20,250
+Watermelon,snack,Veg,50,1,12,0,9,cup,1 cup,1,1,10,15,170
+Pineapple,snack,Veg,82,1,22,0,16,cup,1 cup,2,2,20,15,180
+Mango,snack,Veg,120,1,30,0,26,cup,1 cup,3,2,20,20,260
+Guava,snack,Veg,110,4,23,1,14,piece,1 medium,9,2,20,30,420
+Pomegranate,snack,Veg,105,2,26,1,21,cup,1 cup,4,3,30,35,410
+Fruit Salad,snack,Veg,150,2,35,1,28,bowl,1 bowl,4,10,40,40,420
+Yogurt,snack,Veg,120,6,10,6,9,cup,1 cup,0,80,200,150,240
+Greek Yogurt,snack,Veg,150,12,8,6,7,cup,1 cup,0,70,200,180,240
+Fruit Yogurt,snack,Veg,180,6,24,6,20,cup,1 cup,1,90,200,150,260
+Strawberry Yogurt,snack,Veg,170,6,22,6,18,cup,1 cup,1,90,200,150,260
+Mango Yogurt,snack,Veg,190,6,26,6,22,cup,1 cup,1,90,200,150,260
+Honey Yogurt,snack,Veg,180,6,24,6,20,cup,1 cup,0,90,200,150,260
+Egg Sandwich,breakfast,Non-Veg,280,14,32,10,4,sandwich,1 sandwich,2,320,90,200,220
+Chicken Sandwich,breakfast,Non-Veg,300,18,30,12,4,sandwich,1 sandwich,2,340,80,210,240
+Tuna Sandwich,breakfast,Non-Veg,290,20,28,12,3,sandwich,1 sandwich,2,330,70,200,260
+Grilled Veg Sandwich,breakfast,Veg,260,8,36,8,6,sandwich,1 sandwich,4,320,80,160,220
+Cheese Sandwich,breakfast,Veg,300,12,30,16,5,sandwich,1 sandwich,2,360,220,180,200
+Paneer Wrap,lunch,Veg,320,14,36,14,6,wrap,1 wrap,3,360,240,200,260
+Chicken Wrap,lunch,Non-Veg,340,20,34,14,5,wrap,1 wrap,3,380,80,210,280
+Veg Burger,snack,Veg,300,10,40,10,7,burger,1 burger,4,420,100,160,260
+Chicken Burger,snack,Non-Veg,340,18,38,14,6,burger,1 burger,3,440,80,200,280
+Paneer Burger,snack,Veg,360,16,36,18,6,burger,1 burger,3,460,240,210,260
+French Fries,snack,Veg,320,4,42,15,1,plate,100 g,4,350,20,80,420
+Potato Wedges,snack,Veg,280,4,38,12,2,plate,100 g,4,340,30,90,420
+Sweet Potato Fries,snack,Veg,260,3,36,10,6,plate,100 g,5,300,40,90,450
+Nachos,snack,Veg,300,6,36,14,3,plate,100 g,3,420,60,120,240
+Popcorn,snack,Veg,120,3,24,2,1,cup,1 cup,4,150,5,50,80
+Butter Popcorn,snack,Veg,180,3,24,8,1,cup,1 cup,4,220,10,60,90
+Masala Popcorn,snack,Veg,160,3,24,6,1,cup,1 cup,4,240,10,60,90
+Roasted Peanuts,snack,Veg,200,8,10,16,2,handful,30 g,3,180,20,100,200
+Boiled Peanuts,snack,Veg,180,8,12,14,2,bowl,100 g,4,200,40,110,220
+Peanut Chaat,snack,Veg,220,9,16,14,3,bowl,1 bowl,4,260,40,120,240
+Roasted Chickpeas,snack,Veg,180,9,28,3,4,bowl,50 g,6,220,40,140,260
+Boiled Chickpeas,snack,Veg,200,10,32,3,5,bowl,1 bowl,7,240,60,160,300
+Chickpea Salad,snack,Veg,220,10,34,4,6,bowl,1 bowl,7,260,60,160,320
+Corn Salad,snack,Veg,180,6,32,3,6,bowl,1 bowl,4,200,20,110,280
+Sprouts Salad,snack,Veg,160,10,26,2,5,bowl,1 bowl,6,180,40,150,300
+Moong Sprouts,snack,Veg,140,10,24,1,4,bowl,1 bowl,6,150,40,140,280
+Mixed Sprouts,snack,Veg,160,11,26,2,4,bowl,1 bowl,7,160,50,150,300
+Veg Salad,snack,Veg,120,4,20,2,8,bowl,1 bowl,5,150,60,80,260
+Greek Salad,snack,Veg,180,6,14,10,6,bowl,1 bowl,4,260,150,120,220
+Coleslaw,snack,Veg,200,3,18,12,12,bowl,1 bowl,3,280,80,90,200
+Pasta Veg,dinner,Veg,320,10,48,10,6,plate,1 plate,4,380,80,180,240
+Pasta White Sauce,dinner,Veg,380,12,46,16,6,plate,1 plate,3,420,180,200,260
+Pasta Red Sauce,dinner,Veg,340,10,50,10,8,plate,1 plate,4,360,80,170,260
+Pasta Alfredo,dinner,Veg,420,14,48,20,6,plate,1 plate,3,440,200,210,260
+Pasta Mushroom,dinner,Veg,360,12,46,12,6,plate,1 plate,3,400,80,190,300
+Chicken Pasta,dinner,Non-Veg,400,20,46,16,6,plate,1 plate,3,420,90,210,320
+Pizza Veg,dinner,Veg,280,10,34,12,6,slice,1 slice,3,420,180,180,240
+Pizza Cheese,dinner,Veg,300,12,34,14,6,slice,1 slice,3,440,220,200,240
+Pizza Paneer,dinner,Veg,320,14,34,16,6,slice,1 slice,3,460,240,210,260
+Pizza Mushroom,dinner,Veg,290,11,34,12,6,slice,1 slice,3,420,180,180,280
+Pizza Chicken,dinner,Non-Veg,330,18,34,16,6,slice,1 slice,3,460,200,210,300
+Chocolate Cake,snack,Veg,350,5,50,14,36,slice,1 slice,2,260,60,120,180
+Vanilla Cake,snack,Veg,320,5,48,12,34,slice,1 slice,1,240,60,120,180
+Strawberry Cake,snack,Veg,330,5,50,12,36,slice,1 slice,1,250,60,120,180
+Ice Cream Vanilla,snack,Veg,210,4,24,11,20,cup,1 scoop,0,80,150,110,180
+Ice Cream Chocolate,snack,Veg,230,4,26,12,22,cup,1 scoop,1,90,150,120,180
+Ice Cream Strawberry,snack,Veg,220,4,25,11,21,cup,1 scoop,0,90,150,110,180
+Kulfi,snack,Veg,250,6,28,12,24,piece,1 kulfi,0,90,200,150,200
+Falooda,snack,Veg,300,6,40,12,30,glass,1 glass,1,120,220,160,240
+Gulab Jamun,snack,Veg,280,4,38,12,32,piece,2 pieces,1,120,100,90,140
+Rava Kesari,snack,Veg,300,4,46,10,30,bowl,1 bowl,1,180,40,80,120
+Kheer,snack,Veg,260,8,38,8,26,bowl,1 bowl,1,160,200,180,260
+Payasam,snack,Veg,280,7,42,9,28,bowl,1 bowl,1,170,180,160,240
+Ragi Porridge,breakfast,Veg,180,6,34,2,6,bowl,1 bowl,4,120,250,180,220
+Millet Upma,breakfast,Veg,220,7,36,6,4,bowl,1 bowl,5,240,60,160,260
+Foxtail Millet Pongal,breakfast,Veg,240,8,38,7,3,bowl,1 bowl,5,260,70,170,280
+Barnyard Millet Khichdi,lunch,Veg,230,8,36,6,3,bowl,1 bowl,5,250,70,170,260
+Ragi Roti,dinner,Veg,160,4,30,2,1,piece,1 roti,4,160,150,120,220
+Multigrain Roti,dinner,Veg,170,5,30,3,1,piece,1 roti,4,170,80,140,240

@@ -817,11 +817,7 @@
                         <button onclick="openPdfPreview()" class="btn-clinical btn-pdf"
                             style="background:rgba(255,255,255,.2); color:#fff; border:1px solid rgba(255,255,255,.3); backdrop-filter:blur(6px);">
                             <i class="fas fa-eye"></i> Preview
-                        </button>
-                        <a href="{% url 'regenerate_plan' checkup.id %}" class="btn-clinical btn-sync"
-                            style="background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.25); backdrop-filter:blur(6px);">
-                            <i class="fas fa-sync"></i> Update
-                        </a>
+                        
                         <a href="{% url 'delete_checkup' checkup.id %}" class="btn-clinical btn-del"
                             style="background:rgba(238,93,80,.3); color:#fff; border:1px solid rgba(238,93,80,.4);"
                             onclick="return confirm('Delete this report?')">
@@ -845,7 +841,10 @@
                         <div class="hero-stat-lbl">Weight</div>
                     </div>
                     <div class="hero-stat">
-                        <div class="hero-stat-val" style="color: {% if projected_change < 0 %}#a7f3d0{% else %}#fca5a5{% endif %};">{{ projected_change }}<span style="font-size:14px;">kg</span></div>
+                        <div class="hero-stat-val" 
+                            style="color: {% if diet_goal == 'Maintenance' %}{% if projected_change < 0.5 and projected_change > -0.5 %}#a7f3d0{% else %}#fde68a{% endif %}{% elif diet_goal == 'Weight Loss' %}{% if projected_change < 0 %}#a7f3d0{% else %}#fca5a5{% endif %}{% elif diet_goal == 'Weight Gain' %}{% if projected_change > 0 %}#a7f3d0{% else %}#fca5a5{% endif %}{% endif %};">
+                            {% if projected_change > 0 %}+{% endif %}{{ projected_change }}<span style="font-size:14px;">kg</span>
+                        </div>
                         <div class="hero-stat-lbl">8-Wk Trend</div>
                     </div>
                 </div>
@@ -862,8 +861,7 @@
                             <i class="fas fa-user" style="margin-right: 5px;"></i> Patient Name
                         </div>
                         <div style="font-size: 16px; font-weight: 700; color: #0f172a;">{{ patient.name }}</div>
-                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ checkup.age }} Yrs &middot; {{
-                            patient.gender }}</div>
+                        <div style="font-size: 13px; color: #64748b; margin-top: 2px;">{{ checkup.age }} Yrs &middot; {{patient.gender }}</div>
                     </div>
                     <div>
                         <div
@@ -912,8 +910,8 @@
                         <!-- PROJECTED WEIGHT LOSS CALCULATION DISPLAY -->
                         <div class="m-label">Projected Trend</div>
                         <div class="m-value"
-                            style="color: {% if projected_change < 0 %}#10b981{% else %}#ef4444{% endif %}">
-                            {{ projected_change }}<small style="font-size:14px">kg</small>
+                            style="color: {% if diet_goal == 'Maintenance' %}{% if projected_change < 0.5 and projected_change > -0.5 %}#10b981{% else %}#f59e0b{% endif %}{% elif diet_goal == 'Weight Loss' %}{% if projected_change < 0 %}#10b981{% else %}#ef4444{% endif %}{% elif diet_goal == 'Weight Gain' %}{% if projected_change > 0 %}#10b981{% else %}#ef4444{% endif %}{% endif %}">
+                            {% if projected_change > 0 %}+{% endif %}{{ projected_change }}<small style="font-size:14px">kg</small>
                         </div>
                         <div class="m-context">Expected 8-Week Change</div>
                         <i class="fas fa-chart-line m-icon"></i>

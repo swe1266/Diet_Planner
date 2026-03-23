@@ -6,7 +6,7 @@ from django.template.loader import get_template
 from django.db.models import Q
 from django.contrib import messages
 from xhtml2pdf import pisa
-from .models import Patient, Checkup, FoodItem, AssignedMeal, Disease, NutrientLimit
+from .models import Patient, Checkup, FoodItem, AssignedMeal, Disease
 import json
 import random
 import math
@@ -287,9 +287,17 @@ def new_patient(request):
     if request.method == 'POST':
         name = request.POST['name']
         gender = request.POST['gender']
-        phone = request.POST['phone']
+        phone = request.POST['phone'].strip()
         address = request.POST['address']
         dietary = request.POST['dietary']
+
+        # Server-side Phone Length Validation
+        if len(phone) != 10:
+            messages.error(request, "Invalid contact details (Must be 10 digits)")
+            all_diseases = list(Disease.objects.values_list('name', flat=True).order_by('name'))
+            return render(request, 'new_patient.html', {
+                'all_diseases_json': json.dumps(all_diseases)
+            })
         plan_type = request.POST['plan_type']
         age = int(request.POST['age'])
         height_cm = float(request.POST['height'])
@@ -499,21 +507,25 @@ def calculate_metrics(weight, height, age, gender, activity):
     # 3. TDEE
     tdee = round(bmr * activity, 2)
     
-    # 4. Category & Target (Based on Body Type Logic step 3)
+    # 4. Clinical Caloric Targeting (TDEE-relative)
     if bmi < 18.5:
         category = "Underweight"
-        target = 2350 # average of 2200-2500
+        # Weight Gain (Surplus of 500 kcal is a safe clinical standard)
+        target = tdee + 500
     elif bmi < 25:
         category = "Normal"
-        target = 2000
+        # Maintenance (Matches TDEE exactly)
+        target = tdee
     elif bmi < 30:
         category = "Overweight"
-        target = 1800
+        # Weight Loss (Deficit of 500 kcal)
+        target = tdee - 500
     else:
         category = "Obese"
-        target = 1500
+        # Aggressive Weight Loss (Deficit of 750-1000 kcal, floor at 1200)
+        target = tdee - 750
         
-    # Safety Constraint
+    # Safety Constraint: Never go below 1200 kcal for general health
     if target < 1200:
         target = 1200
     
@@ -522,7 +534,7 @@ def calculate_metrics(weight, height, age, gender, activity):
 def get_restricted_nutrients(diseases_str):
     """
     ENGINE A2: DISEASE RESTRICTIONS  (DB-backed, priority-aware)
-    Queries NutrientLimit from the Disease model for each disease.
+    Queries restricted_nutrients JSONField from the Disease model.
     Higher-priority disease wins on conflicts (e.g. Renal Failure > Constipation).
     Returns a dict: { nutrient: {'max': max_daily_g, 'banned': is_banned} }
     """
@@ -538,16 +550,16 @@ def get_restricted_nutrients(diseases_str):
     diseases = (
         Disease.objects
         .filter(name__in=names)
-        .prefetch_related('nutrient_limits')
         .order_by('priority')          # low priority first → high priority last (overwrites)
     )
 
     restrictions = {}
     for disease in diseases:
-        for limit in disease.nutrient_limits.all():
-            restrictions[limit.nutrient] = {
-                'max': limit.max_daily_g,
-                'banned': limit.is_banned
+        # data in JSONField: {"sodium": {"banned": true}, "sugar": {"max": 10}}
+        for nutrient, rule in disease.restricted_nutrients.items():
+            restrictions[nutrient] = {
+                'max': rule.get('max'),
+                'banned': rule.get('banned', False)
             }
 
     return restrictions
@@ -576,7 +588,12 @@ def smart_filter(category, meal_type, diet_pref, bmi_category, restrictions=None
         'phosphorus':None,
     }
 
-    items = FoodItem.objects.filter(category=meal_type)
+    # Map high-level meal labels to database categories
+    db_category = meal_type
+    if 'Snack' in meal_type or 'Mid-Morning' in meal_type:
+        db_category = 'Snack'
+
+    items = FoodItem.objects.filter(category=db_category)
 
     # ── Dietary preference filter ────────────────────────────────────────────
     if diet_pref == 'Veg':
@@ -676,11 +693,10 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     if checkup.plan_type == '3-Meal':
         splits = {'Breakfast': 0.30, 'Lunch': 0.40, 'Dinner': 0.30}
     else:
-        # 5-Meal Split
+        # 4-Meal Split (Replacing old 5-meal as per user request)
         splits = {
             'Breakfast': 0.25, 
-            'Mid-Morning': 0.10, 
-            'Lunch': 0.25, 
+            'Lunch': 0.35, 
             'Evening Snack': 0.10, 
             'Dinner': 0.30
         }
@@ -779,9 +795,14 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     # Daily Averages
     daily_avg = {k: round(v / 7, 1) for k, v in weekly_totals.items()}
     
-    # Weight Projection (7700 kcal ≈ 1 kg; multiply by 8 to get 8-week total)
-    weekly_cal_diff = (tdee - daily_avg['cal']) * 7
-    projected_weight_change = round((weekly_cal_diff / 7700) * 8, 2)  # 8-week total
+    # Weight Projection (7.7 kcal ≈ 1g; 7700 kcal ≈ 1 kg)
+    # Corrected Sign: (Daily Prescribed Intake - Daily Burn)
+    daily_cal_diff = daily_avg['cal'] - tdee
+    projected_weight_change = round((daily_cal_diff * 7 * 8) / 7700, 2)  # 8-week total in kg
+
+    # Clinical Display: For Maintenance, show 0 trend to avoid confusing the patient
+    if diet_goal == "Maintenance":
+        projected_weight_change = 0
 
     # Prepare WhatsApp Share Text
     whatsapp_text = f"Hello {patient.name}, here is your personalized diet plan for this week:\n\n"

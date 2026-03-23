@@ -16,47 +16,16 @@ class Disease(models.Model):
         default=5,
         help_text="1 = low priority, 10 = highest (overrides conflicts)"
     )
+    restricted_nutrients = models.JSONField(
+        default=dict,
+        help_text='Format: {"sodium": {"banned": false, "max": 1500}, "sugar": {"banned": true}}'
+    )
 
     def __str__(self):
         return self.name
 
 
-class NutrientLimit(models.Model):
-    """
-    Per-disease nutrient restriction rule.
-    - is_banned=True  → food containing ANY amount is excluded
-    - is_banned=False → food is excluded if it pushes daily total above max_daily_g
-    """
-    NUTRIENT_CHOICES = [
-        ('sodium',   'Sodium (mg)'),
-        ('sugar',    'Sugar (g)'),
-        ('fat',      'Fat (g)'),
-        ('carbs',    'Carbs (g)'),
-        ('protein',  'Protein (g)'),
-        ('fiber',    'Fiber (g)'),
-        ('calcium',  'Calcium (mg)'),
-        ('potassium','Potassium (mg)'),
-        ('phosphorus','Phosphorus (mg)'),
-    ]
-    disease     = models.ForeignKey(Disease, on_delete=models.CASCADE,
-                                    related_name='nutrient_limits')
-    nutrient    = models.CharField(max_length=30, choices=NUTRIENT_CHOICES)
-    max_daily_g = models.FloatField(
-        null=True, blank=True,
-        help_text="Daily upper limit (g or mg). NULL = use smart default."
-    )
-    is_banned   = models.BooleanField(
-        default=False,
-        help_text="If True: any food containing this nutrient is excluded."
-    )
-
-    class Meta:
-        unique_together = ('disease', 'nutrient')
-
-    def __str__(self):
-        if self.is_banned:
-            return f"{self.disease.name} — BAN {self.nutrient}"
-        return f"{self.disease.name} — {self.nutrient} ≤ {self.max_daily_g}"
+# NutrientLimit is removed in favor of JSONField in Disease
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -139,7 +108,7 @@ class FoodItem(models.Model):
     diet_type= models.CharField(max_length=20, choices=DIET_TYPE)
 
     # Nutrition (Per 100 g serving)
-    calories = models.IntegerField()
+    calories = models.FloatField() # Changed to FloatField for precision
     protein  = models.FloatField()
     carbs    = models.FloatField()
     fat      = models.FloatField()
@@ -155,6 +124,14 @@ class FoodItem(models.Model):
     # Portion display
     unit_name    = models.CharField(max_length=20, default="Serving")
     serving_desc = models.CharField(max_length=50, default="1 Serving")
+
+    def save(self, *args, **kwargs):
+        # Professional Validation: Prevent negative values
+        for field in ['calories', 'protein', 'carbs', 'fat', 'sugar', 'fiber', 'sodium']:
+            val = getattr(self, field)
+            if val is not None and val < 0:
+                raise ValueError(f"{field.capitalize()} cannot be negative.")
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} ({self.calories} kcal)"

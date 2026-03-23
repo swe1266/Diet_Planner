@@ -69,7 +69,7 @@
         .sidebar {
             width: var(--sidebar-w);
             height: 100vh;
-            background: var(--bg-sidebar);
+            background: #111c44; /* Dark Navy Blue */
             position: fixed;
             left: 0;
             top: 0;
@@ -77,8 +77,8 @@
             flex-direction: column;
             z-index: 1100;
             transition: width var(--transition);
-            border-right: var(--border);
-            box-shadow: 4px 0 24px rgba(67, 24, 255, 0.04);
+            border-right: none;
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.1);
         }
 
         /* Brand Logo */
@@ -90,7 +90,7 @@
             gap: 14px;
             overflow: hidden;
             flex-shrink: 0;
-            border-bottom: var(--border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .brand-icon {
@@ -104,7 +104,7 @@
             justify-content: center;
             color: white;
             font-size: 20px;
-            box-shadow: 0 6px 18px rgba(67, 24, 255, 0.35);
+            box-shadow: 0 6px 18px rgba(67, 24, 255, 0.25);
         }
 
         .brand-text {
@@ -116,14 +116,14 @@
         .brand-text h1 {
             font-size: 18px;
             font-weight: 800;
-            color: var(--text-heading);
+            color: white;
             letter-spacing: -0.5px;
         }
 
         .brand-text p {
             font-size: 10px;
-            font-weight: 600;
-            color: var(--text-muted);
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
@@ -132,10 +132,10 @@
         .nav-label {
             font-size: 10px;
             font-weight: 700;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
             letter-spacing: 1.2px;
-            padding: 20px 24px 8px;
+            padding: 24px 24px 8px;
             white-space: nowrap;
             overflow: hidden;
             transition: opacity var(--transition);
@@ -159,7 +159,7 @@
             align-items: center;
             gap: 14px;
             padding: 13px 14px;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
@@ -175,17 +175,18 @@
             min-width: 22px;
             text-align: center;
             transition: transform var(--transition);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .nav-link span { transition: opacity var(--transition); }
 
         .nav-link:hover {
-            background: var(--brand-light);
-            color: var(--brand);
-            transform: translateX(2px);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            transform: translateX(4px);
         }
 
-        .nav-link:hover i { transform: scale(1.1); }
+        .nav-link:hover i { transform: scale(1.1); color: white; }
 
         .nav-link.active {
             background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
@@ -198,15 +199,15 @@
         /* Sidebar Footer */
         .sidebar-footer {
             padding: 16px;
-            border-top: var(--border);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .logout-btn {
             width: 100%;
             padding: 12px 14px;
-            background: #FFF5F5;
-            color: var(--danger);
-            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ff8080;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-sm);
             cursor: pointer;
             font-family: var(--font);
@@ -221,7 +222,7 @@
         }
 
         .logout-btn i { min-width: 22px; font-size: 18px; text-align: center; }
-        .logout-btn:hover { background: var(--danger); color: white; box-shadow: 0 6px 18px rgba(238, 93, 80, 0.3); }
+        .logout-btn:hover { background: #EE5D50; color: white; border-color: transparent; box-shadow: 0 6px 18px rgba(238, 93, 80, 0.3); }
 
         /* ============================================
            COLLAPSED STATE
