@@ -17,7 +17,7 @@
         :root {
             --font:              'Plus Jakarta Sans', sans-serif;
 
-            /* Colors */
+            /* Brand Colors (same for both themes) */
             --brand:             #4318FF;
             --brand-dark:        #3311CC;
             --brand-light:       #EEF0FF;
@@ -26,29 +26,77 @@
             --danger:            #EE5D50;
             --info:              #4318FF;
 
+            /* Layout */
+            --sidebar-w:         270px;
+            --sidebar-collapsed: 80px;
+            --topbar-h:          76px;
+            --radius:            20px;
+            --radius-sm:         12px;
+            --transition:        0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================
+           LIGHT THEME (default)
+        ============================================ */
+        :root,
+        [data-theme="light"] {
             /* Backgrounds */
             --bg-body:           #f4f7fe;
             --bg-surface:        #ffffff;
-            --bg-sidebar:        #ffffff;
+            --bg-topbar:         rgba(255, 255, 255, 0.85);
+            --bg-toggle:         #f4f7fe;
 
             /* Text */
             --text-heading:      #2b3674;
             --text-body:         #4a5568;
             --text-muted:        #a3aed1;
 
-            /* Layout */
-            --sidebar-w:         270px;
-            --sidebar-collapsed: 80px;
-            --topbar-h:          76px;
-
-            /* Effects */
+            /* Borders & Effects */
+            --border:            1px solid #e9eef8;
             --shadow:            0 4px 24px rgba(67, 24, 255, 0.08);
             --shadow-md:         0 8px 32px rgba(67, 24, 255, 0.12);
             --shadow-lg:         0 20px 48px rgba(67, 24, 255, 0.16);
-            --radius:            20px;
-            --radius-sm:         12px;
-            --border:            1px solid #e9eef8;
-            --transition:        0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Sidebar */
+            --sidebar-bg:        #111c44;
+
+            /* Misc */
+            --scrollbar-thumb:   #CBD5E1;
+            --pd-signout-bg:     #FFF5F5;
+            --theme-icon:        '\f185'; /* fa-sun */
+        }
+
+        /* ============================================
+           DARK THEME
+        ============================================ */
+        [data-theme="dark"] {
+            /* Backgrounds */
+            --bg-body:           #0f1117;
+            --bg-surface:        #1e2436;
+            --bg-topbar:         rgba(20, 25, 45, 0.95);
+            --bg-toggle:         #1e2436;
+
+            /* Text — boosted for readability */
+            --text-heading:      #f0f4ff;          /* near-white for headings */
+            --text-body:         #cdd5e8;          /* was #a0aec0 — much brighter */
+            --text-muted:        #8896b3;          /* was #4a5568 — was near-invisible! */
+
+            /* Borders & Effects — more visible */
+            --border:            1px solid rgba(255,255,255,0.12);
+            --shadow:            0 4px 24px rgba(0, 0, 0, 0.5);
+            --shadow-md:         0 8px 32px rgba(0, 0, 0, 0.6);
+            --shadow-lg:         0 20px 48px rgba(0, 0, 0, 0.7);
+
+            /* Sidebar */
+            --sidebar-bg:        #0c1022;
+
+            /* Brand light (dark mode tint) */
+            --brand-light:       rgba(67, 24, 255, 0.2);
+
+            /* Misc */
+            --scrollbar-thumb:   #3a4560;
+            --pd-signout-bg:     rgba(238, 93, 80, 0.15);
+            --theme-icon:        '\f186'; /* fa-moon */
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -69,7 +117,7 @@
         .sidebar {
             width: var(--sidebar-w);
             height: 100vh;
-            background: #111c44; /* Dark Navy Blue */
+            background: var(--sidebar-bg);
             position: fixed;
             left: 0;
             top: 0;
@@ -264,7 +312,7 @@
             right: 0;
             left: var(--sidebar-w);
             height: var(--topbar-h);
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--bg-topbar);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: var(--border);
@@ -286,7 +334,7 @@
             width: 40px;
             height: 40px;
             border: none;
-            background: var(--bg-body);
+            background: var(--bg-toggle);
             border-radius: var(--radius-sm);
             cursor: pointer;
             display: flex;
@@ -493,8 +541,77 @@
         ============================================ */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #A3AED1; }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ============================================
+           THEME TOGGLE BUTTON
+        ============================================ */
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-toggle);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 17px;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            background: var(--brand-light);
+            color: var(--brand);
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .theme-toggle .t-sun,
+        .theme-toggle .t-moon {
+            position: absolute;
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* Light theme: show sun, hide moon */
+        [data-theme="light"] .theme-toggle .t-sun,
+        :root:not([data-theme]) .theme-toggle .t-sun {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+        [data-theme="light"] .theme-toggle .t-moon,
+        :root:not([data-theme]) .theme-toggle .t-moon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.5);
+        }
+
+        /* Dark theme: show moon, hide sun */
+        [data-theme="dark"] .theme-toggle .t-sun {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.5);
+        }
+        [data-theme="dark"] .theme-toggle .t-moon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        /* Dark-mode surface overrides for dropdowns, cards */
+        [data-theme="dark"] .profile-dropdown {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+        }
+        [data-theme="dark"] .pd-signout {
+            background: var(--pd-signout-bg);
+        }
+        [data-theme="dark"] .user-pill {
+            background: var(--bg-surface);
+        }
+        [data-theme="dark"] .sidebar-toggle,
+        [data-theme="dark"] .theme-toggle {
+            background: var(--bg-surface);
+        }
 
         /* ============================================
            MOBILE
@@ -695,6 +812,11 @@
         </div>
 
         <div class="topbar-right">
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light mode">
+                <i class="fas fa-sun t-sun"></i>
+                <i class="fas fa-moon t-moon"></i>
+            </button>
             <!-- Profile Pill + Dropdown -->
             <div class="user-pill" id="profilePill" onclick="toggleProfileMenu()">
                 <div class="user-info">
@@ -779,6 +901,19 @@
 
     <!-- ===== GLOBAL SCRIPTS ===== -->
     <script>
+        /* --- Theme Toggle --- */
+        (function() {
+            var saved = localStorage.getItem('nutriplanner-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+        })();
+
+        function toggleTheme() {
+            var current = document.documentElement.getAttribute('data-theme') || 'light';
+            var next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('nutriplanner-theme', next);
+        }
+
         /* --- Sidebar Toggle --- */
         function toggleSidebar() {
             if (window.innerWidth > 960) {

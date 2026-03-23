@@ -3,19 +3,15 @@
 
 {% block content %}
 <style>
-    :root {
-        --brand: #4318FF;
-        --brand-light: #EEF0FF;
+    :root, [data-theme="light"] {
         --grad-primary: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
-        --bg-body: #f4f7fe;
-        --surface: #ffffff;
-        --text-main: #2b3674;
-        --text-muted: #a3aed1;
-        --border: #e2e8f0;
-        --shadow-soft: 0px 18px 40px rgba(112, 144, 176, 0.12);
+        --shadow-soft:  0px 18px 40px rgba(112, 144, 176, 0.12);
         --radius-lg: 24px;
         --radius-md: 16px;
         --radius-sm: 12px;
+    }
+    [data-theme="dark"] {
+        --shadow-soft: 0px 18px 40px rgba(0,0,0,0.4);
     }
 
     .registration-wrapper {
@@ -135,11 +131,11 @@
     }
 
     .form-container {
-        background: var(--surface);
+        background: var(--bg-surface);
         padding: 50px;
         border-radius: 0 0 var(--radius-lg) var(--radius-lg);
         box-shadow: var(--shadow-soft);
-        border: 1px solid var(--border);
+        border: var(--border);
         border-top: none;
     }
 
@@ -201,7 +197,7 @@
         border-radius: var(--radius-sm);
         font-size: 15px;
         background: var(--bg-body);
-        color: var(--text-main);
+        color: var(--text-body);
         transition: all .3s cubic-bezier(.4, 0, .2, 1);
         font-family: inherit;
         box-sizing: border-box;
@@ -222,7 +218,7 @@
     select:focus,
     textarea:focus {
         border-color: var(--brand);
-        background: white;
+        background: var(--bg-surface);
         box-shadow: 0 0 0 4px rgba(67, 24, 255, .1);
         transform: translateY(-1px);
     }
@@ -280,7 +276,7 @@
         font-family: inherit;
         min-width: 220px;
         flex: 1;
-        color: var(--text-main);
+        color: var(--text-body);
     }
 
     #diseaseSearch::placeholder {
@@ -338,12 +334,12 @@
     #diseaseDrop {
         position: fixed;
         z-index: 99999;
-        background: #fff;
+        background: var(--bg-surface);
         border: 1.5px solid var(--border);
         border-radius: var(--radius-sm);
         max-height: 240px;
         overflow-y: auto;
-        box-shadow: 0 12px 36px rgba(0, 0, 0, .14);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, .24);
         display: none;
         font-size: 14px;
         scrollbar-width: thin;
@@ -353,8 +349,8 @@
         padding: 11px 18px;
         cursor: pointer;
         transition: background .12s;
-        border-bottom: 1px solid #f1f5f9;
-        color: var(--text-main);
+        border-bottom: 1px solid var(--border);
+        color: var(--text-body);
     }
 
     .dsug-item:last-child {

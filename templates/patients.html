@@ -6,27 +6,20 @@
     /* =====================================
        PATIENTS PAGE — UNIFIED PALETTE
        ===================================== */
-    :root {
-        --brand:         #4318FF;
-        --brand-light:   #EEF0FF;
-        --brand-dark:    #3311CC;
+    :root, [data-theme="light"] {
         --grad-primary:  linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
         --grad-success:  linear-gradient(135deg, #05CD99 0%, #43E97B 100%);
         --grad-warning:  linear-gradient(135deg, #FFB547 0%, #FFD085 100%);
         --grad-danger:   linear-gradient(135deg, #EE5D50 0%, #FF8A80 100%);
-        --success:       #05CD99;
-        --warning:       #FFB547;
-        --danger:        #EE5D50;
-        --bg-body:       #f4f7fe;
-        --surface:       #ffffff;
-        --text-main:     #2b3674;
-        --text-muted:    #a3aed1;
-        --border:        #e2e8f0;
         --shadow-soft:   0px 18px 40px rgba(112, 144, 176, 0.12);
         --shadow-hover:  0px 20px 45px rgba(112, 144, 176, 0.2);
         --radius-lg:     24px;
         --radius-md:     16px;
         --radius-sm:     12px;
+    }
+    [data-theme="dark"] {
+        --shadow-soft:  0px 18px 40px rgba(0,0,0,0.4);
+        --shadow-hover: 0px 20px 45px rgba(0,0,0,0.5);
     }
 
     .pt-page {
@@ -125,10 +118,10 @@
     }
 
     .pt-stat-card {
-        background: var(--surface);
+        background: var(--bg-surface);
         border-radius: var(--radius-md);
         padding: 22px 24px;
-        border: 1px solid var(--border);
+        border: var(--border);
         box-shadow: var(--shadow-soft);
         display: flex;
         align-items: center;
@@ -170,10 +163,10 @@
 
     /* SEARCH BAR */
     .pt-search-bar {
-        background: var(--surface);
+        background: var(--bg-surface);
         border-radius: var(--radius-md);
         padding: 18px 22px;
-        border: 1px solid var(--border);
+        border: var(--border);
         box-shadow: var(--shadow-soft);
         margin-bottom: 24px;
         display: flex;
@@ -233,10 +226,10 @@
     }
 
     .pt-card {
-        background: var(--surface);
+        background: var(--bg-surface);
         border-radius: var(--radius-lg);
         padding: 24px;
-        border: 1px solid var(--border);
+        border: var(--border);
         box-shadow: var(--shadow-soft);
         transition: transform .3s ease, box-shadow .3s ease, border-color .3s;
         position: relative;
@@ -377,8 +370,8 @@
 
     .pt-btn-outline {
         background: var(--bg-body);
-        color: var(--text-main);
-        border: 1px solid var(--border);
+        color: var(--text-body);
+        border: var(--border);
     }
 
     .pt-btn-outline:hover {
