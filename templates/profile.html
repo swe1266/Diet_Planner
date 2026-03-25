@@ -17,9 +17,9 @@
 
 <style>
     :root, [data-theme="light"] {
-        --grad-primary: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
-        --shadow-soft:  0px 18px 40px rgba(112,144,176,.12);
-        --shadow-hover: 0px 20px 45px rgba(112,144,176,.2);
+        --grad-primary: linear-gradient(135deg, #3AACBE 0%, #A4D8E1 100%);
+        --shadow-soft:  0px 18px 40px rgba(58,172,190,.10);
+        --shadow-hover: 0px 20px 45px rgba(58,172,190,.18);
         --radius-lg: 24px;
         --radius-md: 20px;
         --radius-sm: 12px;
@@ -73,7 +73,7 @@
         width: 84px; height: 84px; border-radius: 50%;
         background: var(--grad-primary);
         border: 4px solid var(--bg-surface);
-        box-shadow: 0 8px 28px rgba(67,24,255,.3);
+        box-shadow: 0 8px 28px rgba(58,172,190,.35);
         display: flex; align-items: center; justify-content: center;
         font-size: 34px; color: #fff;
     }
@@ -109,10 +109,10 @@
         color:#fff;border:none;border-radius:var(--radius-sm);
         font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;
         text-decoration:none;transition:all .3s;
-        box-shadow:0 6px 18px rgba(67,24,255,.25);
+        box-shadow:0 6px 18px rgba(58,172,190,.30);
     }
 
-    .pf-action-btn:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(67,24,255,.38); }
+    .pf-action-btn:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(58,172,190,.45); }
 
     /* RIGHT COLUMN */
     .pf-right { display:flex;flex-direction:column;gap:24px; }
@@ -172,23 +172,23 @@
     .pw-label { font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px; }
 
     .pw-input {
-        padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+        padding:12px 16px;border: 1.5px solid var(--brand-mid);border-radius:var(--radius-sm);
         font-family:inherit;font-size:14px;color:var(--text-body);
         transition:border-color .2s,box-shadow .2s;outline:none;
         background:var(--bg-body);
     }
 
-    .pw-input:focus { border-color:var(--brand); box-shadow:0 0 0 4px rgba(67,24,255,.1); }
+    .pw-input:focus { border-color:var(--brand); box-shadow:0 0 0 4px rgba(58,172,190,.12); }
 
     .pw-submit {
         width:100%;padding:13px;background:var(--grad-primary);
         color:#fff;border:none;border-radius:var(--radius-sm);
         font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
         display:flex;align-items:center;justify-content:center;gap:8px;
-        transition:all .3s; box-shadow:0 6px 18px rgba(67,24,255,.25); margin-top:4px;
+        transition:all .3s; box-shadow:0 6px 18px rgba(58,172,190,.30); margin-top:4px;
     }
 
-    .pw-submit:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(67,24,255,.38); }
+    .pw-submit:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(58,172,190,.45); }
 
     @media (max-width:960px) {
         .profile-page        { grid-template-columns:1fr; }
@@ -298,7 +298,7 @@
                     <span>{{ bmi_stats.Underweight }} {% if total %}({% widthratio bmi_stats.Underweight total 100 %}%){% endif %}</span>
                 </div>
                 <div class="bmi-track">
-                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Underweight total 100 %}%{% else %}0%{% endif %};background:#4318FF;"></div>
+                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Underweight total 100 %}%{% else %}0%{% endif %};background:#3AACBE;"></div>
                 </div>
             </div>
             <div class="bmi-bar-row">
@@ -307,7 +307,7 @@
                     <span>{{ bmi_stats.Normal }} {% if total %}({% widthratio bmi_stats.Normal total 100 %}%){% endif %}</span>
                 </div>
                 <div class="bmi-track">
-                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Normal total 100 %}%{% else %}0%{% endif %};background:#05CD99;"></div>
+                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Normal total 100 %}%{% else %}0%{% endif %};background:#2BB5A0;"></div>
                 </div>
             </div>
             <div class="bmi-bar-row">
@@ -316,7 +316,7 @@
                     <span>{{ bmi_stats.Overweight }} {% if total %}({% widthratio bmi_stats.Overweight total 100 %}%){% endif %}</span>
                 </div>
                 <div class="bmi-track">
-                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Overweight total 100 %}%{% else %}0%{% endif %};background:#FFB547;"></div>
+                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Overweight total 100 %}%{% else %}0%{% endif %};background:#F0A500;"></div>
                 </div>
             </div>
             <div class="bmi-bar-row">
@@ -325,7 +325,7 @@
                     <span>{{ bmi_stats.Obese }} {% if total %}({% widthratio bmi_stats.Obese total 100 %}%){% endif %}</span>
                 </div>
                 <div class="bmi-track">
-                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Obese total 100 %}%{% else %}0%{% endif %};background:#EE5D50;"></div>
+                    <div class="bmi-fill" style="width:{% if total %}{% widthratio bmi_stats.Obese total 100 %}%{% else %}0%{% endif %};background:#E05D5D;"></div>
                 </div>
             </div>
         </div>
@@ -338,10 +338,10 @@
             {% for c in recent_checkups %}
             <div class="pf-activity-item">
                 <div class="pf-act-icon" style="
-                    {% if c.category == 'Obese' %}background:#FEE2E2;color:#EE5D50;
-                    {% elif c.category == 'Overweight' %}background:#FEF3C7;color:#FFB547;
-                    {% elif c.category == 'Normal' %}background:#D1FAE5;color:#05CD99;
-                    {% else %}background:#EEF0FF;color:#4318FF;{% endif %}">
+                    {% if c.category == 'Obese' %}background:#FEE2E2;color:#E05D5D;
+                    {% elif c.category == 'Overweight' %}background:#FEF3C7;color:#F0A500;
+                    {% elif c.category == 'Normal' %}background:#D6F7F2;color:#2BB5A0;
+                    {% else %}background:#D8F5FB;color:#3AACBE;{% endif %}">
                     <i class="fas fa-stethoscope"></i>
                 </div>
                 <div>
@@ -351,10 +351,10 @@
                     </div>
                 </div>
                 <div class="pf-act-bmi" style="
-                    {% if c.category == 'Obese' %}background:#FEE2E2;color:#EE5D50;
-                    {% elif c.category == 'Overweight' %}background:#FEF3C7;color:#FFB547;
-                    {% elif c.category == 'Normal' %}background:#D1FAE5;color:#05CD99;
-                    {% else %}background:#EEF0FF;color:#4318FF;{% endif %}">
+                    {% if c.category == 'Obese' %}background:#FEE2E2;color:#E05D5D;
+                    {% elif c.category == 'Overweight' %}background:#FEF3C7;color:#F0A500;
+                    {% elif c.category == 'Normal' %}background:#D6F7F2;color:#2BB5A0;
+                    {% else %}background:#D8F5FB;color:#3AACBE;{% endif %}">
                     BMI {{ c.bmi }}
                 </div>
             </div>

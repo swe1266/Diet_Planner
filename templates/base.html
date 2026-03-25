@@ -12,21 +12,27 @@
 
     <style>
         /* ============================================
-           BASE VARS & RESET — TRENDY 2025 ADMIN UI
+           BASE VARS & RESET — TEAL CLINICAL EDITION
+           Palette: #A4D8E1 · #B2E0E6 · #C4F1F4 · #E0F7FA · #E8F9FD
         ============================================ */
         :root {
             --font:              'Plus Jakarta Sans', sans-serif;
 
-            /* Brand Colors (same for both themes) */
-            --brand:             #4318FF;
-            --brand-dark:        #3311CC;
-            --brand-light:       #EEF0FF;
-            --success:           #05CD99;
-            --warning:           #FFB547;
-            --danger:            #EE5D50;
-            --info:              #4318FF;
+            /* ── Brand / Teal Palette ─────────────────── */
+            --brand:             #3AACBE;   /* vivid teal (action color) */
+            --brand-dark:        #2990A0;   /* darker teal for hover/press */
+            --brand-mid:         #A4D8E1;   /* palette swatch 1 */
+            --brand-soft:        #B2E0E6;   /* palette swatch 2 */
+            --brand-light:       #E0F7FA;   /* palette swatch 4 – tint bg */
+            --brand-xlight:      #E8F9FD;   /* palette swatch 5 – lightest */
 
-            /* Layout */
+            /* ── Semantic Colors ─────────────────────── */
+            --success:           #2BB5A0;   /* teal-green success */
+            --warning:           #F0A500;   /* amber warning */
+            --danger:            #E05D5D;   /* coral red danger */
+            --info:              #3AACBE;   /* same as brand */
+
+            /* ── Layout ──────────────────────────────── */
             --sidebar-w:         270px;
             --sidebar-collapsed: 80px;
             --topbar-h:          76px;
@@ -36,66 +42,67 @@
         }
 
         /* ============================================
-           LIGHT THEME (default)
+           LIGHT THEME (default) — Teal Clinical
         ============================================ */
         :root,
         [data-theme="light"] {
             /* Backgrounds */
-            --bg-body:           #f4f7fe;
+            --bg-body:           #E8F9FD;   /* lightest teal wash */
             --bg-surface:        #ffffff;
-            --bg-topbar:         rgba(255, 255, 255, 0.85);
-            --bg-toggle:         #f4f7fe;
+            --bg-topbar:         rgba(255, 255, 255, 0.90);
+            --bg-toggle:         #C4F1F4;   /* swatch 3 */
 
             /* Text */
-            --text-heading:      #2b3674;
-            --text-body:         #4a5568;
-            --text-muted:        #a3aed1;
+            --text-heading:      #0d3d46;   /* deep teal for headings */
+            --text-body:         #2d6e7a;   /* medium-dark teal */
+            --text-muted:        #7ABFCC;   /* soft teal muted */
 
             /* Borders & Effects */
-            --border:            1px solid #e9eef8;
-            --shadow:            0 4px 24px rgba(67, 24, 255, 0.08);
-            --shadow-md:         0 8px 32px rgba(67, 24, 255, 0.12);
-            --shadow-lg:         0 20px 48px rgba(67, 24, 255, 0.16);
+            --border:            1px solid #C4F1F4;
+            --shadow:            0 4px 24px rgba(58, 172, 190, 0.10);
+            --shadow-md:         0 8px 32px rgba(58, 172, 190, 0.14);
+            --shadow-lg:         0 20px 48px rgba(58, 172, 190, 0.18);
 
-            /* Sidebar */
-            --sidebar-bg:        #111c44;
+            /* Sidebar — deep dark teal */
+            --sidebar-bg:        linear-gradient(180deg, #0d3d46 0%, #0b3039 50%, #08232b 100%);
 
             /* Misc */
-            --scrollbar-thumb:   #CBD5E1;
-            --pd-signout-bg:     #FFF5F5;
+            --scrollbar-thumb:   #B2E0E6;
+            --pd-signout-bg:     #FFF0F0;
             --theme-icon:        '\f185'; /* fa-sun */
         }
 
         /* ============================================
-           DARK THEME
+           DARK THEME — Deep Teal Dark Mode
         ============================================ */
         [data-theme="dark"] {
             /* Backgrounds */
-            --bg-body:           #0f1117;
-            --bg-surface:        #1e2436;
-            --bg-topbar:         rgba(20, 25, 45, 0.95);
-            --bg-toggle:         #1e2436;
+            --bg-body:           #091c21;   /* very dark teal-black */
+            --bg-surface:        #102830;   /* dark teal surface */
+            --bg-topbar:         rgba(10, 30, 36, 0.95);
+            --bg-toggle:         #153640;
 
-            /* Text — boosted for readability */
-            --text-heading:      #f0f4ff;          /* near-white for headings */
-            --text-body:         #cdd5e8;          /* was #a0aec0 — much brighter */
-            --text-muted:        #8896b3;          /* was #4a5568 — was near-invisible! */
+            /* Text */
+            --text-heading:      #E0F7FA;   /* near-white with teal glow */
+            --text-body:         #A4D8E1;   /* palette swatch 1 as text */
+            --text-muted:        #5A9AAA;   /* muted teal */
 
-            /* Borders & Effects — more visible */
-            --border:            1px solid rgba(255,255,255,0.12);
-            --shadow:            0 4px 24px rgba(0, 0, 0, 0.5);
-            --shadow-md:         0 8px 32px rgba(0, 0, 0, 0.6);
-            --shadow-lg:         0 20px 48px rgba(0, 0, 0, 0.7);
+            /* Borders & Effects */
+            --border:            1px solid rgba(164, 216, 225, 0.15);
+            --shadow:            0 4px 24px rgba(0, 0, 0, 0.55);
+            --shadow-md:         0 8px 32px rgba(0, 0, 0, 0.65);
+            --shadow-lg:         0 20px 48px rgba(0, 0, 0, 0.75);
 
             /* Sidebar */
-            --sidebar-bg:        #0c1022;
+            --sidebar-bg:        linear-gradient(180deg, #061419 0%, #091c21 100%);
 
-            /* Brand light (dark mode tint) */
-            --brand-light:       rgba(67, 24, 255, 0.2);
+            /* Brand light tint (dark mode) */
+            --brand-light:       rgba(58, 172, 190, 0.18);
+            --brand-xlight:      rgba(58, 172, 190, 0.08);
 
             /* Misc */
-            --scrollbar-thumb:   #3a4560;
-            --pd-signout-bg:     rgba(238, 93, 80, 0.15);
+            --scrollbar-thumb:   #1e4d5a;
+            --pd-signout-bg:     rgba(224, 93, 93, 0.15);
             --theme-icon:        '\f186'; /* fa-moon */
         }
 
@@ -126,7 +133,7 @@
             z-index: 1100;
             transition: width var(--transition);
             border-right: none;
-            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2), 4px 0 0 rgba(58,172,190,0.08);
         }
 
         /* Brand Logo */
@@ -145,14 +152,14 @@
             width: 42px;
             height: 42px;
             min-width: 42px;
-            background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+            background: linear-gradient(135deg, #3AACBE 0%, #A4D8E1 100%);
             border-radius: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 20px;
-            box-shadow: 0 6px 18px rgba(67, 24, 255, 0.25);
+            box-shadow: 0 6px 18px rgba(58, 172, 190, 0.4);
         }
 
         .brand-text {
@@ -237,9 +244,9 @@
         .nav-link:hover i { transform: scale(1.1); color: white; }
 
         .nav-link.active {
-            background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+            background: linear-gradient(135deg, #3AACBE 0%, #A4D8E1 100%);
             color: white;
-            box-shadow: 0 8px 20px rgba(67, 24, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(58, 172, 190, 0.4);
         }
 
         .nav-link.active i { color: white; }
@@ -381,7 +388,7 @@
             position: relative;
         }
 
-        .user-pill:hover { border-color: var(--brand); box-shadow: 0 4px 16px rgba(67, 24, 255, 0.12); }
+        .user-pill:hover { border-color: var(--brand); box-shadow: 0 4px 16px rgba(58, 172, 190, 0.20); }
 
         .user-info { text-align: right; line-height: 1.2; }
         .user-info strong { display: block; font-size: 13px; font-weight: 700; color: var(--text-heading); }
@@ -400,7 +407,7 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+            background: linear-gradient(135deg, #3AACBE 0%, #A4D8E1 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -436,7 +443,7 @@
         .profile-dropdown.open { display: block; }
 
         .pd-header {
-            background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+            background: linear-gradient(135deg, #2990A0 0%, #3AACBE 50%, #A4D8E1 100%);
             padding: 20px;
             display: flex;
             align-items: center;
@@ -703,10 +710,10 @@
 
         .t-close:hover { background: var(--bg-body); color: var(--text-heading); }
 
-        .toast-success { --toast-accent: #05CD99; --toast-icon-bg: #EAFAF2; }
-        .toast-error   { --toast-accent: #EE5D50; --toast-icon-bg: #FEF0EF; }
-        .toast-warning { --toast-accent: #FFB547; --toast-icon-bg: #FFF8EC; }
-        .toast-info    { --toast-accent: #4318FF; --toast-icon-bg: var(--brand-light); }
+        .toast-success { --toast-accent: #2BB5A0; --toast-icon-bg: #E6F9F6; }
+        .toast-error   { --toast-accent: #E05D5D; --toast-icon-bg: #FEF0F0; }
+        .toast-warning { --toast-accent: #F0A500; --toast-icon-bg: #FFF8E6; }
+        .toast-info    { --toast-accent: #3AACBE; --toast-icon-bg: var(--brand-light); }
 
     </style>
     {% block extra_head %}{% endblock %}
@@ -756,13 +763,7 @@
                     <span>Patient Checkup</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{% url 'search_patient' %}"
-                   class="nav-link {% if request.resolver_match.url_name == 'search_patient' %}active{% endif %}">
-                    <i class="fas fa-folder-open"></i>
-                    <span>Archives</span>
-                </a>
-            </li>
+
         </ul>
 
         <div class="sidebar-footer">
@@ -788,7 +789,6 @@
                     {% elif request.resolver_match.url_name == 'new_patient' %}New Patient
                     {% elif request.resolver_match.url_name == 'patients' %}All Patients
                     {% elif request.resolver_match.url_name == 'existing_patient' %}Patient Checkup
-                    {% elif request.resolver_match.url_name == 'search_patient' %}Clinical Archives
                     {% elif request.resolver_match.url_name == 'generate_dynamic_diet_plan' %}Diet Plan Report
                     {% elif request.resolver_match.url_name == 'profile' %}My Profile
                     {% else %}NutriPlanner{% endif %}
@@ -802,7 +802,7 @@
                         {% elif request.resolver_match.url_name == 'new_patient' %}New Patient
                         {% elif request.resolver_match.url_name == 'patients' %}All Patients
                         {% elif request.resolver_match.url_name == 'existing_patient' %}Patient Checkup
-                        {% elif request.resolver_match.url_name == 'search_patient' %}Archives
+
                         {% elif request.resolver_match.url_name == 'generate_dynamic_diet_plan' %}Diet Report
                         {% elif request.resolver_match.url_name == 'profile' %}Profile
                         {% else %}Page{% endif %}

@@ -8,16 +8,16 @@
 <style>
     /* ── Report page: inherits all colors from base.html theme vars ── */
     :root, [data-theme="light"] {
-        --primary:       #4318FF;
-        --primary-dark:  #3311CC;
-        --primary-light: #EEF0FF;
+        --primary:       #3AACBE;
+        --primary-dark:  #0d3d46;
+        --primary-light: #D8F5FB;
         --secondary:     #64748b;
         --shadow-sm:     0 1px 3px rgba(0,0,0,0.05);
         --shadow-md:     0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
         --shadow-lg:     0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
         --radius-lg:     16px;
         --radius-xl:     24px;
-        --grad-primary:  linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+        --grad-primary:  linear-gradient(135deg, #3AACBE 0%, #A4D8E1 100%);
         /* local aliases */
         --rp-card-border:    1px solid rgba(226,232,240,0.6);
         --rp-th-bg:          #f8fafc;
@@ -38,6 +38,10 @@
         --shadow-sm:     0 1px 3px rgba(0,0,0,0.3);
         --shadow-md:     0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -1px rgba(0,0,0,0.3);
         --shadow-lg:     0 10px 15px -3px rgba(0,0,0,0.5), 0 4px 6px -2px rgba(0,0,0,0.3);
+        /* dark mode text overrides for medical palette */
+        --primary-dark:  #A4D8E1;
+        --primary-light: rgba(58, 172, 190, 0.15);
+        --secondary:     #94a3b8;
         /* local aliases – dark overrides */
         --rp-card-border:    1px solid rgba(255,255,255,0.08);
         --rp-th-bg:          rgba(255,255,255,0.05);
@@ -466,10 +470,10 @@
 
     [data-theme="light"] .dap-restriction.r-danger  { border-left-color: #EE5D50; background: #FFF5F5; }
     [data-theme="light"] .dap-restriction.r-warning { border-left-color: #FFB547; background: #FFFBEB; }
-    [data-theme="light"] .dap-restriction.r-info    { border-left-color: #4318FF; background: #F0EEFF; }
+    [data-theme="light"] .dap-restriction.r-info    { border-left-color: #3AACBE; background: #D8F5FB; }
     [data-theme="dark"]  .dap-restriction.r-danger  { border-left-color: #EE5D50; background: rgba(238,93,80,0.12); }
     [data-theme="dark"]  .dap-restriction.r-warning { border-left-color: #FFB547; background: rgba(255,181,71,0.12); }
-    [data-theme="dark"]  .dap-restriction.r-info    { border-left-color: #4318FF; background: rgba(67,24,255,0.12); }
+    [data-theme="dark"]  .dap-restriction.r-info    { border-left-color: #3AACBE; background: rgba(58,172,190,0.12); }
 
     .dap-rest-icon { font-size: 14px; flex-shrink: 0; }
     .dap-rest-name { font-size: 13px; font-weight: 800; color: var(--text-heading); }
@@ -586,7 +590,7 @@
         margin-bottom: 28px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 20px 50px rgba(67,24,255,0.28);
+        box-shadow: 0 20px 50px rgba(58,172,190,0.28);
         animation: heroIn .6s cubic-bezier(.23,1,.32,1) both;
     }
 
@@ -1236,8 +1240,8 @@
                             </div>
                         </div>
                         <div class="donut-legend">
-                            <div class="donut-leg-item" id="legProtein" onclick="highlightSlice(0)" style="color:#4318FF;">
-                                <div class="donut-leg-dot" style="background:#4318FF;"></div>
+                            <div class="donut-leg-item" id="legProtein" onclick="highlightSlice(0)" style="color:#3AACBE;">
+                                <div class="donut-leg-dot" style="background:#3AACBE;"></div>
                                 Protein
                                 <span class="donut-leg-pct">30%</span>
                             </div>
@@ -1310,7 +1314,7 @@
                                         {% elif n == 'sodium' %}<i class="fas fa-tint" style="color:#EE5D50;"></i>
                                         {% elif n == 'fat' %}<i class="fas fa-drumstick-bite" style="color:#FFB547;"></i>
                                         {% elif n == 'gluten' %}<i class="fas fa-wheat-awn" style="color:#FFB547;"></i>
-                                        {% else %}<i class="fas fa-minus-circle" style="color:#4318FF;"></i>{% endif %}
+                                        {% else %}<i class="fas fa-minus-circle" style="color:#3AACBE;"></i>{% endif %}
                                     </div>
                                     <div>
                                         <div class="dap-rest-name">{{ n|title }} Restricted</div>
@@ -2307,8 +2311,8 @@
     var pT = {{ checkup.protein_target|default:100 }};
     var cT = {{ checkup.carbs_target|default:100 }};
     var fT = {{ checkup.fat_target|default:100 }};
-    var macroColors = ['#4318FF', '#FFB547', '#05CD99'];
-    var macroHover  = ['#3311CC', '#E09A30', '#03A87B'];
+    var macroColors = ['#3AACBE', '#FFB547', '#05CD99'];
+    var macroHover  = ['#0d3d46', '#E09A30', '#03A87B'];
     var dCvs = document.getElementById('macroDoughnut');
     var doughnutChart = null;
     if (dCvs) {
@@ -2414,9 +2418,9 @@
                 data: {
                     labels: aDates, datasets: [{
                         label: 'Weight History (kg)', data: aWeights,
-                        borderColor: '#4318FF', backgroundColor: 'rgba(67,24,255,0.08)',
+                        borderColor: '#3AACBE', backgroundColor: 'rgba(58,172,190,0.08)',
                         fill: true, tension: 0.4, pointRadius: 6, pointHoverRadius: 8,
-                        pointBackgroundColor: '#4318FF'
+                        pointBackgroundColor: '#3AACBE'
                     }]
                 },
                 options: {
@@ -2434,7 +2438,7 @@
                     labels: aDates, datasets: [{
                         label: 'BMI', data: aBmis,
                         backgroundColor: aBmis.map(function (b) {
-                            return b >= 30 ? '#EE5D50' : b >= 25 ? '#FFB547' : b < 18.5 ? '#4318FF' : '#05CD99';
+                            return b >= 30 ? '#EE5D50' : b >= 25 ? '#FFB547' : b < 18.5 ? '#3AACBE' : '#05CD99';
                         }),
                         borderRadius: 6
                     }]

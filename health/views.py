@@ -162,16 +162,82 @@ def change_password(request):
 
 @login_required
 def patients(request):
-    from django.db.models import Count
+    from django.db.models import Count, Q
+    from django.utils import timezone
+    from datetime import timedelta
+
+    query      = request.GET.get('q', '').strip()
+    bmi_filter = request.GET.get('bmi_filter', '')
+    date_range = request.GET.get('date_range', '')
+    any_filter = query or bmi_filter or date_range
+
+    # Single patient detail view
+    if request.GET.get('view_id'):
+        selected_patient = get_object_or_404(Patient, id=request.GET.get('view_id'))
+        history = Checkup.objects.filter(patient=selected_patient).order_by('-date')
+        return render(request, 'patients.html', {
+            'selected_patient': selected_patient,
+            'history':   history,
+            'query':     query,
+            'bmi_filter':  bmi_filter,
+            'date_range':  date_range,
+        })
+
     all_patients = Patient.objects.all().order_by('-id')
     total_visits = Checkup.objects.count()
     male_count   = all_patients.filter(gender='Male').count()
     female_count = all_patients.filter(gender='Female').count()
+    total_patients_count = all_patients.count()
+
+    qs = all_patients
+    if query:
+        qs = qs.filter(Q(name__icontains=query) | Q(phone__icontains=query))
+
+    today = timezone.now().date()
+    if date_range == 'today':
+        since = today
+    elif date_range == 'week':
+        since = today - timedelta(days=7)
+    elif date_range == 'month':
+        since = today - timedelta(days=30)
+    else:
+        since = None
+
+    patients_data = []
+    for p in qs:
+        checkup_qs = Checkup.objects.filter(patient=p).order_by('-date')
+        if since:
+            checkup_qs = checkup_qs.filter(date__gte=since)
+        latest = checkup_qs.first()
+
+        if bmi_filter and latest and latest.category != bmi_filter:
+            continue
+        if since and not latest:
+            continue
+        if bmi_filter and not latest:
+            continue
+
+        patients_data.append({
+            'patient':       p,
+            'latest':        latest,
+            'total_visits':  Checkup.objects.filter(patient=p).count(),
+        })
+
+    error_message = None
+    if any_filter and not patients_data:
+        error_message = "No patients match your search criteria."
+
     return render(request, 'patients.html', {
-        'patients':     all_patients,
+        'patients_data': patients_data,
         'total_visits': total_visits,
         'male_count':   male_count,
         'female_count': female_count,
+        'total_patients_count': total_patients_count,
+        'query': query,
+        'bmi_filter': bmi_filter,
+        'date_range': date_range,
+        'any_filter': any_filter,
+        'error_message': error_message,
     })
 
 @login_required
@@ -202,83 +268,15 @@ def get_patient_details(request):
         except Patient.DoesNotExist:
             return JsonResponse({'exists': False, 'error': 'Patient ID/Phone not found.'})
 
-@login_required
-def search_patient(request):
-    query      = request.GET.get('q', '').strip()
-    bmi_filter = request.GET.get('bmi_filter', '')
-    date_range = request.GET.get('date_range', '')
 
-    error_message = None
-    patients_data = []
-
-    # View single patient detail
-    if request.GET.get('view_id'):
-        selected_patient = get_object_or_404(Patient, id=request.GET.get('view_id'))
-        history = Checkup.objects.filter(patient=selected_patient).order_by('-date')
-        return render(request, 'search_patient.html', {
-            'selected_patient': selected_patient,
-            'history':   history,
-            'query':     query,
-            'bmi_filter':  bmi_filter,
-            'date_range':  date_range,
-        })
-
-    any_filter = query or bmi_filter or date_range
-
-    if any_filter:
-        qs = Patient.objects.all()
-
-        if query:
-            qs = qs.filter(Q(name__icontains=query) | Q(phone__icontains=query))
-
-        today = timezone.now().date()
-        if date_range == 'today':
-            since = today
-        elif date_range == 'week':
-            since = today - timedelta(days=7)
-        elif date_range == 'month':
-            since = today - timedelta(days=30)
-        else:
-            since = None
-
-        for p in qs:
-            checkup_qs = Checkup.objects.filter(patient=p).order_by('-date')
-            if since:
-                checkup_qs = checkup_qs.filter(date__gte=since)
-            latest = checkup_qs.first()
-
-            if bmi_filter and latest and latest.category != bmi_filter:
-                continue
-            if since and not latest:
-                continue
-            if bmi_filter and not latest:
-                continue
-
-            patients_data.append({
-                'patient':       p,
-                'latest':        latest,
-                'total_visits':  Checkup.objects.filter(patient=p).count(),
-            })
-
-        if not patients_data:
-            error_message = "No patients match your search criteria."
-
-    context = {
-        'patients_data':  patients_data,
-        'query':          query,
-        'bmi_filter':     bmi_filter,
-        'date_range':     date_range,
-        'error_message':  error_message,
-        'any_filter':     any_filter,
-    }
-    return render(request, 'search_patient.html', context)
 
 
 @login_required
 def delete_checkup(request, checkup_id):
     checkup = get_object_or_404(Checkup, id=checkup_id)
+    patient_id = checkup.patient.id
     checkup.delete()
-    return redirect('search_patient')
+    return redirect(f"/patients/?view_id={patient_id}")
 
 # ==========================================
 # 3. PATIENT ENTRY

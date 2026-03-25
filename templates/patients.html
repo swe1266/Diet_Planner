@@ -7,12 +7,12 @@
        PATIENTS PAGE — UNIFIED PALETTE
        ===================================== */
     :root, [data-theme="light"] {
-        --grad-primary:  linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
-        --grad-success:  linear-gradient(135deg, #05CD99 0%, #43E97B 100%);
-        --grad-warning:  linear-gradient(135deg, #FFB547 0%, #FFD085 100%);
-        --grad-danger:   linear-gradient(135deg, #EE5D50 0%, #FF8A80 100%);
-        --shadow-soft:   0px 18px 40px rgba(112, 144, 176, 0.12);
-        --shadow-hover:  0px 20px 45px rgba(112, 144, 176, 0.2);
+        --grad-primary:  linear-gradient(135deg, #3AACBE 0%, #A4D8E1 100%);
+        --grad-success:  linear-gradient(135deg, #2BB5A0 0%, #43E9C8 100%);
+        --grad-warning:  linear-gradient(135deg, #F0A500 0%, #FFD085 100%);
+        --grad-danger:   linear-gradient(135deg, #E05D5D 0%, #FF8A80 100%);
+        --shadow-soft:   0px 18px 40px rgba(58, 172, 190, 0.10);
+        --shadow-hover:  0px 20px 45px rgba(58, 172, 190, 0.18);
         --radius-lg:     24px;
         --radius-md:     16px;
         --radius-sm:     12px;
@@ -43,7 +43,7 @@
         margin-bottom: 28px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 20px 40px rgba(67, 24, 255, 0.25);
+        box-shadow: 0 20px 40px rgba(58, 172, 190, 0.30);
     }
 
     .pt-hero::before {
@@ -177,7 +177,7 @@
 
     .pt-search-bar:focus-within {
         border-color: var(--brand);
-        box-shadow: 0 0 0 4px rgba(67, 24, 255, .08);
+        box-shadow: 0 0 0 4px rgba(58, 172, 190, .10);
     }
 
     .pt-search-icon {
@@ -259,18 +259,13 @@
     }
 
     .pt-avatar {
-        width: 52px;
-        height: 52px;
+        width: 52px; height: 52px;
         border-radius: 14px;
         background: var(--grad-primary);
         color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        font-weight: 800;
-        flex-shrink: 0;
-        box-shadow: 0 8px 20px rgba(67, 24, 255, 0.25);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; font-weight: 800; flex-shrink: 0;
+        box-shadow: 0 8px 20px rgba(58, 172, 190, 0.30);
     }
 
     .pt-name {
@@ -287,13 +282,9 @@
     }
 
     .pt-info-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        color: #64748b;
-        margin-bottom: 7px;
-        font-weight: 500;
+        display: flex; align-items: center; gap: 8px;
+        font-size: 13px; color: var(--text-body);
+        margin-bottom: 7px; font-weight: 500;
     }
 
     .pt-info-row i {
@@ -329,8 +320,8 @@
         letter-spacing: .4px;
     }
 
-    .badge-underweight { background: #DBEAFE; color: #1D4ED8; }
-    .badge-normal      { background: #D1FAE5; color: #065F46; }
+    .badge-underweight { background: #D8F5FB; color: #2990A0; }
+    .badge-normal      { background: #D6F7F2; color: #1a7080; }
     .badge-overweight  { background: #FEF3C7; color: #92400E; }
     .badge-obese       { background: #FEE2E2; color: #991B1B; }
 
@@ -360,11 +351,11 @@
     .pt-btn-primary {
         background: var(--grad-primary);
         color: #fff;
-        box-shadow: 0 6px 16px rgba(67, 24, 255, 0.2);
+        box-shadow: 0 6px 16px rgba(58, 172, 190, 0.22);
     }
 
     .pt-btn-primary:hover {
-        box-shadow: 0 10px 24px rgba(67, 24, 255, 0.35);
+        box-shadow: 0 10px 24px rgba(58, 172, 190, 0.38);
         transform: translateY(-1px);
     }
 
@@ -400,6 +391,91 @@
         color: var(--text-main);
         margin-bottom: 8px;
     }
+
+    /* SEARCH PATIENT CSS */
+    .sp-filters {
+        background: var(--bg-surface); border-radius: var(--radius-lg);
+        padding: 28px 30px; box-shadow: var(--shadow-soft);
+        border: var(--border); margin-bottom: 25px;
+    }
+    .sp-filter-label { font-size:11px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px;display:block;margin-bottom:8px; }
+    .sp-search-row { display:flex; gap:10px; margin-bottom:20px; }
+    .sp-search-box { flex:1; position:relative; }
+    .sp-search-box i { position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:16px;pointer-events:none; }
+    .sp-search-box input {
+        width:100%; padding:13px 16px 13px 46px;
+        border: 1.5px solid var(--brand-mid); border-radius: var(--radius-sm);
+        font-size:15px; font-family:inherit; font-weight:500;
+        color:var(--text-main); background:var(--bg-body);
+        outline:none; transition:border-color .2s, box-shadow .2s; box-sizing:border-box;
+    }
+    .sp-search-box input:focus { border-color:var(--brand); box-shadow:0 0 0 4px rgba(58,172,190,.1); }
+    .sp-chips-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:end; }
+    .sp-chip-group { display:flex; gap:7px; flex-wrap:wrap; }
+    .sp-chip {
+        padding:8px 16px; border-radius:30px; font-size:12px; font-weight:700;
+        border:2px solid transparent; cursor:pointer; transition:all .2s; font-family:inherit;
+    }
+    .chip-all   { background:#D8F5FB; color:#3AACBE; border-color:#A4D8E1; }
+    .chip-under { background:#DBEAFE; color:#1D4ED8; border-color:#bfdbfe; }
+    .chip-normal{ background:#D1FAE5; color:#065F46; border-color:#6ee7b7; }
+    .chip-over  { background:#FEF3C7; color:#92400E; border-color:#fde68a; }
+    .chip-obese { background:#FEE2E2; color:#991B1B; border-color:#fca5a5; }
+    .sp-chip.active-chip { box-shadow:0 4px 12px rgba(0,0,0,.15); transform:translateY(-1px); }
+    .chip-all.active-chip   { background:#3AACBE; color:#fff; border-color:#3AACBE; }
+    .chip-under.active-chip { background:#1D4ED8; color:#fff; border-color:#1D4ED8; }
+    .chip-normal.active-chip{ background:#065F46; color:#fff; border-color:#065F46; }
+    .chip-over.active-chip  { background:#92400E; color:#fff; border-color:#92400E; }
+    .chip-obese.active-chip { background:#991B1B; color:#fff; border-color:#991B1B; }
+    .sp-date-select {
+        width:100%; padding:11px 16px;
+        border: 1.5px solid var(--brand-mid); border-radius: var(--radius-sm);
+        font-size:13px; font-family:inherit; font-weight:600;
+        color:var(--text-main); background:var(--bg-body);
+        outline:none; cursor:pointer; transition:border-color .2s;
+    }
+    .sp-search-btn {
+        padding:13px 28px; background:var(--grad-primary);
+        color:#fff; border:none; border-radius:var(--radius-sm);
+        font-size:14px; font-weight:700; font-family:inherit;
+        cursor:pointer; display:flex; align-items:center; gap:8px;
+        transition:all .3s; box-shadow:0 6px 16px rgba(58,172,190,.25); white-space:nowrap;
+    }
+    .sp-search-btn:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(58,172,190,.38); }
+    .sp-clear-btn {
+        padding:11px 18px; background:var(--bg-body); color:var(--text-muted);
+        border: 1.5px solid var(--brand-mid); border-radius: var(--radius-sm);
+        font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;
+        text-decoration:none; display:flex; align-items:center; gap:6px; transition:all .2s;
+    }
+    .health-dot { display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle; }
+    .dot-red    { background:#EE5D50; }
+    .dot-yellow { background:#FFB547; }
+    .dot-green  { background:#05CD99; }
+    .dot-blue   { background:#3AACBE; }
+    .dot-gray   { background:#94a3b8; }
+    
+    .sp-detail-card { background:var(--bg-surface);border-radius:var(--radius-lg);padding:30px;border:var(--border);box-shadow:var(--shadow-soft); }
+    .sp-detail-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--bg-body); }
+    .sp-detail-header h3 { font-size:20px;font-weight:800;color:var(--text-main);margin:0; }
+    .sp-visit-card {
+        display:block; text-decoration:none; color:inherit;
+        background:var(--bg-body); border-radius:var(--radius-md);
+        padding:20px 22px; margin-bottom:12px;
+        border-left:5px solid var(--brand);
+        transition:all .3s cubic-bezier(.175,.885,.32,1.275); position:relative;
+    }
+    .sp-visit-card.v-Obese       { border-left-color:#EE5D50; }
+    .sp-visit-card.v-Overweight  { border-left-color:#FFB547; }
+    .sp-visit-card.v-Normal      { border-left-color:#05CD99; }
+    .sp-visit-card.v-Underweight { border-left-color:#3AACBE; }
+    .sp-visit-card:hover { transform:scale(1.01) translateX(6px); background:var(--brand-light); box-shadow:var(--shadow-soft); }
+    .sp-visit-top  { display:flex;justify-content:space-between;margin-bottom:10px; }
+    .sp-visit-id   { font-weight:800;color:var(--text-main);font-size:15px; }
+    .sp-visit-date { color:var(--text-muted);font-size:13px; }
+    .sp-visit-stats { display:flex;flex-wrap:wrap;gap:10px; }
+    .sp-stat-tag { background:var(--bg-body);padding:4px 12px;border-radius:8px;border:var(--border);font-size:13px;color:var(--text-body); }
+    .sp-health-badge { padding:5px 12px;border-radius:20px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:5px;white-space:nowrap; }
 </style>
 
 <div class="pt-page">
@@ -421,7 +497,7 @@
             </div>
             <div>
                 <div class="pt-stat-lbl">Total Patients</div>
-                <div class="pt-stat-val">{{ patients|length }}</div>
+                <div class="pt-stat-val">{{ total_patients_count }}</div>
             </div>
         </div>
         <div class="pt-stat-card">
@@ -463,31 +539,83 @@
             </div>
         </div>
         <div class="pt-stat-card">
-            <div class="pt-stat-icon" style="background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%);">
+            <div class="pt-stat-icon" style="background: linear-gradient(135deg, #3AACBE 0%, #7ABFCC 100%);">
                 <i class="fas fa-search"></i>
             </div>
             <div>
-                <div class="pt-stat-lbl">Advanced Search</div>
+                <div class="pt-stat-lbl">Reset View</div>
                 <div class="pt-stat-val">
-                    <a href="{% url 'search_patient' %}" style="color: var(--brand); font-size:13px; text-decoration:none; font-weight:700;">Search</a>
+                    <a href="{% url 'patients' %}" style="color: var(--brand); font-size:13px; text-decoration:none; font-weight:700;">Refresh</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SEARCH -->
-    <div class="pt-search-bar">
-        <i class="fas fa-search pt-search-icon"></i>
-        <input type="text" id="ptSearch" class="pt-search-input" placeholder="Filter by name or phone..."
-            oninput="filterPatients(this.value)">
+    <!-- ERROR -->
+    {% if error_message %}
+    <div style="background:#FEE2E2;color:#991B1B;padding:14px 20px;border-radius:var(--radius-sm);border:1px solid #fca5a5;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <i class="fas fa-exclamation-triangle"></i> {{ error_message }}
+    </div>
+    {% endif %}
+
+    {% if not selected_patient %}
+    <!-- FILTER PANEL -->
+    <div class="sp-filters">
+        <form method="GET" action="{% url 'patients' %}" id="searchForm">
+            <div style="margin-bottom:18px;">
+                <label class="sp-filter-label"><i class="fas fa-font" style="margin-right:4px;"></i> Search by Name or Phone</label>
+                <div class="sp-search-row">
+                    <div class="sp-search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" name="q" id="searchQ" value="{{ query }}" placeholder="Type patient name or phone number...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-chips-row">
+                <div>
+                    <label class="sp-filter-label"><i class="fas fa-tag" style="margin-right:4px;"></i> BMI Category Filter</label>
+                    <input type="hidden" name="bmi_filter" id="bmiFilterInput" value="{{ bmi_filter }}">
+                    <div class="sp-chip-group" id="bmiChipGroup">
+                        <button type="button" class="sp-chip chip-all {% if not bmi_filter %}active-chip{% endif %}" onclick="setBmi('')">All</button>
+                        <button type="button" class="sp-chip chip-under {% if bmi_filter == 'Underweight' %}active-chip{% endif %}" onclick="setBmi('Underweight')"><span class="health-dot dot-blue"></span> Underweight</button>
+                        <button type="button" class="sp-chip chip-normal {% if bmi_filter == 'Normal' %}active-chip{% endif %}" onclick="setBmi('Normal')"><span class="health-dot dot-green"></span> Normal</button>
+                        <button type="button" class="sp-chip chip-over {% if bmi_filter == 'Overweight' %}active-chip{% endif %}" onclick="setBmi('Overweight')"><span class="health-dot dot-yellow"></span> Overweight</button>
+                        <button type="button" class="sp-chip chip-obese {% if bmi_filter == 'Obese' %}active-chip{% endif %}" onclick="setBmi('Obese')"><span class="health-dot dot-red"></span> Obese</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="sp-filter-label"><i class="fas fa-calendar-alt" style="margin-right:4px;"></i> Visited Within</label>
+                    <select name="date_range" class="sp-date-select" id="dateRangeSelect">
+                        <option value="" {% if not date_range %}selected{% endif %}>All Time</option>
+                        <option value="today" {% if date_range == 'today' %}selected{% endif %}>Today</option>
+                        <option value="week" {% if date_range == 'week' %}selected{% endif %}>Last 7 Days</option>
+                        <option value="month" {% if date_range == 'month' %}selected{% endif %}>Last 30 Days</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+                <button type="submit" class="sp-search-btn"><i class="fas fa-search"></i> Apply Filters</button>
+                {% if any_filter %}
+                <a href="{% url 'patients' %}" class="sp-clear-btn"><i class="fas fa-times"></i> Clear Filters</a>
+                {% endif %}
+            </div>
+        </form>
     </div>
 
     <!-- GRID -->
-    <h2 class="pt-section-title">Patient Registry</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2 class="pt-section-title" style="margin-bottom:0;">Patient Registry</h2>
+        <span style="font-size:13px; font-weight:600; background:var(--brand-light); color:var(--brand); padding:5px 14px; border-radius:20px;">
+            {{ patients_data|length }} patient{{ patients_data|length|pluralize }}
+        </span>
+    </div>
+
     <div class="pt-grid" id="patientGrid">
-        {% for p in patients %}
-        {% with latest=p.checkup_set.last %}
-        <div class="pt-card" data-name="{{ p.name|lower }}" data-phone="{{ p.phone }}">
+        {% for row in patients_data %}
+        {% with p=row.patient latest=row.latest v=row.total_visits %}
+        <div class="pt-card">
             <div class="pt-card-top">
                 <div class="pt-avatar">{{ p.name|slice:":1"|upper }}</div>
                 <div>
@@ -504,7 +632,7 @@
             </div>
             <div class="pt-info-row">
                 <i class="fas fa-clipboard-list"></i>
-                {{ p.checkup_set.count }} Visit{{ p.checkup_set.count|pluralize }}
+                {{ v }} Visit{{ v|pluralize }}
             </div>
 
             {% if latest %}
@@ -535,7 +663,7 @@
                     <i class="fas fa-file-medical"></i> View Report
                 </a>
                 {% endif %}
-                <a href="{% url 'search_patient' %}?view_id={{ p.id }}" class="pt-btn pt-btn-outline">
+                <a href="{% url 'patients' %}?view_id={{ p.id }}" class="pt-btn pt-btn-outline">
                     <i class="fas fa-history"></i> History
                 </a>
             </div>
@@ -544,25 +672,112 @@
         {% empty %}
         <div class="pt-empty" style="grid-column: 1 / -1;">
             <i class="fas fa-user-slash"></i>
-            <h3>No patients registered yet</h3>
-            <p>Start by adding your first patient to the system.</p>
+            <h3>No patients found</h3>
+            <p>Try clearing your filters or adding a new patient.</p>
             <a href="{% url 'new_patient' %}" class="pt-btn pt-btn-primary"
-                style="display:inline-flex; margin-top:16px; max-width:200px;">
-                <i class="fas fa-user-plus"></i> Add First Patient
+                style="display:inline-flex; margin-top:16px; margin-left:auto; margin-right:auto; max-width:200px;">
+                <i class="fas fa-user-plus"></i> Add New Patient
             </a>
         </div>
         {% endfor %}
     </div>
+
+    {% else %}
+    <!-- SINGLE PATIENT DETAIL VIEW -->
+    <div style="margin-bottom:20px;">
+        <a href="{% url 'patients' %}" class="pt-btn pt-btn-outline" style="max-width:160px; display:inline-flex;">
+            <i class="fas fa-arrow-left"></i> Back to Registry
+        </a>
+    </div>
+
+    <div class="sp-detail-card">
+        <div class="sp-detail-header">
+            <h3>
+                <i class="fas fa-file-medical-alt" style="color:var(--brand);margin-right:10px;"></i>
+                {{ selected_patient.name }}'s Medical File
+            </h3>
+            <a href="{% url 'existing_patient' %}" class="pt-btn pt-btn-primary" style="max-width:180px;">
+                <i class="fas fa-plus-circle"></i> Add New Visit
+            </a>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;padding:18px;background:var(--bg-body);border-radius:var(--radius-md);border:1px solid var(--border);">
+            <div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Phone</div>
+                <div style="font-weight:700;color:var(--text-main);margin-top:3px;">{{ selected_patient.phone }}</div>
+            </div>
+            <div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Gender</div>
+                <div style="font-weight:700;color:var(--text-main);margin-top:3px;">{{ selected_patient.gender }}</div>
+            </div>
+            <div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Address</div>
+                <div style="font-weight:700;color:var(--text-main);margin-top:3px;">{{ selected_patient.address|truncatechars:30 }}</div>
+            </div>
+            <div>
+                <div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Total Visits</div>
+                <div style="font-weight:700;color:var(--brand);margin-top:3px;">{{ history|length }} checkup{{ history|length|pluralize }}</div>
+            </div>
+        </div>
+
+        {% if history %}
+        <div>
+            {% for report in history %}
+            <a href="{% url 'generate_dynamic_diet_plan' selected_patient.id report.id %}" class="sp-visit-card v-{{ report.category }}">
+                <div class="sp-visit-top">
+                    <span class="sp-visit-id">
+                        Protocol #{{ report.id }}&nbsp;
+                        <span class="sp-health-badge badge-{{ report.category }}" style="font-size:11px;">
+                            {% if report.category == 'Obese' %}<span class="health-dot dot-red"></span>
+                            {% elif report.category == 'Overweight' %}<span class="health-dot dot-yellow"></span>
+                            {% elif report.category == 'Normal' %}<span class="health-dot dot-green"></span>
+                            {% else %}<span class="health-dot dot-blue"></span>{% endif %}
+                            {{ report.category }}
+                        </span>
+                    </span>
+                    <span class="sp-visit-date"><i class="far fa-calendar-alt"></i> {{ report.date|date:"d M Y" }}</span>
+                </div>
+                <div class="sp-visit-stats">
+                    <span class="sp-stat-tag"><strong>Weight:</strong> {{ report.weight }} kg</span>
+                    <span class="sp-stat-tag"><strong>BMI:</strong> {{ report.bmi }}</span>
+                    <span class="sp-stat-tag"><strong>Height:</strong> {{ report.height }} cm</span>
+                    <span class="sp-stat-tag"><strong>Plan:</strong> {{ report.plan_type }}</span>
+                    <span class="sp-stat-tag"><strong>Diet:</strong> {{ report.dietary }}</span>
+                    <span class="sp-stat-tag"><strong>TDEE:</strong> {{ report.tdee|floatformat:0 }} kcal</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align:center; padding:40px 20px;">
+            <i class="fas fa-clipboard-list" style="color:var(--text-muted);font-size:48px;opacity:0.4;margin-bottom:16px;display:block;"></i>
+            <div style="font-size:20px;font-weight:800;color:var(--text-main);margin-bottom:8px;">No Checkup Records</div>
+            <div><a href="{% url 'existing_patient' %}" style="color:var(--brand);font-weight:700;">Start the first assessment &rarr;</a></div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
 </div>
 
 <script>
-    function filterPatients(q) {
-        const cards = document.querySelectorAll('#patientGrid .pt-card');
-        const term = q.toLowerCase().trim();
-        cards.forEach(card => {
-            const name = card.dataset.name || '';
-            const phone = card.dataset.phone || '';
-            card.style.display = (!term || name.includes(term) || phone.includes(term)) ? '' : 'none';
+    function setBmi(val) {
+        document.getElementById('bmiFilterInput').value = val;
+        document.querySelectorAll('.sp-chip').forEach(function(c){ c.classList.remove('active-chip'); });
+        var map = {'':'chip-all','Underweight':'chip-under','Normal':'chip-normal','Overweight':'chip-over','Obese':'chip-obese'};
+        document.querySelectorAll('.'+(map[val]||'chip-all')).forEach(function(c){ c.classList.add('active-chip'); });
+    }
+
+    var searchTimer;
+    var searchEl = document.getElementById('searchQ');
+    if (searchEl) {
+        searchEl.addEventListener('input', function() {
+            clearTimeout(searchTimer);
+            var v = this.value.trim();
+            if (v.length === 0 || v.length >= 2) {
+                // Auto-submit after 600ms if input is at least 2 chars or cleared
+                searchTimer = setTimeout(function(){ document.getElementById('searchForm').submit(); }, 600);
+            }
         });
     }
 </script>

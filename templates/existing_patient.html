@@ -4,7 +4,7 @@
 {% block content %}
 <style>
     :root, [data-theme="light"] {
-        --grad-primary: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+        --grad-primary: linear-gradient(135deg, #3AACBE 0%, #A4D8E1 100%);
         --grad-success: linear-gradient(135deg, #05CD99 0%, #43E97B 100%);
         --shadow-soft:  0px 18px 40px rgba(112,144,176,.12);
         --shadow-hover: 0px 20px 45px rgba(112,144,176,.2);
@@ -31,7 +31,7 @@
         border-radius: var(--radius-lg);
         padding: 44px 48px 36px; color: #fff;
         margin-bottom: 28px; position: relative; overflow: hidden;
-        box-shadow: 0 20px 40px rgba(67,24,255,.25);
+        box-shadow: 0 20px 40px rgba(58,172,190,.25);
     }
 
     .ep-hero::before {
@@ -69,22 +69,22 @@
     .ep-search-box i { position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:18px;pointer-events:none; }
     .ep-search-box input {
         width:100%; padding:15px 18px 15px 52px;
-        border:1.5px solid var(--border); border-radius:var(--radius-sm);
+        border: 1.5px solid var(--brand-mid); border-radius: var(--radius-sm);
         font-size:15px; font-family:inherit; font-weight:500;
         color:var(--text-body); background:var(--bg-body);
         outline:none; transition:all .2s; box-sizing:border-box;
     }
-    .ep-search-box input:focus { border-color:var(--brand); background:var(--bg-surface); box-shadow:0 0 0 5px rgba(67,24,255,.08); }
+    .ep-search-box input:focus { border-color:var(--brand); background:var(--bg-surface); box-shadow:0 0 0 5px rgba(58,172,190,.08); }
 
     .ep-search-btn {
         padding:0 32px; background:var(--grad-primary);
         color:#fff; border:none; border-radius:var(--radius-sm);
         font-size:15px; font-weight:700; font-family:inherit;
         cursor:pointer; display:flex; align-items:center; gap:10px;
-        transition:all .3s; box-shadow:0 6px 20px rgba(67,24,255,.25); white-space:nowrap;
+        transition:all .3s; box-shadow:0 6px 20px rgba(58,172,190,.25); white-space:nowrap;
     }
 
-    .ep-search-btn:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(67,24,255,.38); }
+    .ep-search-btn:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(58,172,190,.38); }
 
     /* RESULTS SECTION */
     .ep-results-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; margin-top:30px; }
@@ -175,20 +175,20 @@
 
     input, select, textarea {
         width: 100%; padding: 14px 15px 14px 48px;
-        border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+        border: 1.5px solid var(--brand-mid); border-radius: var(--radius-sm);
         font-size: 15px; background: var(--bg-body); color: var(--text-body);
         transition: all .3s; font-family: inherit; box-sizing: border-box; outline: none;
     }
     textarea { padding-left: 15px; }
-    input:focus, select:focus, textarea:focus { border-color: var(--brand); background: var(--bg-surface); box-shadow: 0 0 0 5px rgba(67,24,255,.08); }
+    input:focus, select:focus, textarea:focus { border-color: var(--brand); background: var(--bg-surface); box-shadow: 0 0 0 5px rgba(58,172,190,.08); }
 
     /* Disease Tag Input */
     #diseaseTagBox {
-        min-height: 56px; background: var(--bg-body); border: 1.5px solid var(--border);
+        min-height: 56px; background: var(--bg-body); border: 1.5px solid var(--brand-mid);
         border-radius: var(--radius-sm); padding: 10px 14px;
         display: flex; flex-wrap: wrap; gap: 8px; align-items: center; cursor: text; transition: all .2s;
     }
-    #diseaseTagBox:focus-within { border-color: var(--brand); background: var(--bg-surface); box-shadow: 0 0 0 5px rgba(67,24,255,.08); }
+    #diseaseTagBox:focus-within { border-color: var(--brand); background: var(--bg-surface); box-shadow: 0 0 0 5px rgba(58,172,190,.08); }
     #diseaseSearch { border: none; outline: none; background: transparent; font-size: 14px; font-family: inherit; min-width: 180px; flex: 1; color: var(--text-body); padding-left: 0; }
     
     .dtag { display: inline-flex; align-items: center; gap: 5px; background: var(--grad-primary); color: #fff; border-radius: 999px; padding: 5px 14px 5px 12px; font-size: 12px; font-weight: 700; white-space: nowrap; animation: tagPop .18s ease-out both; }
@@ -202,8 +202,8 @@
 
     .modal-footer { padding: 32px 40px 40px; display: flex; gap: 16px; border-top: var(--border); }
     .modal-btn { flex: 1; padding: 16px; border-radius: var(--radius-sm); font-size: 16px; font-weight: 700; cursor: pointer; transition: all .3s; font-family: inherit; border: none; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .btn-submit { background: var(--grad-primary); color: #fff; box-shadow: 0 10px 24px rgba(67,24,255,0.25); }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 32px rgba(67,24,255,0.35); }
+    .btn-submit { background: var(--grad-primary); color: #fff; box-shadow: 0 10px 24px rgba(58,172,190,0.30); }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 32px rgba(58,172,190,0.35); }
     .btn-cancel { background: var(--bg-body); color: var(--text-body); border: var(--border); }
     .btn-cancel:hover { background: var(--brand-light); }
 

@@ -20,7 +20,7 @@ urlpatterns = [
     # Patient Forms
     path('patients/new/', views.new_patient, name='new_patient'),
     path('patients/existing/', views.existing_patient, name='existing_patient'),
-    path('patients/search/', views.search_patient, name='search_patient'),
+
     path('regenerate/<int:checkup_id>/', views.regenerate_plan, name='regenerate_plan'),
 
     # Reports
