@@ -696,88 +696,348 @@
     .donut-leg-pct  { font-size:11px; opacity:.65; }
 
     /* ============================================
-       FEATURE #8 — WHATSAPP PREVIEW PANEL
+       FEATURE #8 — WHATSAPP PREVIEW PANEL (Creative Edition)
     ============================================ */
+
+    /* ── Outer container ────────────────────────────────────── */
     .wa-panel {
-        background: var(--bg-surface); border-radius: var(--radius-xl);
-        padding: 28px; border: 1px solid var(--rp-panel-border);
-        box-shadow: var(--shadow-lg);
-    }
-
-    .wa-panel-title {
-        font-size: 16px; font-weight: 800; color: var(--text-heading);
-        display:flex; align-items:center; gap:10px; margin-bottom:20px;
-        padding-bottom:14px; border-bottom:1px solid var(--rp-tr-border);
-    }
-
-    .wa-phone-frame {
-        background: #ECE5DD;
-        border-radius: 20px;
-        padding: 0;
+        background: linear-gradient(145deg, #0d1b14 0%, #0a2318 50%, #051810 100%);
+        border-radius: 28px;
+        padding: 32px 28px 28px;
+        border: 1px solid rgba(37,211,102,0.2);
+        box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(37,211,102,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+        position: relative;
         overflow: hidden;
-        max-width: 320px;
-        margin: 0 auto;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        border: 8px solid #1c1c1c;
     }
 
-    .wa-phone-bar {
-        background: #075E54;
-        color: #fff;
-        padding: 10px 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 13px;
-        font-weight: 700;
+    /* Glowing BG orb */
+    .wa-panel::before {
+        content: '';
+        position: absolute; inset: -80px;
+        background: radial-gradient(ellipse at 70% 20%, rgba(37,211,102,0.15) 0%, transparent 60%),
+                    radial-gradient(ellipse at 20% 80%, rgba(18,140,126,0.12) 0%, transparent 50%);
+        pointer-events: none;
     }
 
-    .wa-phone-avatar {
-        width:32px; height:32px; border-radius:50%;
-        background: #25D366;
-        display:flex; align-items:center; justify-content:center;
-        font-size:14px; font-weight:800; flex-shrink:0;
+    /* Large WhatsApp watermark */
+    .wa-panel::after {
+        content: '';
+        font-family: 'Font Awesome 6 Brands'; font-weight: 400;
+        position: absolute; right: -10px; bottom: -20px;
+        font-size: 180px; opacity: .04; color: #25D366;
+        pointer-events: none; line-height: 1;
     }
 
-    .wa-phone-body {
-        padding: 12px 10px;
-        max-height: 280px;
-        overflow-y: auto;
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23ECE5DD' width='100' height='100'/%3E%3C/svg%3E");
+    /* ── Panel header ───────────────────────────────────────── */
+    .wa-panel-title {
+        font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.9);
+        display: flex; align-items: center; gap: 12px;
+        margin-bottom: 22px; padding-bottom: 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        position: relative; z-index: 2;
     }
 
-    .wa-bubble {
-        background: #fff;
-        border-radius: 12px 12px 12px 3px;
-        padding: 10px 14px;
-        font-size: 12px;
-        line-height: 1.6;
-        color: #1c1c1c;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        max-width: 90%;
-        white-space: pre-line;
-    }
-
-    .wa-bubble-time {
-        text-align: right;
-        font-size: 10px;
-        color: #94a3b8;
-        margin-top: 4px;
-    }
-
-    .wa-send-btn {
-        width:100%; padding: 14px;
+    .wa-title-badge {
+        width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0;
         background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-        color:#fff; border:none; border-radius:14px;
-        font-size:15px; font-weight:800; font-family:inherit;
-        cursor:pointer; display:flex; align-items:center; justify-content:center;
-        gap:10px; margin-top:20px;
-        transition: all .3s;
-        box-shadow: 0 8px 20px rgba(37,211,102,.3);
-        text-decoration:none;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; color: #fff;
+        box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+        animation: pulseWA 2.5s ease-in-out infinite;
     }
 
-    .wa-send-btn:hover { transform:translateY(-2px); box-shadow: 0 12px 28px rgba(37,211,102,.4); }
+    @keyframes pulseWA {
+        0%,100% { box-shadow: 0 6px 20px rgba(37,211,102,0.4); }
+        50%      { box-shadow: 0 6px 32px rgba(37,211,102,0.7); }
+    }
+
+    .wa-title-text { flex: 1; }
+    .wa-title-text strong { display: block; font-size: 15px; color: #fff; }
+    .wa-title-text span { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 500; }
+
+    .wa-live-dot {
+        display: flex; align-items: center; gap: 6px;
+        font-size: 10px; font-weight: 700; color: #25D366;
+        background: rgba(37,211,102,0.12); padding: 5px 11px;
+        border-radius: 100px; border: 1px solid rgba(37,211,102,0.25);
+        animation: fadeDot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes fadeDot { 0%,100%{opacity:1;} 50%{opacity:.5;} }
+    .wa-live-dot i { font-size: 7px; }
+
+    /* ── Smartphone frame ───────────────────────────────────── */
+    .wa-device-wrap {
+        position: relative; z-index: 2;
+        display: flex; justify-content: center; margin-bottom: 20px;
+    }
+
+    .wa-phone-device {
+        width: 280px;
+        background: #111;
+        border-radius: 38px;
+        border: 2px solid #333;
+        box-shadow:
+            0 0 0 1px #000,
+            0 30px 80px rgba(0,0,0,0.7),
+            0 0 40px rgba(37,211,102,0.12),
+            inset 0 0 0 1px rgba(255,255,255,0.06);
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Notch */
+    .wa-notch {
+        background: #111;
+        height: 28px;
+        display: flex; align-items: center; justify-content: center;
+        position: relative; z-index: 5;
+    }
+
+    .wa-notch-pill {
+        width: 90px; height: 20px;
+        background: #000;
+        border-radius: 0 0 14px 14px;
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    .wa-notch-cam {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: #1a1a1a; border: 1.5px solid #333;
+    }
+
+    /* System status bar */
+    .wa-status-bar {
+        background: #075E54;
+        padding: 4px 14px;
+        display: flex; align-items: center; justify-content: space-between;
+        font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.9);
+    }
+
+    .wa-status-icons { display: flex; align-items: center; gap: 5px; }
+    .wa-signal { display: flex; align-items: flex-end; gap: 1.5px; }
+    .wa-signal span {
+        width: 2.5px; background: rgba(255,255,255,0.9); border-radius: 1px;
+    }
+    .wa-signal span:nth-child(1){height:4px;}
+    .wa-signal span:nth-child(2){height:6px;}
+    .wa-signal span:nth-child(3){height:8px;}
+    .wa-signal span:nth-child(4){height:10px;}
+
+    /* Chat header bar */
+    .wa-chat-bar {
+        background: #075E54;
+        padding: 8px 12px;
+        display: flex; align-items: center; gap: 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .wa-chat-back { color: rgba(255,255,255,0.8); font-size: 16px; }
+
+    .wa-chat-avatar {
+        width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px; font-weight: 900; color: #fff;
+        border: 2px solid rgba(255,255,255,0.2);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .wa-chat-info { flex: 1; }
+    .wa-chat-name  { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.2; }
+    .wa-chat-status { font-size: 10px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 4px; }
+    .wa-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #25D366; animation: fadeDot 1.5s infinite; }
+
+    .wa-chat-icons { display: flex; gap: 12px; color: rgba(255,255,255,0.7); font-size: 17px; }
+
+    /* Chat messages body */
+    .wa-messages-body {
+        background: #ECE5DD url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAB3RJTUUH6AESCgcHvIAnDwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAARnQU1BAACxjwv8YQUAAAAtSURBVHjaY2AgBvz//59BC4iBgYGJgZqAN1OogJGBgRFI/MfNJLSjSB8CAGgwBuVbbCeXAAAAAElFTkSuQmCC");
+        padding: 10px 8px;
+        max-height: 320px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0,0,0,0.2) transparent;
+    }
+
+    /* Date divider */
+    .wa-date-divider {
+        text-align: center; margin: 8px 0;
+    }
+
+    .wa-date-chip {
+        background: rgba(255,255,255,0.85);
+        border-radius: 100px; padding: 3px 12px;
+        font-size: 10px; font-weight: 600; color: #546E7A;
+        display: inline-block;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* Message bubbles */
+    .wa-msg { margin-bottom: 6px; }
+
+    /* incoming (left, white) */
+    .wa-msg-in .wa-bubble-new {
+        background: #fff;
+        border-radius: 0px 12px 12px 12px;
+        padding: 9px 12px;
+        font-size: 11px; line-height: 1.65;
+        color: #1c1c1c;
+        max-width: 88%;
+        display: inline-block;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+        position: relative;
+    }
+
+    /* outgoing (right, green) */
+    .wa-msg-out {
+        display: flex; justify-content: flex-end;
+    }
+
+    .wa-msg-out .wa-bubble-new {
+        background: #DCF8C6;
+        border-radius: 12px 0px 12px 12px;
+        padding: 9px 12px;
+        font-size: 11px; line-height: 1.65;
+        color: #1c1c1c;
+        max-width: 88%;
+        display: inline-block;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+    }
+
+    .wa-msg-tail-in  { font-size: 0; }
+    .wa-msg-tail-out { font-size: 0; }
+
+    .wa-msg-time {
+        font-size: 9px; color: #94a3b8;
+        margin-top: 3px; display: flex; align-items: center;
+        justify-content: flex-end; gap: 3px;
+    }
+
+    .wa-double-tick { color: #53bdeb; font-size: 10px; }
+
+    /* Emoji nutrition pills inside bubble */
+    .wa-pill-row {
+        display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0;
+    }
+
+    .wa-pill {
+        background: rgba(37,211,102,0.12); color: #0a5c47;
+        border: 1px solid rgba(37,211,102,0.3);
+        border-radius: 100px; padding: 2px 8px;
+        font-size: 9.5px; font-weight: 700;
+        display: inline-flex; align-items: center; gap: 3px;
+    }
+
+    /* Day row inside bubble */
+    .wa-day-row {
+        background: rgba(37,211,102,0.08);
+        border-left: 2px solid #25D366;
+        border-radius: 0 6px 6px 0;
+        padding: 3px 7px 3px 6px;
+        margin: 4px 0;
+        font-size: 9.5px; line-height: 1.5;
+        color: #1c1c1c;
+    }
+
+    .wa-day-header { font-weight: 800; color: #075E54; font-size: 9.5px; margin-bottom: 2px; }
+
+    /* Typing animation bubble */
+    .wa-typing {
+        display: flex; align-items: center; gap: 6px;
+        margin-bottom: 6px;
+    }
+
+    .wa-typing-avatar {
+        width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+        background: linear-gradient(135deg, #25D366, #128C7E);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10px; font-weight: 900; color: #fff;
+    }
+
+    .wa-typing-bubble {
+        background: #fff; border-radius: 0 12px 12px 12px;
+        padding: 10px 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        display: flex; align-items: center; gap: 4px;
+    }
+
+    .wa-typing-dot {
+        width: 7px; height: 7px; border-radius: 50%; background: #9ca3af;
+    }
+
+    .wa-typing-dot:nth-child(1) { animation: typingBounce .8s 0s ease-in-out infinite; }
+    .wa-typing-dot:nth-child(2) { animation: typingBounce .8s .15s ease-in-out infinite; }
+    .wa-typing-dot:nth-child(3) { animation: typingBounce .8s .30s ease-in-out infinite; }
+
+    @keyframes typingBounce {
+        0%,60%,100% { transform: translateY(0); }
+        30%          { transform: translateY(-6px); background: #25D366; }
+    }
+
+    /* Bottom input bar */
+    .wa-input-bar {
+        background: #F0F0F0;
+        padding: 7px 10px;
+        display: flex; align-items: center; gap: 8px;
+    }
+
+    .wa-input-box {
+        flex: 1; background: #fff; border-radius: 22px;
+        padding: 7px 14px; font-size: 11px; color: #546E7A;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .wa-mic-btn {
+        width: 36px; height: 36px; border-radius: 50%;
+        background: #25D366;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 14px; flex-shrink: 0;
+        box-shadow: 0 3px 10px rgba(37,211,102,0.4);
+    }
+
+    /* ── Send CTA button ────────────────────────────────────── */
+    .wa-send-cta {
+        position: relative; z-index: 2;
+        display: block;
+        width: 100%; padding: 16px 24px;
+        background: linear-gradient(135deg, #25D366 0%, #20BA5C 40%, #128C7E 100%);
+        color: #fff; border: none; border-radius: 18px;
+        font-size: 15px; font-weight: 800; font-family: inherit;
+        cursor: pointer; text-decoration: none;
+        display: flex; align-items: center; justify-content: center; gap: 12px;
+        transition: all .35s cubic-bezier(.23,1,.32,1);
+        box-shadow: 0 10px 30px rgba(37,211,102,0.45), 0 0 0 0 rgba(37,211,102,0.4);
+        letter-spacing: .3px;
+        animation: ctaPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes ctaPulse {
+        0%,100% { box-shadow: 0 10px 30px rgba(37,211,102,.45), 0 0 0 0 rgba(37,211,102,.4); }
+        50%      { box-shadow: 0 14px 40px rgba(37,211,102,.6), 0 0 0 8px rgba(37,211,102,.0); }
+    }
+
+    .wa-send-cta:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 18px 50px rgba(37,211,102,.6);
+        animation: none;
+    }
+
+    .wa-send-cta .wa-cta-icon {
+        width: 36px; height: 36px; border-radius: 10px;
+        background: rgba(255,255,255,0.2);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+        transition: transform .3s;
+    }
+
+    .wa-send-cta:hover .wa-cta-icon { transform: rotate(-10deg) scale(1.15); }
+
+    .wa-send-cta-text { text-align: left; line-height: 1.3; }
+    .wa-send-cta-text strong { display: block; font-size: 15px; }
+    .wa-send-cta-text span   { display: block; font-size: 11px; opacity: .8; font-weight: 500; }
+
+    .wa-send-cta .wa-arrow { margin-left: auto; font-size: 16px; opacity: .8; transition: transform .3s; }
+    .wa-send-cta:hover .wa-arrow { transform: translateX(4px); opacity: 1; }
 </style>
 
 <div class="report-page-container">
@@ -1082,44 +1342,212 @@
                         {% endif %}
                     </div>
 
-                    <!-- FEATURE #8: WhatsApp Preview Panel -->
+                    <!-- FEATURE #8: WhatsApp Preview Panel (Creative Edition) -->
                     <div class="wa-panel">
+
+                        <!-- Panel header -->
                         <div class="wa-panel-title">
-                            <div style="width:38px;height:38px;border-radius:10px;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:18px;color:#16a34a;flex-shrink:0;">
-                                <i class="fab fa-whatsapp"></i>
+                            <div class="wa-title-badge"><i class="fab fa-whatsapp"></i></div>
+                            <div class="wa-title-text">
+                                <strong>Share via WhatsApp</strong>
+                                <span>Preview your patient's message below</span>
                             </div>
-                            Share Diet Plan via WhatsApp
+                            <div class="wa-live-dot"><i class="fas fa-circle"></i> LIVE</div>
                         </div>
 
-                        <!-- Phone frame preview -->
-                        <div class="wa-phone-frame">
-                            <div class="wa-phone-bar">
-                                <div class="wa-phone-avatar">{{ patient.name|slice:":1"|upper }}</div>
-                                <div>
-                                    <div style="font-size:13px;font-weight:700;">{{ patient.name }}</div>
-                                    <div style="font-size:10px;opacity:.7;">{{ patient.phone }}</div>
+                        <!-- Smartphone device mockup -->
+                        <div class="wa-device-wrap">
+                            <div class="wa-phone-device">
+
+                                <!-- Notch -->
+                                <div class="wa-notch">
+                                    <div class="wa-notch-pill">
+                                        <div class="wa-notch-cam"></div>
+                                    </div>
                                 </div>
+
+                                <!-- Status bar -->
+                                <div class="wa-status-bar">
+                                    <span>{% now "H:i" %}</span>
+                                    <div class="wa-status-icons">
+                                        <div class="wa-signal">
+                                            <span></span><span></span><span></span><span></span>
+                                        </div>
+                                        <i class="fas fa-wifi" style="font-size:9px;"></i>
+                                        <i class="fas fa-battery-three-quarters" style="font-size:9px;"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Chat header -->
+                                <div class="wa-chat-bar">
+                                    <span class="wa-chat-back"><i class="fas fa-arrow-left"></i></span>
+                                    <div class="wa-chat-avatar">{{ patient.name|slice:":1"|upper }}</div>
+                                    <div class="wa-chat-info">
+                                        <div class="wa-chat-name">{{ patient.name }}</div>
+                                        <div class="wa-chat-status">
+                                            <div class="wa-online-dot"></div> online
+                                        </div>
+                                    </div>
+                                    <div class="wa-chat-icons">
+                                        <i class="fas fa-video"></i>
+                                        <i class="fas fa-phone"></i>
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Messages -->
+                                <div class="wa-messages-body" id="waMessages">
+
+                                    <div class="wa-date-divider">
+                                        <span class="wa-date-chip">&#128197; Today, {% now "d M Y" %}</span>
+                                    </div>
+
+                                    <!-- 1. Clinic Header Card (incoming) -->
+                                    <div class="wa-msg">
+                                        <div class="wa-bubble-new" style="background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;border-radius:10px;padding:10px 13px;font-size:11px;text-align:center;max-width:90%;display:inline-block;box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+                                            <div style="font-size:18px;margin-bottom:3px;">&#x1F3E5;</div>
+                                            <div style="font-weight:800;font-size:12px;letter-spacing:.3px;">NutriPlanner Clinic</div>
+                                            <div style="opacity:.8;font-size:10px;font-style:italic;margin-top:2px;">Precision Nutrition for You</div>
+                                        </div>
+                                        <div class="wa-msg-time">{% now "H:i" %}</div>
+                                    </div>
+
+                                    <!-- 2. Greeting (incoming) -->
+                                    <div class="wa-msg">
+                                        <div class="wa-bubble-new">
+                                            &#x1F44B; Hello <strong>{{ patient.name }}</strong>!<br>
+                                            Your personalised <strong>7-Day Diet Plan</strong> is ready! &#x1F389;
+                                        </div>
+                                        <div class="wa-msg-time">{% now "H:i" %}</div>
+                                    </div>
+
+                                    <!-- 3. Nutrition Summary (outgoing green) -->
+                                    <div class="wa-msg wa-msg-out">
+                                        <div>
+                                            <div class="wa-bubble-new">
+                                                <div style="font-weight:800;font-size:11px;color:#075E54;border-bottom:1px solid rgba(37,211,102,0.3);padding-bottom:5px;margin-bottom:7px;">
+                                                    &#x1F4CA; YOUR NUTRITION TARGET
+                                                </div>
+                                                <div style="display:grid;gap:3px;font-size:10.5px;">
+                                                    <div>&#x1F3AF; &nbsp;<strong>Goal</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ diet_goal }}</div>
+                                                    <div>&#x1F525; &nbsp;<strong>Daily Cals</strong>&nbsp;: {{ target_calories }} kcal</div>
+                                                    <div>&#x1F4AA; &nbsp;<strong>Protein</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ checkup.protein_target|floatformat:0 }}g</div>
+                                                    <div>&#x1F33E; &nbsp;<strong>Carbs</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ checkup.carbs_target|floatformat:0 }}g</div>
+                                                    <div>&#x1F951; &nbsp;<strong>Fat</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ checkup.fat_target|floatformat:0 }}g</div>
+                                                    <div>&#x1F4CF; &nbsp;<strong>BMI</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ checkup.bmi }} ({{ checkup.category }})</div>
+                                                </div>
+                                            </div>
+                                            <div class="wa-msg-time">
+                                                {% now "H:i" %} <span class="wa-double-tick"><i class="fas fa-check-double"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4. Weekly Plan (incoming) -->
+                                    <div class="wa-msg">
+                                        <div class="wa-bubble-new" style="font-size:11px;">
+                                            <div style="font-weight:800;color:#075E54;margin-bottom:6px;border-bottom:1px solid rgba(37,211,102,0.25);padding-bottom:4px;">
+                                                &#x1F5D3; YOUR 7-DAY MEAL SCHEDULE
+                                            </div>
+                                            {% for day, meals in weekly_plan.items %}
+                                            <div class="wa-day-row" data-day="{{ day }}">
+                                                <div class="wa-day-header">
+                                                    <span class="day-dot"></span> {{ day|upper }}
+                                                </div>
+                                                {% for m in meals %}
+                                                <div style="display:flex;align-items:baseline;gap:4px;margin-top:2px;">
+                                                    <span class="meal-icon" data-meal="{{ m.meal }}" style="font-size:11px;"></span>
+                                                    <span style="font-style:italic;color:#546e7a;">{{ m.meal }}</span>:
+                                                    <span style="font-weight:600;">{{ m.food }}</span>
+                                                    <span style="color:#ef5350;font-size:9.5px;">&#x1F525;{{ m.cal }}</span>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="wa-msg-time">{% now "H:i" %}</div>
+                                    </div>
+
+                                    <!-- 5. Wellness Tips (outgoing) -->
+                                    <div class="wa-msg wa-msg-out">
+                                        <div>
+                                            <div class="wa-bubble-new" style="font-size:10.5px;">
+                                                <div style="font-weight:800;color:#075E54;margin-bottom:5px;">&#x1F4A1; DAILY WELLNESS TIPS</div>
+                                                <div>&#x1F4A7; Drink 8&ndash;10 glasses of water daily</div>
+                                                <div>&#x1F6B6; Walk at least 30 mins every day</div>
+                                                <div>&#x1F6CC; Get 7&ndash;8 hours of quality sleep</div>
+                                                <div>&#x1F9D8; Manage stress with mindful breaks</div>
+                                            </div>
+                                            <div class="wa-msg-time">
+                                                {% now "H:i" %} <span class="wa-double-tick"><i class="fas fa-check-double"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 6. Footer & Sign-off (incoming) -->
+                                    <div class="wa-msg">
+                                        <div class="wa-bubble-new" style="text-align:center;font-size:11px;">
+                                            &#x1F49A; <strong>Stay healthy &amp; consistent!</strong><br><br>
+                                            &#x1F3E5; <strong>LifeCare NutriPlanner Clinic</strong><br>
+                                            <em style="color:#546e7a;font-size:10px;">Your health is our mission &#x1F33F;</em>
+                                        </div>
+                                        <div class="wa-msg-time">{% now "H:i" %}</div>
+                                    </div>
+
+                                    <!-- Typing indicator -->
+                                    <div class="wa-typing">
+                                        <div class="wa-typing-avatar">{{ patient.name|slice:":1"|upper }}</div>
+                                        <div class="wa-typing-bubble">
+                                            <div class="wa-typing-dot"></div>
+                                            <div class="wa-typing-dot"></div>
+                                            <div class="wa-typing-dot"></div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- /messages -->
+
+                                <script>
+                                // Inject day-dot and meal-icon emojis via JS to guarantee rendering
+                                (function() {
+                                    var dayEmoji  = { Monday:'&#x1F7E2;', Tuesday:'&#x1F535;', Wednesday:'&#x1F7E3;',
+                                                      Thursday:'&#x1F7E0;', Friday:'&#x1F534;', Saturday:'&#x1F7E1;', Sunday:'&#x26AA;' };
+                                    var mealEmoji = { Breakfast:'&#x1F305;', Lunch:'&#x2600;&#xFE0F;',
+                                                      Dinner:'&#x1F319;', 'Evening Snack':'&#x1F34E;', 'Mid-Morning':'&#x1F95C;' };
+
+                                    document.querySelectorAll('.wa-day-row').forEach(function(row) {
+                                        var day = row.getAttribute('data-day');
+                                        var dot = row.querySelector('.day-dot');
+                                        if (dot && dayEmoji[day]) dot.innerHTML = dayEmoji[day];
+                                    });
+                                    document.querySelectorAll('.meal-icon').forEach(function(span) {
+                                        var meal = span.getAttribute('data-meal');
+                                        span.innerHTML = mealEmoji[meal] || '&#x1F37D;&#xFE0F;';
+                                    });
+                                })();
+                                </script>
+
+                                <!-- Input bar -->
+                                <div class="wa-input-bar">
+                                    <i class="far fa-smile" style="font-size:18px;color:#666;"></i>
+                                    <div class="wa-input-box">Type a message</div>
+                                    <i class="fas fa-paperclip" style="font-size:16px;color:#666;"></i>
+                                    <div class="wa-mic-btn"><i class="fas fa-microphone"></i></div>
+                                </div>
+
+                            </div><!-- /phone device -->
+                        </div><!-- /device wrap -->
+
+                        <!-- Send CTA -->
+                        <a href="{{ whatsapp_link }}" target="_blank" class="wa-send-cta">
+                            <div class="wa-cta-icon"><i class="fab fa-whatsapp"></i></div>
+                            <div class="wa-send-cta-text">
+                                <strong>Send to {{ patient.name }}'s WhatsApp</strong>
+                                <span>{{ patient.phone }} &bull; Tap to open WhatsApp</span>
                             </div>
-                            <div class="wa-phone-body">
-                                <div class="wa-bubble">Hello {{ patient.name }}, here is your personalised 7-day diet plan 🥗
-
-🎯 Goal: {{ diet_goal }}
-🔥 Daily Calories: {{ target_calories }} kcal
-💪 Protein: {{ checkup.protein_target|floatformat:0 }}g &bull; Carbs: {{ checkup.carbs_target|floatformat:0 }}g &bull; Fat: {{ checkup.fat_target|floatformat:0 }}g
-
-{% for day, meals in weekly_plan.items %}📅 {{ day }}
-{% for m in meals %}  • {{ m.meal }}: {{ m.food }} ({{ m.cal }} kcal)
-{% endfor %}{% endfor %}
-Stay healthy! 💚
-— NutriPlanner Clinic</div>
-                                <div class="wa-bubble-time">{% now "H:i" %} ✓✓</div>
-                            </div>
-                        </div>
-
-                        <a href="{{ whatsapp_link }}" target="_blank" class="wa-send-btn">
-                            <i class="fab fa-whatsapp" style="font-size:18px;"></i> Send to Patient's WhatsApp
+                            <i class="fas fa-arrow-right wa-arrow"></i>
                         </a>
-                    </div>
+
+                    </div><!-- /wa-panel -->
                 </div>
 
                 <!-- 4. DIET PLAN TABLE -->

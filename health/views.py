@@ -147,8 +147,8 @@ def change_password(request):
 
         if not request.user.check_password(old_pass):
             messages.error(request, 'Current password is incorrect.')
-        elif len(new_pass1) < 6:
-            messages.error(request, 'New password must be at least 6 characters.')
+        elif len(new_pass1) < 8:
+            messages.error(request, 'New password must be at least 8 characters.')
         elif new_pass1 != new_pass2:
             messages.error(request, 'Passwords do not match.')
         else:
@@ -174,6 +174,7 @@ def patients(request):
         'female_count': female_count,
     })
 
+@login_required
 def contact(request):
     return render(request, 'contact.html')
 
@@ -285,63 +286,75 @@ def delete_checkup(request, checkup_id):
 @login_required
 def new_patient(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        gender = request.POST['gender']
-        phone = request.POST['phone'].strip()
-        address = request.POST['address']
-        dietary = request.POST['dietary']
+        name     = request.POST.get('name', '').strip()
+        gender   = request.POST.get('gender', '').strip()
+        phone    = request.POST.get('phone', '').strip()
+        address  = request.POST.get('address', '').strip()
+        dietary  = request.POST.get('dietary', 'Non-Veg').strip()
+        plan_type = request.POST.get('plan_type', '').strip()
 
-        # Server-side Phone Length Validation
-        if len(phone) != 10:
-            messages.error(request, "Invalid contact details (Must be 10 digits)")
-            all_diseases = list(Disease.objects.values_list('name', flat=True).order_by('name'))
-            return render(request, 'new_patient.html', {
-                'all_diseases_json': json.dumps(all_diseases)
-            })
-        plan_type = request.POST['plan_type']
-        age = int(request.POST['age'])
-        height_cm = float(request.POST['height'])
-        weight = float(request.POST['weight'])
-        activity = float(request.POST['activity'])
-        
-        # Get diseases: hidden input sends a single comma-separated string
-        diseases_str = request.POST.get('diseases', '').strip()
-        
-        blood_pressure = request.POST.get('bp', '120/80')
-        
+        all_diseases = list(Disease.objects.values_list('name', flat=True).order_by('name'))
+        ctx_error = {'all_diseases_json': json.dumps(all_diseases)}
+
+        # ── Server-side validation ──────────────────────────────────────────
+        if not all([name, gender, phone, address, plan_type]):
+            messages.error(request, "All required fields must be filled in.")
+            return render(request, 'new_patient.html', ctx_error)
+
+        if len(phone) != 10 or not phone.isdigit():
+            messages.error(request, "Invalid contact number — must be exactly 10 digits.")
+            return render(request, 'new_patient.html', ctx_error)
+
+        try:
+            age       = int(request.POST.get('age', 0))
+            height_cm = float(request.POST.get('height', 0))
+            weight    = float(request.POST.get('weight', 0))
+            activity  = float(request.POST.get('activity', 0))
+        except (ValueError, TypeError):
+            messages.error(request, "Age, height, weight, and activity must be valid numbers.")
+            return render(request, 'new_patient.html', ctx_error)
+
+        if not (1 <= age <= 120):
+            messages.error(request, "Age must be between 1 and 120 years.")
+            return render(request, 'new_patient.html', ctx_error)
+        if not (50 <= height_cm <= 280):
+            messages.error(request, "Height must be between 50 cm and 280 cm.")
+            return render(request, 'new_patient.html', ctx_error)
+        if not (1 <= weight <= 500):
+            messages.error(request, "Weight must be between 1 kg and 500 kg.")
+            return render(request, 'new_patient.html', ctx_error)
+        if activity not in [1.2, 1.375, 1.55, 1.725, 1.9]:
+            messages.error(request, "Invalid activity level selected.")
+            return render(request, 'new_patient.html', ctx_error)
+
+        # ── Optional fields ─────────────────────────────────────────────────
+        diseases_str   = request.POST.get('diseases', '').strip()
+        blood_pressure = request.POST.get('bp', '120/80').strip() or '120/80'
+
         bmi, bmr, tdee, category, target_calories = calculate_metrics(
             weight, height_cm, age, gender, activity
         )
-        
-        carbs_target = target_calories * 0.4 / 4
+
+        carbs_target   = target_calories * 0.4 / 4
         protein_target = target_calories * 0.3 / 4
-        fat_target = target_calories * 0.3 / 9
+        fat_target     = target_calories * 0.3 / 9
 
         patient, created = Patient.objects.get_or_create(
-            phone=phone, 
+            phone=phone,
             defaults={'name': name, 'gender': gender, 'address': address}
         )
-        
+
         checkup = Checkup.objects.create(
             patient=patient,
-            age=age,
-            height=height_cm,
-            weight=weight,
-            activity=activity,
-            dietary=dietary,
-            plan_type=plan_type,
-            bmi=bmi,
-            bmr=bmr,
-            tdee=tdee,
-            category=category,
+            age=age, height=height_cm, weight=weight, activity=activity,
+            dietary=dietary, plan_type=plan_type,
+            bmi=bmi, bmr=bmr, tdee=tdee, category=category,
             blood_pressure=blood_pressure,
             diseases=diseases_str,
-            protein_target=protein_target,
-            carbs_target=carbs_target,
-            fat_target=fat_target
+            protein_target=protein_target, carbs_target=carbs_target, fat_target=fat_target
         )
-        
-        # ── Link diseases (M2M) and sync legacy text field ─────────────────
+
+        # ── Link diseases (M2M) and sync legacy text field ──────────────────
         _link_diseases_to_checkup(checkup, diseases_str)
 
         return redirect('generate_dynamic_diet_plan', patient_id=patient.id, checkup_id=checkup.id)
@@ -355,48 +368,58 @@ def new_patient(request):
 @login_required
 def existing_patient(request):
     if request.method == "POST":
-        patient_id = request.POST['patient_id']
+        patient_id = request.POST.get('patient_id', '').strip()
         patient = get_object_or_404(Patient, id=patient_id)
-        
-        age = int(request.POST['age'])
-        height_cm = float(request.POST['height'])
-        weight = float(request.POST['weight'])
-        activity = float(request.POST['activity'])
-        dietary = request.POST['dietary']
-        plan_type = request.POST['plan_type']
-        
-        # Get diseases: hidden input sends a single comma-separated string
+
+        plan_type = request.POST.get('plan_type', '').strip()
+        dietary   = request.POST.get('dietary', 'Non-Veg').strip()
+
+        all_diseases = list(Disease.objects.values_list('name', flat=True).order_by('name'))
+        ctx_error = {'all_diseases_json': json.dumps(all_diseases)}
+
+        try:
+            age       = int(request.POST.get('age', 0))
+            height_cm = float(request.POST.get('height', 0))
+            weight    = float(request.POST.get('weight', 0))
+            activity  = float(request.POST.get('activity', 0))
+        except (ValueError, TypeError):
+            messages.error(request, "Age, height, weight, and activity must be valid numbers.")
+            return render(request, 'existing_patient.html', ctx_error)
+
+        if not (1 <= age <= 120):
+            messages.error(request, "Age must be between 1 and 120 years.")
+            return render(request, 'existing_patient.html', ctx_error)
+        if not (50 <= height_cm <= 280):
+            messages.error(request, "Height must be between 50 cm and 280 cm.")
+            return render(request, 'existing_patient.html', ctx_error)
+        if not (1 <= weight <= 500):
+            messages.error(request, "Weight must be between 1 kg and 500 kg.")
+            return render(request, 'existing_patient.html', ctx_error)
+        if activity not in [1.2, 1.375, 1.55, 1.725, 1.9]:
+            messages.error(request, "Invalid activity level selected.")
+            return render(request, 'existing_patient.html', ctx_error)
+
         diseases_str = request.POST.get('diseases', '').strip()
-        
-        bp = request.POST.get('bp', '120/80')
-        
+        bp           = request.POST.get('bp', '120/80').strip() or '120/80'
+
         bmi, bmr, tdee, category, target_calories = calculate_metrics(
             weight, height_cm, age, patient.gender, activity
         )
-        
-        carbs_target = target_calories * 0.4 / 4
+
+        carbs_target   = target_calories * 0.4 / 4
         protein_target = target_calories * 0.3 / 4
-        fat_target = target_calories * 0.3 / 9
+        fat_target     = target_calories * 0.3 / 9
 
         checkup = Checkup.objects.create(
             patient=patient,
-            age=age,
-            height=height_cm,
-            weight=weight,
-            activity=activity,
-            dietary=dietary,
-            plan_type=plan_type,
-            bmi=bmi,
-            bmr=bmr,
-            tdee=tdee,
-            category=category,
+            age=age, height=height_cm, weight=weight, activity=activity,
+            dietary=dietary, plan_type=plan_type,
+            bmi=bmi, bmr=bmr, tdee=tdee, category=category,
             blood_pressure=bp,
             diseases=diseases_str,
-            protein_target=protein_target,
-            carbs_target=carbs_target,
-            fat_target=fat_target
+            protein_target=protein_target, carbs_target=carbs_target, fat_target=fat_target
         )
-        # ── Link diseases (M2M) and sync legacy text field ─────────────────
+        # ── Link diseases (M2M) and sync legacy text field ──────────────────
         _link_diseases_to_checkup(checkup, diseases_str)
 
         return redirect('generate_dynamic_diet_plan', patient_id=patient.id, checkup_id=checkup.id)
@@ -531,38 +554,44 @@ def calculate_metrics(weight, height, age, gender, activity):
     
     return bmi, bmr, tdee, category, int(target)
 
-def get_restricted_nutrients(diseases_str):
+def get_restricted_nutrients_from_queryset(disease_qs):
     """
-    ENGINE A2: DISEASE RESTRICTIONS  (DB-backed, priority-aware)
-    Queries restricted_nutrients JSONField from the Disease model.
-    Higher-priority disease wins on conflicts (e.g. Renal Failure > Constipation).
+    ENGINE A2 (internal): takes a Disease queryset ordered by priority asc.
+    Higher-priority disease overwrites lower ones on conflicts.
     Returns a dict: { nutrient: {'max': max_daily_g, 'banned': is_banned} }
     """
-    if not diseases_str:
-        return {}
-
-    names = [d.strip() for d in diseases_str.split(',') if d.strip()]
-    if not names:
-        return {}
-
-    # Resolve disease names → Disease objects (ordered by priority desc so
-    # highest-priority disease is processed last and overwrites lower ones)
-    diseases = (
-        Disease.objects
-        .filter(name__in=names)
-        .order_by('priority')          # low priority first → high priority last (overwrites)
-    )
-
     restrictions = {}
-    for disease in diseases:
-        # data in JSONField: {"sodium": {"banned": true}, "sugar": {"max": 10}}
+    for disease in disease_qs.order_by('priority'):
         for nutrient, rule in disease.restricted_nutrients.items():
             restrictions[nutrient] = {
                 'max': rule.get('max'),
                 'banned': rule.get('banned', False)
             }
-
     return restrictions
+
+
+def get_restricted_nutrients(diseases_str):
+    """
+    ENGINE A2: DISEASE RESTRICTIONS  (DB-backed, priority-aware)
+    Accepts a comma-separated string of disease names (legacy fallback).
+    Prefer get_restricted_nutrients_from_checkup() when a Checkup is available.
+    Returns a dict: { nutrient: {'max': max_daily_g, 'banned': is_banned} }
+    """
+    if not diseases_str:
+        return {}
+    names = [d.strip() for d in diseases_str.split(',') if d.strip()]
+    if not names:
+        return {}
+    disease_qs = Disease.objects.filter(name__in=names)
+    return get_restricted_nutrients_from_queryset(disease_qs)
+
+
+def get_restricted_nutrients_from_checkup(checkup):
+    """
+    ENGINE A2 (preferred): Uses the authoritative M2M disease_links relation
+    on a Checkup instead of the legacy text field, avoiding sync drift.
+    """
+    return get_restricted_nutrients_from_queryset(checkup.disease_links.all())
 
 
 def _get_nutrient_list(diseases_str):
@@ -600,6 +629,10 @@ def smart_filter(category, meal_type, diet_pref, bmi_category, restrictions=None
         items = items.filter(diet_type__in=['Veg', 'Vegan'])
     elif diet_pref == 'Vegan':
         items = items.filter(diet_type='Vegan')
+    elif diet_pref == 'Eggetarian':
+        # Eggetarian: vegetarian foods + eggs; exclude meat-based Non-Veg
+        items = items.filter(diet_type__in=['Veg', 'Vegan'])
+        # Note: Add diet_type='Egg' to FoodItem if egg dishes are in the DB
 
     # ── BMI-based base filters ──────────────────────────────────────────────
     if bmi_category in ['Obese', 'Overweight']:
@@ -710,9 +743,9 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     if not AssignedMeal.objects.filter(checkup=checkup).exists():
         days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
         
-        # Determine disease restrictions from DB (returns dict {nutrient: threshold})
-        restricted = get_restricted_nutrients(checkup.diseases)
-        
+        # Determine disease restrictions via M2M (authoritative, avoids sync drift)
+        restricted = get_restricted_nutrients_from_checkup(checkup)
+
         pools = {}
         for meal in splits.keys():
             pools[meal] = smart_filter(meal, meal, checkup.dietary, category, restricted)
@@ -771,27 +804,38 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     total_bmi_change = round(current_b - start_bmi, 2)
 
     # --- 5. AGGREGATES & SHOPPING LIST ---
+    # Parse actual grams from quantity_text (e.g. "250 g" → 250)
+    # and scale per-100g nutrient values to get real consumed amounts.
     weekly_totals = {'cal': 0, 'p': 0, 'c': 0, 'f': 0, 'fiber': 0, 'sugar': 0}
     shopping_list = {}
-    
+
     for m in db_meals:
-        weekly_totals['cal'] += m.total_calories
-        weekly_totals['p'] += m.food_item.protein
-        weekly_totals['c'] += m.food_item.carbs
-        weekly_totals['f'] += m.food_item.fat
-        weekly_totals['fiber'] += getattr(m.food_item, 'fiber', 0)
-        weekly_totals['sugar'] += getattr(m.food_item, 'sugar', 0)
-        
-        fname = m.food_item.name
+        # Extract numeric grams from text like "250 g" or "100 g"
+        qty_parts = m.quantity_text.split()
+        try:
+            grams = float(qty_parts[0])
+        except (ValueError, IndexError):
+            grams = 100.0  # safe fallback
+        scale = grams / 100.0
+
+        fi = m.food_item
+        weekly_totals['cal']   += m.total_calories              # already portion-adjusted
+        weekly_totals['p']     += round(fi.protein * scale, 2)
+        weekly_totals['c']     += round(fi.carbs   * scale, 2)
+        weekly_totals['f']     += round(fi.fat     * scale, 2)
+        weekly_totals['fiber'] += round(getattr(fi, 'fiber', 0) * scale, 2)
+        weekly_totals['sugar'] += round(getattr(fi, 'sugar', 0) * scale, 2)
+
+        fname = fi.name
         if fname in shopping_list:
             shopping_list[fname]['qty'] += 1
         else:
             shopping_list[fname] = {
-                'qty': 1, 
-                'unit': m.food_item.unit_name,
-                'cat': m.food_item.category
+                'qty': 1,
+                'unit': fi.unit_name,
+                'cat': fi.category
             }
-            
+
     # Daily Averages
     daily_avg = {k: round(v / 7, 1) for k, v in weekly_totals.items()}
     
@@ -804,21 +848,98 @@ def generate_dynamic_diet_plan(request, patient_id, checkup_id):
     if diet_goal == "Maintenance":
         projected_weight_change = 0
 
-    # Prepare WhatsApp Share Text
-    whatsapp_text = f"Hello {patient.name}, here is your personalized diet plan for this week:\n\n"
+    # ─────────────────────────────────────────────────────────────────────────
+    # Prepare WhatsApp Share Text  (WhatsApp markdown: *bold*, _italic_, emojis)
+    # ─────────────────────────────────────────────────────────────────────────
+    day_emojis = {
+        'Monday':    '🟢', 'Tuesday':  '🔵', 'Wednesday': '🟣',
+        'Thursday':  '🟠', 'Friday':   '🔴', 'Saturday':  '🟡',
+        'Sunday':    '⚪',
+    }
+    meal_emojis = {
+        'Breakfast':     '🌅', 'Lunch':          '☀️',
+        'Dinner':        '🌙', 'Evening Snack':  '🍎',
+        'Mid-Morning':   '🥜',
+    }
+
+    lines = []
+
+    # ── Header / Clinic banner ────────────────────────────────────────────────
+    lines += [
+        "╔══════════════════════════════╗",
+        "      🏥 *NutriPlanner Clinic*",
+        "   _Precision Nutrition for You_",
+        "╚══════════════════════════════╝",
+        "",
+    ]
+
+    # ── Greeting ─────────────────────────────────────────────────────────────
+    lines += [
+        f"👋 Hello *{patient.name}*!",
+        f"Your personalised *7-Day Diet Plan* is ready. 🎉",
+        "",
+    ]
+
+    # ── Nutrition Summary ─────────────────────────────────────────────────────
+    lines += [
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        "📊 *YOUR NUTRITION TARGET*",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        f"🎯  Goal         : *{diet_goal}*",
+        f"🔥  Daily Cals   : *{target_calories} kcal*",
+        f"💪  Protein      : *{round(checkup.protein_target)} g*",
+        f"🌾  Carbs        : *{round(checkup.carbs_target)} g*",
+        f"🥑  Fat          : *{round(checkup.fat_target)} g*",
+        f"📏  BMI          : *{checkup.bmi}* ({checkup.category})",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        "",
+    ]
+
+    # ── Weekly Plan ───────────────────────────────────────────────────────────
+    lines.append("🗓 *YOUR 7-DAY MEAL SCHEDULE*")
+    lines.append("")
+
     for day, meals in weekly_plan.items():
-        whatsapp_text += f"📅 *{day}*\n"
+        dot = day_emojis.get(day, '▪️')
+        lines.append(f"{dot} *{day.upper()}*")
         for m in meals:
-            whatsapp_text += f"- {m['meal']}: {m['food']} ({m['cal']} kcal)\n"
-        whatsapp_text += "\n"
-    
-    whatsapp_text += "Stay healthy!\n- LifeCare Clinic"
+            meal_icon = meal_emojis.get(m['meal'], '🍽️')
+            lines.append(f"  {meal_icon} _{m['meal']}_")
+            lines.append(f"     • {m['food']}")
+            lines.append(f"     🔥 {m['cal']} kcal")
+        lines.append("  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+        lines.append("")
+
+    # ── Tips & Footer ─────────────────────────────────────────────────────────
+    lines += [
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        "💡 *DAILY WELLNESS TIPS*",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        "  💧 Drink 8–10 glasses of water daily",
+        "  🚶 Walk at least 30 mins every day",
+        "  🛌 Get 7–8 hours of quality sleep",
+        "  🧘 Manage stress with mindful breaks",
+        "",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        f"💚 *Stay healthy & consistent, {patient.name.split()[0]}!*",
+        "",
+        "🏥 *LifeCare NutriPlanner Clinic*",
+        "_Your health is our mission_ 🌿",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+    ]
+
+    whatsapp_text = "\n".join(lines)
     
     import urllib.parse
-    whatsapp_link = f"https://wa.me/{patient.phone.replace(' ', '').replace('-', '')}?text={urllib.parse.quote(whatsapp_text)}"
+    # WhatsApp wa.me requires full E.164 international number (country code + number).
+    # Prepend India country code (+91). Adjust if serving other countries.
+    clean_phone = patient.phone.replace(' ', '').replace('-', '')
+    if not clean_phone.startswith('+'):
+        clean_phone = '91' + clean_phone  # default to India (+91)
+    whatsapp_link = f"https://wa.me/{clean_phone}?text={urllib.parse.quote(whatsapp_text)}"
 
-    # Restricted nutrients for display (list of names)
-    restricted_nutrients = _get_nutrient_list(checkup.diseases)
+    # Restricted nutrients for display — use M2M as the authoritative source
+    restricted_nutrients = sorted(get_restricted_nutrients_from_checkup(checkup).keys())
 
     # Pre-split diseases list so template doesn't need to call .split()
     diseases_list = [d.strip() for d in checkup.diseases.split(',') if d.strip()] if checkup.diseases else []

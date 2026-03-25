@@ -1,251 +1,276 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Diet Planner</title>
+{% block content %}
+<style>
+    .contact-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        animation: fadeIn .6s ease-out;
+    }
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 
-    <style>
-        /* --- GLOBAL VARIABLES (Matching Home Page) --- */
-        :root {
-            --primary-dark: #0b2545;       /* Deep Navy Blue */
-            --primary-light: #1e4c8c;      /* Professional Blue */
-            --accent: #48cae4;             /* Medical Light Blue Accent */
-            --bg-color: #f0f4f8;           /* Very Light Grey-Blue Background */
-            --text-color: #333;
-            --white: #ffffff;
-        }
+    /* Page Hero Banner */
+    .contact-hero {
+        background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+        border-radius: 24px;
+        padding: 48px 52px;
+        color: #fff;
+        margin-bottom: 32px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(67, 24, 255, 0.28);
+    }
 
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    .contact-hero::before {
+        content: '';
+        position: absolute; top: -60%; left: -10%;
+        width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(255,255,255,.1) 0%, transparent 60%);
+        border-radius: 50%;
+        animation: pulseGlow 6s ease-in-out infinite alternate;
+    }
 
-        /* --- HEADER & NAVIGATION (Exact Copy) --- */
-        header {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
-            color: var(--white);
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+    .contact-hero::after {
+        content: '\f015';
+        font-family: 'Font Awesome 6 Free'; font-weight: 900;
+        position: absolute; right: 52px; top: 50%;
+        transform: translateY(-50%);
+        font-size: 140px; opacity: .07;
+    }
 
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            display: flex;       /* Added flex to align image and text */
-            align-items: center; /* Vertically center the logo */
-        }
+    @keyframes pulseGlow {
+        from { transform: scale(1); }
+        to   { transform: scale(1.08); }
+    }
 
-        /* REMOVED the ::before pseudo-element here so the image works */
+    .contact-hero h2 {
+        font-size: 34px; font-weight: 800;
+        margin: 0 0 10px; letter-spacing: -.5px;
+        position: relative; z-index: 2;
+    }
 
-        nav a {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            margin-left: 30px;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
+    .contact-hero p {
+        font-size: 15px; opacity: .9; margin: 0;
+        position: relative; z-index: 2;
+    }
 
-        nav a:hover {
-            color: var(--white);
-            transform: translateY(-2px);
-        }
+    /* Content Sections */
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 24px;
+        margin-bottom: 28px;
+    }
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--accent);
-            transition: width 0.3s;
-        }
+    .info-card {
+        background: var(--bg-surface);
+        border-radius: 20px;
+        padding: 36px 32px;
+        border: var(--border);
+        box-shadow: var(--shadow);
+        transition: transform .25s ease, box-shadow .25s ease;
+        position: relative;
+        overflow: hidden;
+    }
 
-        nav a:hover::after {
-            width: 100%;
-        }
+    .info-card::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #4318FF, #868CFF);
+        border-radius: 20px 20px 0 0;
+    }
 
-        /* --- PAGE TITLE SECTION --- */
-        .page-header {
-            background: var(--white);
-            text-align: center;
-            padding: 60px 20px;
-            border-bottom: 1px solid #e0e6ed;
-            margin-bottom: 40px;
-        }
+    .info-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-md);
+    }
 
-        .page-header h2 {
-            font-size: 36px;
-            color: var(--primary-dark);
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
+    .info-card-icon {
+        width: 54px; height: 54px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 22px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 20px rgba(67, 24, 255, 0.25);
+    }
 
-        .page-header p {
-            font-size: 18px;
-            color: #666;
-            letter-spacing: 1px;
-        }
+    .info-card h3 {
+        font-size: 18px; font-weight: 800;
+        color: var(--text-heading); margin: 0 0 10px;
+    }
 
-        /* --- MAIN CONTENT CONTAINER --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px 60px;
-        }
+    .info-card p {
+        font-size: 14px; line-height: 1.75;
+        color: var(--text-body); margin: 0;
+    }
 
-        /* --- SECTIONS --- */
-        .content-section {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 40px;
-            border-left: 5px solid var(--primary-light);
-        }
+    /* Features Grid */
+    .features-section {
+        background: var(--bg-surface);
+        border-radius: 20px;
+        padding: 40px;
+        border: var(--border);
+        box-shadow: var(--shadow);
+        margin-bottom: 28px;
+    }
 
-        .content-section h3 {
-            color: var(--primary-dark);
-            font-size: 24px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+    .features-section h3 {
+        font-size: 20px; font-weight: 800;
+        color: var(--text-heading); margin: 0 0 8px;
+    }
 
-        .content-section p {
-            line-height: 1.8;
-            color: #555;
-            font-size: 16px;
-        }
+    .features-section > p {
+        color: var(--text-muted); font-size: 14px; margin: 0 0 28px;
+    }
 
-        /* --- GRID FOR FEATURES --- */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
 
-        .feature-card {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            border-top: 3px solid var(--primary-light);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    .feature-tile {
+        background: var(--bg-body);
+        padding: 22px;
+        border-radius: 14px;
+        border: var(--border);
+        transition: all .25s ease;
+    }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            background: var(--white);
-        }
+    .feature-tile:hover {
+        background: var(--brand-light);
+        border-color: var(--brand);
+        transform: translateY(-3px);
+    }
 
-        .feature-card h4 {
-            color: var(--primary-dark);
-            font-size: 18px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+    .feature-tile i {
+        font-size: 22px; color: var(--brand);
+        margin-bottom: 12px; display: block;
+    }
 
-        .feature-card p {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-            margin: 0;
-        }
+    .feature-tile h4 {
+        font-size: 15px; font-weight: 700;
+        color: var(--text-heading); margin: 0 0 6px;
+    }
 
-        /* --- FOOTER --- */
-        footer {
-            margin-top: auto;
-            background-color: var(--primary-dark);
-            color: rgba(255,255,255,0.6);
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-        }
+    .feature-tile p {
+        font-size: 13px; color: var(--text-body);
+        line-height: 1.6; margin: 0;
+    }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            header { flex-direction: column; text-align: center; }
-            nav { margin-top: 15px; }
-            nav a { margin: 0 10px; }
-        }
-    </style>
-</head>
-<body>
+    /* Commitment Banner */
+    .commitment-banner {
+        background: var(--bg-surface);
+        border-radius: 20px;
+        padding: 36px 40px;
+        border: var(--border);
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
 
-    <header>
-        <h1>
-            <img src="{% static 'images/kg icon.webp' %}" alt="Hospital Logo" style="height: 50px; margin-right: 15px;">
-            HOSPITAL DIET PLANNER
-        </h1>
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'patients' %}">Patients Info</a>
-            <a href="{% url 'contact' %}">Contact</a>
-        </nav>
-    </header>
+    .commitment-icon {
+        width: 64px; height: 64px; min-width: 64px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #05cd99 0%, #00b87d 100%);
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 28px;
+        box-shadow: 0 8px 20px rgba(5, 205, 153, 0.28);
+    }
 
-    <div class="page-header">
-        <h2>About Us</h2>
-        <p>Your Personal Nutrition Companion</p>
+    .commitment-banner h3 {
+        font-size: 18px; font-weight: 800;
+        color: var(--text-heading); margin: 0 0 8px;
+    }
+
+    .commitment-banner p {
+        font-size: 14px; color: var(--text-body);
+        line-height: 1.75; margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .contact-hero { padding: 32px 24px; }
+        .contact-hero h2 { font-size: 24px; }
+        .features-section { padding: 28px 20px; }
+        .commitment-banner { flex-direction: column; text-align: center; }
+    }
+</style>
+
+<div class="contact-wrapper">
+    <!-- Hero -->
+    <div class="contact-hero">
+        <h2>🏥 About NutriPlanner</h2>
+        <p>Your Clinical Nutrition Companion — Bridging medical insight with everyday lifestyle.</p>
     </div>
 
-    <div class="container">
-        
-        <div class="content-section">
+    <!-- Mission + Contact Info Cards -->
+    <div class="info-grid">
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-bullseye"></i></div>
             <h3>Our Mission</h3>
-            <p>Diet Planner is dedicated to helping individuals achieve their health and fitness goals through personalized nutrition planning. We believe that healthy eating should be simple, accessible, and sustainable for everyone. Our goal is to bridge the gap between medical requirements and daily lifestyle.</p>
+            <p>Diet Planner is dedicated to helping individuals achieve their health and fitness goals through personalized nutrition planning. We believe healthy eating should be simple, accessible, and sustainable for everyone.</p>
         </div>
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-envelope"></i></div>
+            <h3>Get in Touch</h3>
+            <p>Have questions or feedback? Reach us at:<br>
+               <strong>support@nutriplanner.health</strong><br><br>
+               We're available Monday–Saturday, 9 AM – 6 PM IST.
+            </p>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <h3>Location</h3>
+            <p>LifeCare Hospital, Block 3<br>
+               Medical District, Chennai<br>
+               Tamil Nadu, India — 600001
+            </p>
+        </div>
+    </div>
 
-        <div class="content-section">
-            <h3>Why Choose Us?</h3>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h4>Personalized Plans</h4>
-                    <p>Get customized meal plans tailored specifically to your BMI, BMR, and medical activity levels.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Expert Guidance</h4>
-                    <p>Access nutritional information and structures based on hospital-grade standards.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Easy Tracking</h4>
-                    <p>Monitor your daily calorie intake (TDEE) and macronutrients with our intuitive tools.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Community Support</h4>
-                    <p>Join thousands of users on their journey to better health and sustainable recovery.</p>
-                </div>
+    <!-- Features -->
+    <div class="features-section">
+        <h3>Why Choose NutriPlanner?</h3>
+        <p>Hospital-grade nutrition management built for healthcare professionals.</p>
+        <div class="features-grid">
+            <div class="feature-tile">
+                <i class="fas fa-dna"></i>
+                <h4>Personalized Plans</h4>
+                <p>Customized meal plans tailored to BMI, BMR, diseases, and activity levels.</p>
+            </div>
+            <div class="feature-tile">
+                <i class="fas fa-stethoscope"></i>
+                <h4>Clinical Accuracy</h4>
+                <p>Uses Mifflin-St Jeor BMR and TDEE standards with disease restriction logic.</p>
+            </div>
+            <div class="feature-tile">
+                <i class="fas fa-chart-line"></i>
+                <h4>Progress Tracking</h4>
+                <p>Monitor macro trends, BMI history, and weight projections per patient.</p>
+            </div>
+            <div class="feature-tile">
+                <i class="fas fa-file-pdf"></i>
+                <h4>PDF Reports</h4>
+                <p>Download and share professional diet plan reports with patients instantly.</p>
             </div>
         </div>
-
-        <div class="content-section">
-            <h3>Our Commitment</h3>
-            <p>We are committed to providing accurate nutritional information, promoting healthy lifestyle choices, and supporting our users every step of the way toward their wellness goals. Your health is our priority.</p>
-        </div>
-
     </div>
 
-    <footer>
-        <p>&copy; 2026 Hospital Diet Planner System. All Rights Reserved.</p>
-    </footer>
-
-</body>
-</html>
+    <!-- Commitment -->
+    <div class="commitment-banner">
+        <div class="commitment-icon"><i class="fas fa-heart"></i></div>
+        <div>
+            <h3>Our Commitment to Patient Health</h3>
+            <p>We are committed to providing accurate nutritional information, promoting healthy lifestyle choices, and supporting healthcare professionals every step of the way. Your patients' health is our priority.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
